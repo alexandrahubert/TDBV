@@ -1,6 +1,7 @@
-
-
-# convertir R64 bit -> R32 bit :  Tools-> Global Options-> Change R version-> choisir R 32 bit
+##########################################################
+# NB : Script pour une version Access 32 bits => R doit aussi être une version 32 bits
+# Tools-> Global Options-> Change R version -> choisir R 32 bit
+##########################################################
 
 
 rm(list = ls()) # nettoyage de l'espace
@@ -9,15 +10,10 @@ rm(list = ls()) # nettoyage de l'espace
 library(tidyverse)
 library(RODBC)
 
-# odbcDriverConnect("Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=../raw_data/Tête_BV.accdb")
-# channel <- odbcConnect("TBV")
-# channel
-# Table1Dat <- sqlFetch(channel, "creationtable")
-# connexion
+# connexion à la base Access
 channel <- RODBC::odbcConnectAccess2007(access.file = "raw_data/Tête_BV.accdb")
-#
 
-# importer les tables qui seront utilisées
+# importation des tables qui seront utilisées
 station <- sqlFetch(channel, "Station")
 caractere_bv <- sqlFetch(channel, "caractere_BV")
 facies <- sqlFetch(channel, "Facies")
@@ -28,57 +24,6 @@ rugosite <- sqlFetch(channel, "Rugosite")
 tdbv_stations_aval_l93_20200612 <-
   sqlFetch(channel, "TDBV_stations_aval_L93_20200612")
 
+
+# sauvegarde des données au format RData
 save.image(file = "processed_data/tables_access.RData")
-
-
-# distance entre deux radiers
-dist_rad <- facies %>%
-  filter(type == "Rad") %>%
-  group_by(Ref_sta) %>%
-  summarise(
-    borne_prem_rad = min(borne),
-    borne_der_rad = max(borne),
-    n_rad = n() - 1
-  ) %>%
-  ungroup() %>%
-  mutate(dist_inter_rad = (borne_der_rad - borne_prem_rad) / n_rad) %>%
-  select(Ref_sta,
-         dist_inter_rad)
-
-
-moyenne <- prof_chute %>% 
-  group_by(Ref_sta) %>% 
-  summarise(
-    moy_chute = mean(Hauteur_chute),
-    moy_fd = mean(Profondeur_FD)
-  ) %>% 
-  ungroup() %>% 
-  select(Ref_sta,
-         moy_chute, moy_fd)
-
-  
-
-
-#créer jointures
-data <- station %>%
-  select(Ref_sta, comm, topo, lieu_dit) %>%
-  left_join(y = rugosite %>%
-              select(Ref_sta, Coeff_K)) %>%
-  left_join(y = mesures_wolman %>%
-              select(Ref_sta, D16, D50, D84)) %>%
-  left_join(y = pente %>%
-              select(Ref_sta, pente_eau)) %>%
-  left_join(y = dist_rad %>%
-              select(Ref_sta,
-                     dist_inter_rad)) %>%
-  left_join(y = tdbv_stations_aval_l93_20200612 %>%
-              select(Ref_sta,
-                     Surface_BV,
-                     Lpb_moy,
-                     Htot_moy)) %>%
-  left_join(y = moyenne %>%
-              select(Ref_sta,
-                     moy_chute, moy_fd))
-
-
-

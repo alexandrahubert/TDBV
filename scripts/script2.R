@@ -1,49 +1,57 @@
-access_query_32 <- function(db_table = "qryData_RM", table_out = "data_access") {
-  library(svSocket)
-  
-  # variables to make values uniform
-  sock_port <- 8642L
-  sock_con <- "sv_con"
-  ODBC_con <- "a32_con"
-  db_path <- "../raw_data/Tête_BV.accdb"
-  
-  if (file.exists(db_path)) {
-    
-    # build ODBC string
-    ODBC_str <- local({
-      s <- list()
-      s$path <- paste0("DBQ=", gsub("(/|\\\\)+", "/", path.expand(db_path)))
-      s$driver <- "Driver={Microsoft Access Driver (*.mdb, *.accdb)}"
-      s$threads <- "Threads=4"
-      s$buffer <- "MaxBufferSize=4096"
-      s$timeout <- "PageTimeout=5"
-      paste(s, collapse=";")
-    })
-    
-    # start socket server to transfer data to 32 bit session
-    startSocketServer(port=sock_port, server.name="access_query_32", local=TRUE)
-    
-    # build expression to pass to 32 bit R session
-    expr <- "library(svSocket)"
-    expr <- c(expr, "library(RODBC)")
-    expr <- c(expr, sprintf("%s <- odbcDriverConnect('%s')", ODBC_con, ODBC_str))
-    expr <- c(expr, sprintf("if('%1$s' %%in%% sqlTables(%2$s)$TABLE_NAME) {%1$s <- sqlFetch(%2$s, '%1$s')} else {%1$s <- 'table %1$s not found'}", db_table, ODBC_con))
-    expr <- c(expr, sprintf("%s <- socketConnection(port=%i)", sock_con, sock_port))
-    expr <- c(expr, sprintf("evalServer(%s, %s, %s)", sock_con, table_out, db_table))
-    expr <- c(expr, "odbcCloseAll()")
-    expr <- c(expr, sprintf("close(%s)", sock_con))
-    expr <- paste(expr, collapse=";")
-    
-    # launch 32 bit R session and run expressions
-    prog <- file.path(R.home(), "bin", "i386", "Rscript.exe")
-    system2(prog, args=c("-e", shQuote(expr)), stdout=NULL, wait=TRUE, invisible=TRUE)
-    
-    # stop socket server
-    stopSocketServer(port=sock_port)
-    
-    # display table fields
-    message("retrieved: ", table_out, " - ", paste(colnames(get(table_out)), collapse=", "))
-  } else {
-    warning("database not found: ", db_path)
-  }
-}
+rm(list = ls()) # nettoyage de l'espace
+
+# chargement des packages
+library(tidyverse)
+
+# chargement des données au format RData
+load(file = "processed_data/tables_access.RData")
+
+# distance entre deux radiers
+dist_rad <- facies %>%
+  filter(type == "Rad") %>%
+  group_by(Ref_sta) %>%
+  summarise(
+    borne_prem_rad = min(borne),
+    borne_der_rad = max(borne),
+    n_rad = n() - 1
+  ) %>%
+  ungroup() %>%
+  mutate(dist_inter_rad = (borne_der_rad - borne_prem_rad) / n_rad) %>%
+  select(Ref_sta,
+         dist_inter_rad)
+
+# calcul des moyennes de profondeur de chute
+moyenne <- prof_chute %>% 
+  group_by(Ref_sta) %>% 
+  summarise(
+    moy_chute = mean(Hauteur_chute),
+    moy_fd = mean(Profondeur_FD)
+  ) %>% 
+  ungroup() %>% 
+  select(Ref_sta,
+         moy_chute, moy_fd)
+
+
+# assemblage du tableau de données
+data <- station %>%
+  select(Ref_sta, comm, topo, lieu_dit) %>%
+  left_join(y = rugosite %>%
+              select(Ref_sta, Coeff_K)) %>%
+  left_join(y = mesures_wolman %>%
+              select(Ref_sta, D16, D50, D84)) %>%
+  left_join(y = pente %>%
+              select(Ref_sta, pente_eau)) %>%
+  left_join(y = dist_rad %>%
+              select(Ref_sta,
+                     dist_inter_rad)) %>%
+  left_join(y = tdbv_stations_aval_l93_20200612 %>%
+              select(Ref_sta,
+                     Surface_BV,
+                     Lpb_moy,
+                     Htot_moy)) %>%
+  left_join(y = moyenne %>%
+              select(Ref_sta,
+                     moy_chute, moy_fd))
+
+
+
