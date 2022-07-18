@@ -28,7 +28,7 @@ rugosite <- sqlFetch(channel, "Rugosite")
 tdbv_stations_aval_l93_20200612 <-
   sqlFetch(channel, "TDBV_stations_aval_L93_20200612")
 
-
+save.image(file = "processed_data/tables_access.RData")
 
 
 # distance entre deux radiers
@@ -68,13 +68,15 @@ data <- station %>%
               select(Ref_sta, D16, D50, D84)) %>%
   left_join(y = pente %>%
               select(Ref_sta, pente_eau)) %>%
-  left_join(y=dist_rad %>%
+  left_join(y = dist_rad %>%
               select(Ref_sta,
-                     dist_inter_rad)) %>% 
-  left_join(y=tdbv_stations_aval_l93_20200612 %>% 
+                     dist_inter_rad)) %>%
+  left_join(y = tdbv_stations_aval_l93_20200612 %>%
               select(Ref_sta,
-                     Surface_BV, Lpb_moy, Htot_moy, )) %>% 
-  left_join(y=moyenne %>% 
+                     Surface_BV,
+                     Lpb_moy,
+                     Htot_moy)) %>%
+  left_join(y = moyenne %>%
               select(Ref_sta,
                      moy_chute, moy_fd))
 
