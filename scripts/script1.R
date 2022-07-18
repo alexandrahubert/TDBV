@@ -12,12 +12,10 @@ library(RODBC)
 # channel <- odbcConnect("TBV")
 # channel
 # Table1Dat <- sqlFetch(channel, "creationtable")
-
 # connexion
-channel <- odbcConnectAccess2007(access.file = "../raw_data/Tête_BV.accdb")
+channel <- RODBC::odbcConnectAccess2007(access.file = "raw_data/Tête_BV.accdb")
 
 # importer les tables qui seront utilisées
-
 station <- sqlFetch(channel, "Station")
 caractere_bv <- sqlFetch(channel, "caractere_BV")
 facies <- sqlFetch(channel, "Facies")
