@@ -1,0 +1,6 @@
+retirer <- station %>%
+   select( Ref_sta,
+	   Code_tron,
+	   lieu_dit)
+   filter(Code_tron not in(11,5,1,10,14,12,22,20,21,17,23,24,31,26,27,32,28,29,30)) %>%
+   filter(lieu_dit not in('La Chauvinière','Le Champ-Fleury'))
