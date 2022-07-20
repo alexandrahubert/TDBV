@@ -113,7 +113,7 @@ ref_data <- data %>%
 
 # Données Carhyce téléchargées depuis l'IED https://analytics.huma-num.fr/ied_carhyce/
 # filtré sur REGION == ARMORICAIN
-carhyce <- data.table::fread("../raw_data/Operations_2022-07-19.csv",
+carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
                              encoding = "UTF-8") %>% 
   select(localisation = `Localisation station de mesure`,
          topo = `Cours d'eau`,
@@ -170,6 +170,7 @@ g <- ggplot(data = ref,
 
 g
 
+
 model <- glm(log(Lpb_moy, base = 10) ~ log(Surface_BV, base = 10),
             data = ref_carhyce)
 summary(model)
@@ -189,20 +190,29 @@ model <- glm(log(pente_eau, base = 10) ~ log(Surface_BV, base = 10),
              data = ref_carhyce)
 summary(model)
 
-g2 <- ggplot(data = ref,
+g2 <- ggplot(data = ref %>% filter(Surface_BV > 0.1),
              aes(x = Surface_BV,
                  y = Htot_moy,
                  col = jeu_donnees)) +
   geom_point() +
   scale_x_log10() +
   scale_y_log10() +
-  geom_smooth(method = "lm")
+  geom_smooth(method = "gam")
 
 g2
 
 model <- glm(log(Htot_moy, base = 10) ~ log(Surface_BV, base = 10),
-             data = ref_carhyce)
+             data = ref %>% filter(Surface_BV > 0.1,
+                                   jeu_donnees == "tbv_ref"))
+
 summary(model)
+
+
+
+model <- glm(log(Htot_moy, base = 10) ~ log(Surface_BV, base = 10),
+             data = ref_carhyce )
+summary(model)
+
 
 ```
 

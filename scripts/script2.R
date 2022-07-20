@@ -4,7 +4,7 @@ rm(list = ls()) # nettoyage de l'espace
 library(tidyverse)
 
 # chargement des données au format RData
-load(file = "../processed_data/tables_access.RData")
+load(file = "processed_data/tables_access.RData")
 
 # distance entre deux radiers
 dist_rad <- facies %>%
@@ -30,6 +30,7 @@ moyenne <- prof_chute %>%
   ungroup() %>% 
   select(Ref_sta,
          moy_chute, moy_fd)
+
 
 
 # assemblage du tableau de données
@@ -129,8 +130,6 @@ ref <- rbind(ref_data, ref_carhyce)
   
 
 
-
-
 g <- ggplot(data = ref,
        aes(x = Surface_BV,
            y = Lpb_moy,
@@ -178,8 +177,6 @@ model <- glm(log(Htot_moy, base = 10) ~ log(Surface_BV, base = 10),
                                    jeu_donnees == "tbv_ref"))
 
 summary(model)
-
-
 
 
 
