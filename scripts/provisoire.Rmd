@@ -1,11 +1,40 @@
-rm(list = ls()) # nettoyage de l'espace
+---
+title: "tbv"
+author: "Julien"
+date: "19/07/2022"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = TRUE, message = FALSE)
+```
+
 
 # chargement des packages
+
+
+
+```{r}
 library(tidyverse)
+```
+
+
+
+
 
 # chargement des données au format RData
-load(file = "../processed_data/tables_access.RData")
 
+```{r}
+load(file = "../processed_data/tables_access.RData")
+```
+
+# Création de nouvelles tables à partir de celles existantes
+
+A partir de la table présentant les différents facies sur chaque station
+```{r}
 # distance entre deux radiers
 dist_rad <- facies %>%
   filter(type == "Rad") %>%
@@ -29,7 +58,8 @@ moyenne <- prof_chute %>%
   ) %>% 
   ungroup() %>% 
   select(Ref_sta,
-         moy_chute, moy_fd)
+         moy_chute,
+         moy_fd)
 
 
 # assemblage du tableau de données
@@ -42,9 +72,6 @@ data <- station %>%
   left_join(y = rugosite %>%
               select(Ref_sta,
                      Coeff_K)) %>%
-  left_join((y=caractere_bv %>% 
-               select(Ref_sta,
-                      surf_bv_access = `surface BV (en km²)`))) %>% 
   left_join(y = mesures_wolman %>%
               select(Ref_sta,
                      D16,
@@ -86,7 +113,7 @@ ref_data <- data %>%
 
 # Données Carhyce téléchargées depuis l'IED https://analytics.huma-num.fr/ied_carhyce/
 # filtré sur REGION == ARMORICAIN
-carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
+carhyce <- data.table::fread("../raw_data/Operations_2022-07-19.csv",
                              encoding = "UTF-8") %>% 
   select(localisation = `Localisation station de mesure`,
          topo = `Cours d'eau`,
@@ -112,8 +139,7 @@ carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
          Pentea_m_m = NA,
          dist_inter_rad = NA,
          moy_chute = NA,
-         moy_fd = NA,
-         surf_bv_access = NA)
+         moy_fd = NA)
 
 ref_carhyce <- carhyce %>% 
   filter(ref == 1) %>% 
@@ -125,12 +151,14 @@ ref_carhyce <- carhyce %>%
 identical(names(ref_carhyce), names(ref_data))
 
 ref <- rbind(ref_data, ref_carhyce)
-  
-  
+
+DT::datatable(ref)
+```
 
 
 
 
+```{r}
 g <- ggplot(data = ref,
        aes(x = Surface_BV,
            y = Lpb_moy,
@@ -141,7 +169,6 @@ g <- ggplot(data = ref,
   geom_smooth(method = "lm")
 
 g
-
 
 model <- glm(log(Lpb_moy, base = 10) ~ log(Surface_BV, base = 10),
             data = ref_carhyce)
@@ -162,28 +189,21 @@ model <- glm(log(pente_eau, base = 10) ~ log(Surface_BV, base = 10),
              data = ref_carhyce)
 summary(model)
 
-g2 <- ggplot(data = ref %>% filter(Surface_BV > 0.1),
+g2 <- ggplot(data = ref,
              aes(x = Surface_BV,
                  y = Htot_moy,
                  col = jeu_donnees)) +
   geom_point() +
   scale_x_log10() +
   scale_y_log10() +
-  geom_smooth(method = "gam")
+  geom_smooth(method = "lm")
 
 g2
 
 model <- glm(log(Htot_moy, base = 10) ~ log(Surface_BV, base = 10),
-             data = ref %>% filter(Surface_BV > 0.1,
-                                   jeu_donnees == "tbv_ref"))
-
+             data = ref_carhyce)
 summary(model)
 
+```
 
-
-
-
-model <- glm(log(Htot_moy, base = 10) ~ log(Surface_BV, base = 10),
-             data = ref_carhyce )
-summary(model)
 
