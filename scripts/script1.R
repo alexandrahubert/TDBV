@@ -11,7 +11,7 @@ library(tidyverse)
 library(RODBC)
 
 # connexion à la base Access
-channel <- RODBC::odbcConnectAccess2007(access.file = "//ad.intra/dfs/COMMUNS/REGIONS/BRE/DR/dr35/donnees_partage/6Stagiaires/2022TeteDeBassin_BOETON_Julien/Tête_BV.accdb")
+channel <- RODBC::odbcConnectAccess2007(access.file = "//ad.intra/dfs/COMMUNS/REGIONS/BRE/DR/dr35/donnees_partage/6Stagiaires/2022TeteDeBassin_BOETON_Julien/2022_07_21_Tête_BV.accdb")
 
 # importation des tables qui seront utilisées
 station <- sqlFetch(channel, "Station")
