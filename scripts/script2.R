@@ -13,10 +13,10 @@ dist_rad <- facies %>%
   summarise(
     borne_prem_rad = min(borne),
     borne_der_rad = max(borne),
-    n_rad = n() - 1
+    n_rad = n()
   ) %>%
   ungroup() %>%
-  mutate(dist_inter_rad = (borne_der_rad - borne_prem_rad) / n_rad) %>%
+  mutate(dist_inter_rad = (borne_der_rad - borne_prem_rad) / (n_rad - 1)) %>%
   select(Ref_sta,
          dist_inter_rad)
 
@@ -38,17 +38,14 @@ data <- station %>%
          topo,
          lieu_dit,
          Code_tron) %>%
-  left_join(y = rugosite %>%
-              select(Ref_sta,
-                     Coeff_K)) %>%
   left_join(y = caractere_bv %>%
               select(Ref_sta,
-                      surf_bv_access = `surface BV (en km²)`)) %>%
-  left_join(y = mesures_wolman %>%
-              select(Ref_sta,
-                     D16,
-                     D50,
-                     D84)) %>%
+                     surf_bv_access = `surface BV (en km²)`)) %>%
+  # left_join(y = mesures_wolman %>%
+  #             select(Ref_sta,
+  #                    D16,
+  #                    D50,
+  #                    D84)) %>%
   left_join(y = pente %>%
               select(Ref_sta,
                      pente_eau)) %>%
@@ -79,12 +76,12 @@ data <- station %>%
 # Sélection des stations
 # selon les sites, sur les Code_tron, ou bien sur les lieu_dit
 # NB manque une station du 44, contact D Fatin, SMBV Isac ?
-selection_troncons <- c(11,5,1,10,14,12,22,20,21,17,23,24,31,26,27,32,28,29,30)
-selection_lieux_dits <- c('La Chauvinière','Le Champ-Fleury')
+troncons_a_supprimer <- c(1, 5, 10, 11, 12, 14, 17, 20:24, 26:32)
+lieux_dits_a_supprimer <- c('La Chauvinière','Le Champ-Fleury')
 
 ref_data <- data %>% 
-  filter(!Code_tron %in% selection_troncons) %>%
-  filter(!lieu_dit %in% selection_lieux_dits) %>% 
+  filter(!Code_tron %in% troncons_a_supprimer) %>%
+  filter(!lieu_dit %in% lieux_dits_a_supprimer) %>% 
   mutate(jeu_donnees = 'tbv_ref')
 
 # Données Carhyce téléchargées depuis l'IED https://analytics.huma-num.fr/ied_carhyce/
@@ -121,8 +118,12 @@ carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
 ref_carhyce <- carhyce %>% 
   filter(ref == 1) %>% 
   mutate(localisation = str_to_upper(localisation),
-         localisation = str_replace(localisation, pattern = " À ", replacement = " A "),
-         comm = word(localisation, -1, sep = ' A ')) %>% 
+         localisation = str_replace(localisation,
+                                    pattern = " À ",
+                                    replacement = " A "),
+         comm = word(localisation,
+                     start = -1,
+                     sep = ' A ')) %>% 
   select(names(ref_data))
 
 identical(names(ref_carhyce), names(ref_data))
