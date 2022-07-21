@@ -21,13 +21,11 @@ dist_rad <- facies %>%
          dist_inter_rad)
 
 # calcul des moyennes de profondeur de chute
-moyenne <- prof_chute %>% 
-  group_by(Ref_sta) %>% 
-  summarise(
-    moy_chute = mean(Hauteur_chute),
-    moy_fd = mean(Profondeur_FD)
-  ) %>% 
-  ungroup() %>% 
+moyenne <- prof_chute %>%
+  group_by(Ref_sta) %>%
+  summarise(moy_chute = mean(Hauteur_chute),
+            moy_fd = mean(Profondeur_FD)) %>%
+  ungroup() %>%
   select(Ref_sta,
          moy_chute, moy_fd)
 
@@ -43,9 +41,9 @@ data <- station %>%
   left_join(y = rugosite %>%
               select(Ref_sta,
                      Coeff_K)) %>%
-  left_join((y=caractere_bv %>% 
-               select(Ref_sta,
-                      surf_bv_access = `surface BV (en km²)`))) %>% 
+  left_join(y = caractere_bv %>%
+              select(Ref_sta,
+                      surf_bv_access = `surface BV (en km²)`)) %>%
   left_join(y = mesures_wolman %>%
               select(Ref_sta,
                      D16,
@@ -63,16 +61,20 @@ data <- station %>%
                      Lpb_moy,
                      Htot_moy,
                      Pentea_m_m,
-                     Coef_sinuo)) %>%
+                     Coef_sinuo,
+                     jeu_donnees = Reseau_etu)) %>%
   left_join(y = moyenne %>%
               select(Ref_sta,
                      moy_chute,
-                     moy_fd)) %>% 
+                     moy_fd)) %>%
+  mutate(jeu_donnees = ifelse(str_detect(jeu_donnees, "Gallineau"),
+                              yes = "gallineau_2020",
+                              no = "tbv_ref")) %>% 
   select(Ref_sta:Code_tron,
+         jeu_donnees,
          Surface_BV,
          Pentea_m_m,
-         everything()) %>% 
-  mutate(jeu_donnees = "ref_tbv")
+         everything())
 
 # Sélection des stations
 # selon les sites, sur les Code_tron, ou bien sur les lieu_dit
