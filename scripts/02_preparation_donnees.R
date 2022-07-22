@@ -3,11 +3,11 @@ rm(list = ls()) # nettoyage de l'espace
 # chargement des packages
 library(tidyverse)
 
+
 # chargement des données au format RData
 load(file = "processed_data/tables_access.RData")
 
-# chargement des fonctions
-source(file = "scripts/00_fonctions.R")
+
 
 # distance entre deux radiers
 dist_rad <- facies %>%
@@ -146,64 +146,7 @@ identical(names(ref_carhyce), names(ref_data))
 
 ref <- rbind(ref_data, ref_carhyce) %>% 
   mutate(etiquette = paste0(Ref_sta, ", ", topo))
+
+save(ref, file = "processed_data/ref.RData")
   
   
-
-
-g_lpd_sbv <- ggplot(data = ref,
-       aes(x = Surface_BV_km2,
-           y = Lpb_moy,
-           col = jeu_donnees)) +
-  geom_point() +
-  scale_x_log10() +
-  scale_y_log10() +
-  geom_smooth(method = "lm")
-
-g_lpd_sbv
-
-
-model <- lm(log(Lpb_moy, base = 10) ~ log(Surface_BV_km2, base = 10),
-            data = ref_carhyce)
-
-summary(model)
-
-g1 <- ggplot(data = ref %>% 
-               filter(pente_eau_m_m > 0),
-            aes(x = Surface_BV_km2,
-                y = pente_eau_m_m,
-                col = jeu_donnees,
-                label = etiquette)) +
-  geom_point() +
-  scale_x_log10() +
-  scale_y_log10() +
-  geom_smooth(method = "lm")
-
-plotly::ggplotly(g1)
-
-model <- glm(log(pente_eau, base = 10) ~ log(Surface_BV_km2, base = 10),
-             data = ref_carhyce)
-summary(model)
-
-g2 <- ggplot(data = ref %>% filter(Surface_BV_km2 > 0.1),
-             aes(x = Surface_BV_km2,
-                 y = Htot_moy,
-                 col = jeu_donnees)) +
-  geom_point() +
-  scale_x_log10() +
-  scale_y_log10() +
-  geom_smooth(method = "gam")
-
-g2
-
-model <- glm(log(Htot_moy, base = 10) ~ log(Surface_BV_km2, base = 10),
-             data = ref %>% filter(Surface_BV_km2 > 0.1,
-                                   jeu_donnees == "tbv_ref"))
-
-summary(model)
-
-
-
-model <- glm(log(Htot_moy, base = 10) ~ log(Surface_BV_km2, base = 10),
-             data = ref_carhyce )
-summary(model)
-

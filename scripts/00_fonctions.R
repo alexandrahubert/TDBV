@@ -2,8 +2,13 @@
 #'
 #' @param data Le dataframe contenant les données.
 #' @param x,y,col Variables pour l'abscisse, l'ordonnée et la couleur des points.
+#' @param_label Variable qui apparaît dabs les popups si l'on passe en ggplotly().
 #' @param tendance Caractère. Type de courbe de tendance au sens de ggplot2::geom_smooth().
 #'     Par défaut c'est linéaire ("lm").
+#' @param tendance_tous_jeux Booléen. Ajouter une courbe de tendance sur l'ensemble des données ?
+#'     Par défaut tendance_tous_jeux = TRUE
+#' @param y_log Booléen. L'axe des ordonnées doit-il être en échelle log ? Par défaut TRUE.
+#' @param x_lab,y_lab Caractère. Etiquette des axes.
 #'
 #' @return
 #' @export
@@ -19,18 +24,45 @@ mon_nuage <- function(data,
                       x,
                       y,
                       col,
-                      tendance = "lm")
+                      label,
+                      tendance = "lm",
+                      tendance_tous_jeux = TRUE,
+                      y_log = TRUE,
+                      x_lab = NULL,
+                      y_lab = NULL)
   
   {
   
   g <- ggplot(data = data,
               aes(x = {{ x }},
                   y = {{ y }},
-                  col = {{ col }})) +
+                  col = {{ col }},
+                  label = {{ label }})) +
   geom_point() +
   scale_x_log10() +
-  scale_y_log10() +
-  geom_smooth(method = tendance)
+  geom_smooth(method = tendance) +
+  scale_color_manual(values = wes_palette(n = 3,
+                                          name = "Darjeeling1"),
+                     name = "Jeu de donn\u00e9es")  +
+  theme(legend.position = "bottom")
+  
+  # gestion des échelles et étiquettes des axes
+  if(y_log) {g <- g + scale_y_log10() }
+  if(!is.null(x_lab)) {g <- g + labs(x = x_lab) }
+  if(!is.null(y_lab)) {g <- g + labs(y = y_lab) }
+  
+  # éventuellement ajout de la courbe de tendance tous jeux de données confondus
+  if(tendance_tous_jeux) {
+  g <- g +
+    geom_smooth(data = data,
+                aes(x = {{ x }},
+                    y = {{ y }}),
+                col = "grey50",
+                linetype = "dashed",
+                se = FALSE) }
+  
+  # affichage
+  g
 
 }
 
