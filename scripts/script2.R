@@ -6,6 +6,9 @@ library(tidyverse)
 # chargement des données au format RData
 load(file = "processed_data/tables_access.RData")
 
+# chargement des fonctions
+source(file = "scripts/00_fonctions.R")
+
 # distance entre deux radiers
 dist_rad <- facies %>%
   filter(type == "Rad") %>%
@@ -114,8 +117,10 @@ carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
          Coef_sinuo = `Coefficient de sinuosité`,
          ref = `Station référence modèle`
          ) %>% 
-  mutate_at(vars(Surface_BV_km2:Coef_sinuo), function(x) str_replace(x, pattern = ",", replacement = ".")) %>% 
-  mutate_at(vars(Surface_BV_km2:Coef_sinuo), as.numeric) %>% 
+  mutate_at(vars(Surface_BV_km2:Coef_sinuo),
+            function(x) str_replace(x, pattern = ",", replacement = ".")) %>% 
+  mutate_at(vars(Surface_BV_km2:Coef_sinuo),
+            as.numeric) %>% 
   mutate(jeu_donnees = 'carhyce_ref_armo',
          Ref_sta = NA,
          lieu_dit = NA,
@@ -145,7 +150,7 @@ ref <- rbind(ref_data, ref_carhyce) %>%
   
 
 
-g <- ggplot(data = ref,
+g_lpd_sbv <- ggplot(data = ref,
        aes(x = Surface_BV_km2,
            y = Lpb_moy,
            col = jeu_donnees)) +
@@ -154,7 +159,7 @@ g <- ggplot(data = ref,
   scale_y_log10() +
   geom_smooth(method = "lm")
 
-g
+g_lpd_sbv
 
 
 model <- lm(log(Lpb_moy, base = 10) ~ log(Surface_BV_km2, base = 10),
