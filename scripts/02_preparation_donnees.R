@@ -45,11 +45,6 @@ data <- station %>%
   left_join(y = caractere_bv %>%
               select(Ref_sta,
                      Surface_BV_km2 = `surface BV (en km²)`)) %>%
-  # left_join(y = mesures_wolman %>%
-  #             select(Ref_sta,
-  #                    D16,
-  #                    D50,
-  #                    D84)) %>%
   left_join(y = pente %>%
               select(Ref_sta,
                      pente_eau)) %>%
@@ -61,16 +56,12 @@ data <- station %>%
     y = tdbv_stations_aval_l93_20200612 %>%
       select(
         Ref_sta,
-        Lpb_moy,
-        Htot_moy,
+        Lpb = Lpb_moy,
+        Hpb = Htot_moy,
         Pentea_m_m,
         Coef_sinuo
       )
   ) %>%
-  # left_join(y = moyenne %>%
-  #             select(Ref_sta,
-  #                    moy_chute,
-  #                    moy_fd)) %>%
   mutate(
     jeu_donnees = ifelse(
       str_detect(jeu_donnees, "Gallineau"),
@@ -112,8 +103,8 @@ carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
          D50 = `D50 (mm)`,
          D84 = `D84 (mm)`,
          pente_eau_m_km = `Pente ligne d'eau (‰)`,
-         Lpb_moy = `Largeur plein bord évaluée (m)`,
-         Htot_moy = `Profondeur moyenne Qb (m)`,
+         Lpb = `Largeur plein bord évaluée (m)`,
+         Hpb = `Profondeur moyenne Qb (m)`,
          Coef_sinuo = `Coefficient de sinuosité`,
          ref = `Station référence modèle`
          ) %>% 

@@ -17,7 +17,7 @@
 #' \dontrun{
 #' mon_nuage(data = ref,
 #' x = Surface_BV_km2,
-#' y = Lpb_moy,
+#' y = Lpb,
 #' col = jeu_donnees)
 #' }
 mon_nuage <- function(data,
@@ -136,9 +136,6 @@ mon_nuage <- function(data,
       row.names(resultat) <- paste(var_dep, jeu_donnees_selectionne, sep = " / ")
       
       # ajout du r2
-      # resultat <- c(resultat, summary(mod)$adj.r.squared %>% 
-      #                 round(digits = 3))
-
       as.data.frame(resultat) %>% 
         mutate(r2 = summary(mod)$adj.r.squared)
       
@@ -146,6 +143,6 @@ mon_nuage <- function(data,
 
 
 
-lm_unitaire(data = ref,
-            var_dep = "Lpb_moy",
-            jeu_donnees_selectionne = "tbv_ref")
+# lm_unitaire(data = ref,
+#             var_dep = "Lpb",
+#             jeu_donnees_selectionne = "tbv_ref")
