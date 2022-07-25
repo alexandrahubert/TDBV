@@ -1,6 +1,6 @@
 ---
 title: "Hydromorphologie des têtes de bassins versants"
-subtitle: "Analyses préliminaires sur les situations de référence du massif armoricain"
+subtitle: "Analyses préliminaires sur les stations de référence hydromorphologique du massif armoricain"
 author: "Julien Boëton"
 date: "22/07/2022"
 output:
@@ -17,12 +17,12 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 
 # Introduction
 
-Le présent document expose les analyses préliminaires réalisées dans le cadre d'un stage de première année à l'[ENGEES](https://engees.unistra.fr/) réalisé à la Direction Rgéionale Bretagne de l'Office Français de la Biodiversité. Il vise à esquisser ce que pourraient être des "conditions de référence" pour le chevelu hydrographique dans l'hydro-écorégion "massif armoricain". L'établissement de telles références fournirait une base pour l'ingéniérie écologique de restauration de ces petits cours d'eau dans la région.
+Le présent document expose les analyses préliminaires réalisées dans le cadre d'un stage de première année à l'[ENGEES](https://engees.unistra.fr/) réalisé à la Direction Régionale Bretagne de l'Office Français de la Biodiversité. Il vise à esquisser ce que pourrait être des "conditions de référence" pour le chevelu hydrographique dans l'HER de niveau 1 "massif armoricain". L'établissement de telles références fournirait une base pour l'ingénierie écologique de restauration de ces petits cours d'eau dans la région.
 
 
-Dans cet objectif, des données ont été collectées par plusieurs stagiaires entre 2013 et 2022 sur des ruisseaux réputés non-impactés. Il s'agissait de caractériser finement la topographie du lit pour des tronçons de rang de Strahler 1. Les caractéristiques principales des bassins versants en amont des tronçons ont été obtenues par géotraitement.
+Dans cet objectif, des données ont été collectées par plusieurs étudiants stagiaires entre 2013 et 2022 sur des ruisseaux réputés non-impactés. Il s'agissait de caractériser finement les caractéristiques hydromorphologiques du lit mineur et de la ripisylve pour des tronçons de rang de Strahler allant de 1 à 4, avec une majorité de cours d'eau de rang 1. Les caractéristiques principales des bassins versants en amont des tronçons ont été obtenues par géotraitement sous le logiciel QGis.
 
-Afin de mettre en perspective les résultats obtenus, les mêmes analyses ont été menées sur les cours d'eau également "de référence" de [l'IED Carhyce](https://analytics.huma-num.fr/ied_carhyce/) en sélectionnant la même hydro-écorégion. Les protocoles de terrain ne sont pas identiques, cependant certaines grandeurs estimées se recoupent.
+Afin de mettre en perspective les résultats obtenus, les mêmes analyses ont été menées sur les cours d'eau qualifiés "de référence" de [l'IED Carhyce](https://analytics.huma-num.fr/ied_carhyce/) en sélectionnant la même hydro-écorégion. Les protocoles de terrain ne sont pas identiques, cependant certaines grandeurs vairiables sont similaires et se recoupent.
 
 ```{r}
 # chargement des packages
@@ -33,7 +33,7 @@ library(flextable)
 load(file = "../processed_data/ref.RData")
 ```
 
-Le tableau assemblé comprend `r nrow(ref)` lignes correspondant à autant de cours d'eau. On a distingué, parmi les sources de données de la DR OFB Bretagne, celles issues de Gallineau (2020) des autres (à citer) car il s'agit de cours d'eau intermédiaires, en terme de taille, entre, d'une part, les rangs 0 et 1 (autres stages) et, d'autre part, des cours d'eau plus importants (Carhyce). La variable `etiquette` est obtenue par concaténation de la référence de la station et du nom du cours d'eau car aucune de ces variables n'est renseignée dans 100% des cas.
+Le tableau assemblé comprend `r nrow(ref)` lignes correspondant à 74 cours d'eau d'étude DR Bretagne et 65 cours d'eau IED Carhyce. Il a été distingué, parmi les sources de données de la DR OFB Bretagne, celles issues de Galineau (2020) des autres (Jan, 2013 ; BOSSIS, 2014 pour les rangs 1) car il s'agit de cours d'eau intermédiaires, en terme de taille, entre, d'une part, les rangs 0 et 1 (autres stages) et, d'autre part, des cours d'eau plus importants (Carhyce). La variable `etiquette` est obtenue par concaténation de la référence de la station et du nom du cours d'eau car aucune de ces variables n'est renseignée dans 100% des cas.
 
 ```{r}
 ref %>% 
@@ -49,7 +49,7 @@ L'hypothèse sous-jacente aux analyses est que les caractéristiques naturelles 
 Les caractéristiques du bassin qui vont être prises en compte ici sont :
 
 - Sa superficie, en km².
-- La pente. Ici c'est la pente longitudinale du cours d'eau au niveau de la station qui est prise comme proxy de la pente du bassin.
+- La pente. Ici c'est la pente longitudinale de la ligne d'eau du cours d'eau au niveau de la station qui est prise comme proxy de la pente du bassin.
 
 Les variables de réponse sont la largeur et la hauteur de plein bord (moyennes sur l'ensemble des transects).
 
@@ -69,7 +69,8 @@ g_pente_sbv
 
 En échelle log-log, le lien entre les deux variables explicatives est fort. Il est possible que la relation soit plutôt curvi-linéaire que linéaire. La relation est décroissante, donc sans surprise la pente est d'autant plus faible que le site est en aval (bassin plus grand).
 
-Les plus petits bassins sont bien ceux du jeu de données de référence, les plus grands ceux de Caryce et ceux de Gallineau (2020) en position intermédiaire.
+Les plus petits bassins sont bien ceux du jeu de données de référence, les plus grands ceux de Caryce et ceux de Galineau (2020) en position intermédiaire.
+Il peut être constaté dans ce premier graphique une première discontinuité de la pente en fonction de la taille du bassin-versant : certaines pentes de stations issues du jeu de données de référence sont assez faibles.
 
 Quelques points sont très éloignés du schéma général et méritent des vérifications (ex : Ref_0065, ou bien le Dolo dans Carhyce).
 
@@ -122,7 +123,7 @@ modeles %>%
 
 La superficie du bassin versant, avec des coefficients toujours significatifs, est clairement la principale variable qui contribue à expliquer la forme du lit. Ces coefficients sont tous positifs, indiquant un clair effet taille : plus un bassin versant est grand, plus le cours d'eau est large et profond.
 
-L'effet de la pente n'est signigicatif que sur un modèle, avec une `p-value` entre `0.05` et `0.01`, ce qui n'est pas très convaincant, d'autant que le coefficient est positif, à l'inverse de l'attendu (en règle générale quand un cours d'eau est large, il est en plaine donc sa pente est faible). Il s'agit vraisemblablement d'une mauvaise extimation de ce coefficient, ce qui arrive quand les variables explicatives sont corrélées entre elles.
+L'effet de la pente n'est signigicatif que sur un modèle, avec une `p-value` entre `0.05` et `0.01`, ce qui n'est pas très convaincant, d'autant que le coefficient est positif, à l'inverse de l'attendu (en règle générale quand un cours d'eau est large, il est en plaine donc sa pente est faible). Il s'agit vraisemblablement d'une mauvaise estimation de ce coefficient, ce qui arrive quand les variables explicatives sont corrélées entre elles.
 
 Les coefficients de détermination ajustés `r²` sont plus faibles pour les têtes de bassins versants que pour les deux autres jeux de données, malgré l'effet très significatif de la surface du bassin versant. Sur ces deux autres jeux de données, ils sont particulièrement élevés (`>0.90`) pour la largeur plein bord `Lpb`. Ils sont de l'ordre de `0.80` pour la hauteur plein bord `Hpb`.
 

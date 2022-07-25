@@ -92,7 +92,7 @@ ref_data <- data %>%
   # filter(!lieu_dit %in% lieux_dits_a_supprimer)
   mutate(num = str_sub(Ref_sta, -3, -1),
          num = as.integer(num)) %>% 
-  filter(num < 201 | num > 231) %>% 
+  filter(num < 201 | num > 235) %>% 
   select(-num)
 
 # Données Carhyce téléchargées depuis l'IED https://analytics.huma-num.fr/ied_carhyce/
