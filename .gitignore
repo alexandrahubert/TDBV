@@ -2,4 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-/raw_data/
+raw_data/
+processed_data/
+processed_data/tables_access.RData
