@@ -93,6 +93,14 @@ g_hpb_pente
 g_hpb_sbv
 ```
 
+```{r}
+g_lh_pente
+```
+
+```{r}
+g_lh_sbv
+```
+
 # Modélisation
 
 Pour évaluer les effets combinés des deux variables explicatives, des régressions multiples ont été réalisées.

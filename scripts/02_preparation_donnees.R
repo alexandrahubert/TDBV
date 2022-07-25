@@ -140,7 +140,8 @@ ref_carhyce <- carhyce %>%
 identical(names(ref_carhyce), names(ref_data))
 
 ref <- rbind(ref_data, ref_carhyce) %>% 
-  mutate(etiquette = paste0(Ref_sta, ", ", topo))
+  mutate(etiquette = paste0(Ref_sta, ", ", topo),
+         l_h = Lpb/Hpb)
 
 save(ref, file = "processed_data/ref.RData")
   

@@ -51,6 +51,17 @@ g_hpb_sbv <- mon_nuage(
   y_lab = "Hauteur plein bord (m)"
 )
 
+g_lh_sbv <- mon_nuage(
+  data = ref %>%
+    filter(pente_eau_m_m > 0),
+  x = Surface_BV_km2,
+  y = l_h,
+  col = jeu_donnees,
+  label = etiquette,
+  #        y_log = FALSE,
+  x_lab = "Surface du bassin versant (km²)",
+  y_lab = "Largeur sur Hauteur"
+)
 
 # passage en plotly pour avoir l'interactivité
 g_lpb_sbv <- ggplotly(g_lpb_sbv) %>%
@@ -72,10 +83,18 @@ g_hpb_sbv <- ggplotly(g_hpb_sbv) %>%
     y = -0.2
   ))
 
+g_lh_sbv <- ggplotly(g_lh_sbv) %>%
+  layout(legend = list(
+    orientation = "h",
+    x = 0,
+    y = -0.2
+  ))
+
 # affichage
 g_lpb_sbv
 g_pente_sbv
 g_hpb_sbv
+g_lh_sbv
 
 # ----------------------------------------------------------
 # Graphiques bivariés des variables de morpho en fonction de la pente
@@ -104,6 +123,17 @@ g_hpb_pente <- mon_nuage(
   y_lab = "Hauteur plein bord (m)"
 )
 
+g_lh_pente <- mon_nuage(
+  data = ref %>%
+    filter(pente_eau_m_m > 0),
+  x = pente_eau_m_m,
+  y = l_h,
+  y_log = FALSE,
+  col = jeu_donnees,
+  label = etiquette,
+  x_lab = "Pente de la ligne d'eau (m/m)",
+  y_lab = "Largeur sur Hauteur"
+)
 
 # passage en plotly pour avoir l'interactivité
 g_lpb_pente <- ggplotly(g_lpb_pente) %>%
@@ -119,13 +149,21 @@ g_hpb_pente <- ggplotly(g_hpb_pente) %>%
     y = -0.2
   ))
 
+g_lh_pente <- ggplotly(g_lh_pente) %>%
+  layout(legend = list(
+    orientation = "h",
+    x = 0,
+    y = -0.2
+  ))
 
 # affichage
 g_lpb_sbv
 g_pente_sbv
 g_hpb_sbv
+g_lh_sbv
 g_lpb_pente
 g_hpb_pente
+g_lh_pente
 
 
 
@@ -135,8 +173,10 @@ g_hpb_pente
 save(g_lpb_sbv,
      g_pente_sbv,
      g_hpb_sbv,
+     g_lh_sbv,
      g_lpb_pente,
      g_hpb_pente,
+     g_lh_pente,
      file = "output/graphiques_bivaries.RData")
 
 
