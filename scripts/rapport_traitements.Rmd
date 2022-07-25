@@ -123,7 +123,7 @@ modeles %>%
   flextable() %>%
   set_table_properties(layout = "autofit", width = 1) %>% 
   align(align = "center", part = "all") %>% 
-  hline(i = 3)
+  hline(i = c(3, 6) )
 ```
 
 La superficie du bassin versant, avec des coefficients toujours significatifs, est clairement la principale variable qui contribue à expliquer la forme du lit. Ces coefficients sont tous positifs, indiquant un clair effet taille : plus un bassin versant est grand, plus le cours d'eau est large et profond.

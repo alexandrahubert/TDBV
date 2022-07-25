@@ -51,8 +51,25 @@ m6 <- lm_unitaire(
   jeu_donnees_selectionne = "carhyce_ref_armo"
 )
 
+m7 <- lm_unitaire(
+  data = ref,
+  var_dep = "l_h",
+  jeu_donnees_selectionne = "tbv_ref"
+)
 
-modeles <- rbind(m1, m3, m5, m2, m4, m6) %>% 
+m8 <- lm_unitaire(
+  data = ref,
+  var_dep = "l_h",
+  jeu_donnees_selectionne = "gallineau_2020"
+)
+
+m9 <- lm_unitaire(
+  data = ref,
+  var_dep = "l_h",
+  jeu_donnees_selectionne = "carhyce_ref_armo"
+)
+
+modeles <- rbind(m1, m3, m5, m2, m4, m6, m7, m8, m9) %>% 
   as.data.frame() %>% 
   rownames_to_column() %>% 
   separate(col = rowname,
