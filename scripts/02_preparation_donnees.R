@@ -84,12 +84,16 @@ data <- station %>%
 # Sélection des stations
 # selon les sites, sur les Code_tron, ou bien sur les lieu_dit
 # NB manque une station du 44, contact D Fatin, SMBV Isac ?
-troncons_a_supprimer <- c(1, 5, 10, 11, 12, 14, 17, 20:24, 26:32)
-lieux_dits_a_supprimer <- c('La Chauvinière','Le Champ-Fleury')
+# troncons_a_supprimer <- c(1, 5, 10, 11, 12, 14, 17, 20:24, 26:32)
+# lieux_dits_a_supprimer <- c('La Chauvinière','Le Champ-Fleury')
 
 ref_data <- data %>% 
-  filter(!Code_tron %in% troncons_a_supprimer) %>%
-  filter(!lieu_dit %in% lieux_dits_a_supprimer)
+  # filter(!Code_tron %in% troncons_a_supprimer) %>%
+  # filter(!lieu_dit %in% lieux_dits_a_supprimer)
+  mutate(num = str_sub(Ref_sta, -3, -1),
+         num = as.integer(num)) %>% 
+  filter(num < 201 | num > 231) %>% 
+  select(-num)
 
 # Données Carhyce téléchargées depuis l'IED https://analytics.huma-num.fr/ied_carhyce/
 # filtré sur REGION == ARMORICAIN
