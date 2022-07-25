@@ -5,6 +5,11 @@ author: "Julien Boëton"
 date: "22/07/2022"
 output:
   html_document:
+    toc: true
+    toc_float:
+      toc_collapsed: true
+    toc_depth: 2
+    number_sections: true
     code_folding: hide
   word_document: default
   pdf_document: default
