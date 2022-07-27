@@ -81,3 +81,4 @@ modeles <- rbind(m1, m3, m5, m2, m4, m6, m7, m8, m9) %>%
 
 save(modeles,
      file = "output/modeles.RData")
+

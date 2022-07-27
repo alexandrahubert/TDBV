@@ -6,6 +6,6 @@ server: rpubs.com
 hostUrl: rpubs.com
 appId: https://api.rpubs.com/api/v1/document/926326/4c47d4b7533245aba7b11c6d5da37003
 bundleId: https://api.rpubs.com/api/v1/document/926326/4c47d4b7533245aba7b11c6d5da37003
-url: http://rpubs.com/publish/claim/926326/18e01fa7630b44239a5d9071f2e8352d
-when: 1658505382.70921
-lastSyncTime: 1658505382.70921
+url: http://rpubs.com/kamoke/926326
+when: 1658930912.04767
+lastSyncTime: 1658930912.04767

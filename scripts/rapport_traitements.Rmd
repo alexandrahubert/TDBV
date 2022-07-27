@@ -100,12 +100,17 @@ g_hpb_sbv
 ```
 
 ```{r}
-g_lh_pente
+#g_lh_pente
 ```
 
 ```{r}
-g_lh_sbv
+#g_lh_sbv
 ```
+
+```{r}
+g_densite_lh
+```
+
 
 # Modélisation
 

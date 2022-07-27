@@ -165,10 +165,31 @@ g_lpb_pente
 g_hpb_pente
 g_lh_pente
 
+l_h_moy <- ref %>% 
+  group_by(jeu_donnees) %>% 
+  summarise(moy = mean(l_h))
+# 
+g_densite_lh <- ggplot(data = ref %>%
+                          filter(pente_eau_m_m > 0),
+                        aes(x = l_h,
+                            col = jeu_donnees,
+                            fill = jeu_donnees)) +
+  geom_density(alpha = 0.5) +
+  scale_color_manual(values = wes_palette(n = 3,
+                                          name = "Darjeeling1")) +
+  scale_fill_manual(values = wes_palette(n = 3,
+                                          name = "Darjeeling1")) +
+  labs(x = "Largeur sur hauteur",
+       y = "Densité de probabilité",
+       fill = "",
+       col = "") +
+  geom_vline(xintercept = l_h_moy$moy,
+             col = wes_palette(n = 3,
+                               name = "Darjeeling1"),
+             size = 1) +
+  theme(legend.position = "bottom")
 
-
-
-
+g_densite_lh
 
 save(g_lpb_sbv,
      g_pente_sbv,
@@ -177,6 +198,7 @@ save(g_lpb_sbv,
      g_lpb_pente,
      g_hpb_pente,
      g_lh_pente,
+     g_densite_lh,
      file = "output/graphiques_bivaries.RData")
 
 
