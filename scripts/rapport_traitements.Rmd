@@ -111,6 +111,8 @@ g_hpb_sbv
 g_densite_lh
 ```
 
+Le rapport largeur sur hauteur n'est lié nettement ni à la pente ni à la surface du bassin versant. Il apparaît en revanche que la valeur moyenne de ce rapport est inférieure dans le jeu de données "têtes de bassin" en comparaison des deux autres jeu.
+
 
 # Modélisation
 
