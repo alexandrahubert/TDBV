@@ -4,12 +4,14 @@ subtitle: "Analyses préliminaires sur les stations de référence hydromorpholo
 author: "Julien Boëton"
 date: "22/07/2022"
 output:
-  html_document:
+  bookdown::html_document2: 
+    fig_caption: yes
+    number_sections: yes
     toc: true
     toc_float:
       toc_collapsed: true
-    toc_depth: 2
-    number_sections: true
+      toc_depth: 2
+   # number_sections: true
     code_folding: hide
   word_document: default
   pdf_document: default
@@ -81,21 +83,21 @@ Quelques points sont très éloignés du schéma général et méritent des vér
 
 ## Relation entre bassin et morphologie du lit
 
-```{r}
+```{r, fig.cap="Relation entre la largeur plein bords et la pente de la ligne d'eau, distinguant les trois jeux de données."}
 g_lpb_pente
 ```
 
 
-```{r}
+```{r, fig.cap="Relation entre la largeur plein bords et la surface du bassin versant, distinguant les trois jeux de données."}
 g_lpb_sbv
 ```
 
-```{r}
+```{r, fig.cap="Relation entre la hauteur plein bords et la pente de la ligne d'eau, distinguant les trois jeux de données."}
 g_hpb_pente
 ```
 
 
-```{r}
+```{r, fig.cap="Relation entre la hauteur plein bords et la surface du bassin versant, distinguant les trois jeux de données."}
 g_hpb_sbv
 ```
 
@@ -107,11 +109,11 @@ g_hpb_sbv
 #g_lh_sbv
 ```
 
-```{r}
+```{r, fig.cap="Distribution des valeurs du rapport entre largeur plein bord et hauteur plein bord pour chacun des trois jeux de données. Les lignes verticales indiquent la valeur moyenne pour chaque jeu de données."}
 g_densite_lh
 ```
 
-Le rapport largeur sur hauteur n'est lié nettement ni à la pente ni à la surface du bassin versant. Il apparaît en revanche que la valeur moyenne de ce rapport est inférieure dans le jeu de données "têtes de bassin" en comparaison des deux autres jeu.
+Le rapport largeur sur hauteur n'est lié nettement ni à la pente ni à la surface du bassin versant (graphiques non prsentés). Il apparaît en revanche que la valeur moyenne de ce rapport est inférieure dans le jeu de données "têtes de bassin" en comparaison des deux autres jeu.
 
 
 # Modélisation
