@@ -73,73 +73,96 @@ mon_nuage <- function(data,
 
 
     # -------------- Fonction pour un modèle ------------------------- #
-    lm_unitaire <- function(data,
-                            var_dep,
-                            jeu_donnees_selectionne = NULL) {
-      
-      # construction de la formule en fonction de la variable dépendante
-
-        fm <- as.formula(paste0("log(",
-                                var_dep,
-                                ", base = 10) ",
-                                "~ log(Surface_BV_km2, base = 10) + pente_eau_m_m"))
-
-        
-      # sélection des données
-        
-        mod_data <- data %>% 
-          filter(jeu_donnees == jeu_donnees_selectionne,
-                 !is.na(Surface_BV_km2),
-                 !is.na(pente_eau_m_m))
-      
-      # on cale le modèle initial
-      mod <- lm(formula = fm,
-                data = mod_data)
-      
-      # recherche et suppression des outliers
-      dist_cook <- cooks.distance(mod)
-      seuil_cook <- 4 / nrow(data)
-      mod_data <- mod_data %>%
-        cbind(dist_cook) %>% # ajout de la colonne avec les distances
-        filter(dist_cook < seuil_cook) # suppression des observations avec distance > 4/N
-      
-      # on cale le modèle une fois les données expurgées des outliers
-      mod <- lm(formula = fm,
-                data = mod_data)
-      
-      # récupération de ce qui ous intéresse dans les résultats et mise en forme
-
-      resultat <-
-        summary(mod)$coefficients[c("(Intercept)",
-                                    "log(Surface_BV_km2, base = 10)",
-                                    "pente_eau_m_m"),] %>%
-        as.data.frame() %>%
-        select(coef = Estimate,
-               pval = `Pr(>|t|)`) %>%
-        mutate(
-          sig = case_when(
-            pval > 0.05 ~ "NS",
-            pval <= 0.05 & pval > 0.01 ~ "*",
-            pval <= 0.01 & pval > 0.001 ~ "**",
-            TRUE ~ "***"
-          )
-        ) %>%
-        mutate(text = paste0(round(coef, 3),
-                             " (",
-                             sig,
-                             ")")) %>%
-        select(text) %>%
-        t()
-        
-      
-      # on nomme la ligne d'après le nom de la métrique
-      row.names(resultat) <- paste(var_dep, jeu_donnees_selectionne, sep = " / ")
-      
-      # ajout du r2
-      as.data.frame(resultat) %>% 
-        mutate(r2 = summary(mod)$adj.r.squared)
-      
-    }
+lm_unitaire <- function(data,
+                        var_dep,
+                        jeu_donnees_selectionne = NULL,
+                        pente_incluse = TRUE) {
+  
+  # construction de la formule en fonction de la variable dépendante
+  fm <- 
+    paste0(
+   #   "log(",
+      var_dep,
+   #   ", base = 10) ",
+      "~ Surface_BV_km2"
+    )
+  
+  if (pente_incluse) {
+    fm <- paste0(fm, "+ pente_eau_m_m")
+  }
+  
+  
+  fm <- as.formula(fm)
+  
+  # sélection des données
+  
+  mod_data <- data %>%
+    filter(
+      jeu_donnees %in% jeu_donnees_selectionne,
+      !is.na(Surface_BV_km2),
+      !is.na(pente_eau_m_m)
+    )
+  
+  # on cale le modèle initial
+  mod <- lm(formula = fm,
+            data = mod_data)
+  
+  # recherche et suppression des outliers
+  dist_cook <- cooks.distance(mod)
+  seuil_cook <- 4 / nrow(data)
+  mod_data <- mod_data %>%
+    cbind(dist_cook) %>% # ajout de la colonne avec les distances
+    filter(dist_cook < seuil_cook) # suppression des observations avec distance > 4/N
+  
+  # on cale le modèle une fois les données expurgées des outliers
+  mod <- lm(formula = fm,
+            data = mod_data)
+  
+  # récupération de ce qui ous intéresse dans les résultats et mise en forme
+  
+  if (pente_incluse) {
+    
+  resultat <-
+    summary(mod)$coefficients[c("(Intercept)",
+                                "Surface_BV_km2",
+                                "pente_eau_m_m"), ]
+  }else{
+    
+    resultat <-
+      summary(mod)$coefficients[c("(Intercept)",
+                                  "Surface_BV_km2"), ]
+  }
+  
+  resultat <-  resultat %>% 
+    as.data.frame() %>%
+    select(coef = Estimate,
+           pval = `Pr(>|t|)`) %>%
+    mutate(
+      sig = case_when(
+        pval > 0.05 ~ "NS",
+        pval <= 0.05 & pval > 0.01 ~ "*",
+        pval <= 0.01 & pval > 0.001 ~ "**",
+        TRUE ~ "***"
+      )
+    ) %>%
+    mutate(text = paste0(round(coef, 3),
+                         " (",
+                         sig,
+                         ")")) %>%
+    select(text) %>%
+    t()
+  
+  
+  # on nomme la ligne d'après le nom de la métrique
+  jeux_donnees <- paste(jeu_donnees_selectionne, collapse = " + ")
+  row.names(resultat) <-
+    paste(var_dep, jeux_donnees, sep = " / ")
+  
+  # ajout du r2
+  as.data.frame(resultat) %>%
+    mutate(r2 = summary(mod)$adj.r.squared)
+  
+}
 
 
 

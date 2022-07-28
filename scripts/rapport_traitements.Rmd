@@ -1,12 +1,14 @@
 ---
 title: "Hydromorphologie des têtes de bassins versants"
 subtitle: "Analyses préliminaires sur les stations de référence hydromorphologique du massif armoricain"
-author: "Julien Boëton"
+author: "Julien Boëton & Pascal Irz"
 date: "22/07/2022"
 output:
   bookdown::html_document2: 
-    fig_caption: yes
-    number_sections: yes
+    fig_caption: true
+ #   tab_caption: yes
+    number_sections: true
+    global_numbering: true
     toc: true
     toc_float:
       toc_collapsed: true
@@ -15,6 +17,7 @@ output:
     code_folding: hide
   word_document: default
   pdf_document: default
+runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
@@ -40,25 +43,26 @@ library(flextable)
 load(file = "../processed_data/ref.RData")
 ```
 
-Le tableau assemblé comprend `r nrow(ref)` lignes correspondant à 74 cours d'eau d'étude DR Bretagne et 65 cours d'eau IED Carhyce. Il a été distingué, parmi les sources de données de la DR OFB Bretagne, celles issues de Galineau (2020) des autres (Jan, 2013 ; BOSSIS, 2014 pour les rangs 1) car il s'agit de cours d'eau intermédiaires, en terme de taille, entre, d'une part, les rangs 0 et 1 (autres stages) et, d'autre part, des cours d'eau plus importants (Carhyce). La variable `etiquette` est obtenue par concaténation de la référence de la station et du nom du cours d'eau car aucune de ces variables n'est renseignée dans 100% des cas.
+Le tableau assemblé comprend `r nrow(ref)` lignes correspondant à `r ref %>% filter(jeu_donnees != 'carhyce_ref_armo') %>% nrow()` cours d'eau d'étude DR Bretagne et `r ref %>% filter(jeu_donnees == 'carhyce_ref_armo') %>% nrow()` cours d'eau IED Carhyce. Il a été distingué, parmi les sources de données de la DR OFB Bretagne, celles issues de Galineau (2020) des autres (Jan, 2013 ; BOSSIS, 2014 pour les rangs 1) car il s'agit de cours d'eau intermédiaires, en terme de taille, entre, d'une part, les rangs 0 et 1 (autres stages) et, d'autre part, des cours d'eau plus importants (Carhyce). 
 
 ```{r}
 ref %>% 
   select(-Code_tron,
          -dist_inter_rad,
          -Coef_sinuo) %>%
-  mutate(pente_eau_m_m = round(pente_eau_m_m, 5)) %>% 
-  DT::datatable()
+  mutate_at(vars(pente_eau_m_m, l_h),
+            function(x) round(x, 5)) %>% 
+  DT::datatable(caption = "Table 1 : Tableau assemblant les données de l'IED Carhyce et les mesures de terrain réalisées par la DR OFB Bretagne. La variable `etiquette` est obtenue par concaténation de la référence de la station et du nom du cours d'eau car aucune de ces variables n'est renseignée dans 100% des cas. Elle sert à identifier les points sur les graphiques interactifs.")
 ```
 
 L'hypothèse sous-jacente aux analyses est que les caractéristiques naturelles d'un bassin versant "contraignent" celles de son réseau hydrographique. Le phénomène est bien connu sur les grands cours d'eau, mais les têtes de bassins ont été beaucoup moins étudiées. 
 
 Les caractéristiques du bassin qui vont être prises en compte ici sont :
 
-- Sa superficie, en km².
-- La pente. Ici c'est la pente longitudinale de la ligne d'eau du cours d'eau au niveau de la station qui est prise comme proxy de la pente du bassin.
+- Sa *superficie*, en km².
+- La *pente.* Ici c'est la pente longitudinale de la ligne d'eau du cours d'eau au niveau de la station qui est prise comme proxy de la pente du bassin. Elle est exprimée en m/m.
 
-Les variables de réponse sont la largeur et la hauteur de plein bord (moyennes sur l'ensemble des transects).
+Les variables de réponse sont *la largeur et la hauteur de plein bord* (moyennes sur l'ensemble des transects, en mètres) ainsi que le rapport entre les deux, largeur / hauteur.
 
 # Analyse bivariée
 
@@ -71,6 +75,10 @@ Sur le graphique ci-dessous, une droite de régression a été calée pour chaqu
 ```{r}
 # chargement du tableau de données au format RData
 load(file = "../output/graphiques_bivaries.RData")
+```
+
+
+```{r, fig.cap="Relation entre la pente de la ligne d'eau et la surgace du bassin versant, distinguant les trois jeux de données."}
 g_pente_sbv
 ```
 
@@ -118,28 +126,60 @@ Le rapport largeur sur hauteur n'est lié nettement ni à la pente ni à la surf
 
 # Modélisation
 
-Pour évaluer les effets combinés des deux variables explicatives, des régressions multiples ont été réalisées.
+## Modèles complets
+
+Pour évaluer les effets combinés des deux variables explicatives, sur la largeur et la hauteur plein bord, des régressions multiples ont été réalisées. 
 
 ```{r}
 # chargement du tableau de données au format RData
 load(file = "../output/modeles.RData")
 
 modeles %>% 
-  rename(`Surface BV` = `log(Surface_BV_km2, base = 10)`,
+  rename(`Surface BV` = `Surface_BV_km2`,
          `Pente` = pente_eau_m_m,
           Constante = `(Intercept)`) %>% 
   mutate(r2 = round(r2, 2)) %>% 
   flextable() %>%
   set_table_properties(layout = "autofit", width = 1) %>% 
-  align(align = "center", part = "all") %>% 
-  hline(i = c(3, 6) )
+  align(j = c(1, 3:6), align = "center", part = "all") %>% 
+  hline(i = 3)
 ```
 
-La superficie du bassin versant, avec des coefficients toujours significatifs, est clairement la principale variable qui contribue à expliquer la forme du lit. Ces coefficients sont tous positifs, indiquant un clair effet taille : plus un bassin versant est grand, plus le cours d'eau est large et profond.
+La superficie du bassin versant, avec des coefficients toujours significatifs, est clairement la principale variable qui contribue à expliquer lla largeur et la hauteur du lit. Ces coefficients sont positifs, indiquant un clair effet taille : plus un bassin versant est grand, plus le cours d'eau est large et profond.
 
 L'effet de la pente n'est signigicatif que sur un modèle, avec une `p-value` entre `0.05` et `0.01`, ce qui n'est pas très convaincant, d'autant que le coefficient est positif, à l'inverse de l'attendu (en règle générale quand un cours d'eau est large, il est en plaine donc sa pente est faible). Il s'agit vraisemblablement d'une mauvaise estimation de ce coefficient, ce qui arrive quand les variables explicatives sont corrélées entre elles.
 
 Les coefficients de détermination ajustés `r²` sont plus faibles pour les têtes de bassins versants que pour les deux autres jeux de données, malgré l'effet très significatif de la surface du bassin versant. Sur ces deux autres jeux de données, ils sont particulièrement élevés (`>0.90`) pour la largeur plein bord `Lpb`. Ils sont de l'ordre de `0.80` pour la hauteur plein bord `Hpb`.
+
+## Modèles simplifiés
+
+Dans un but de parcimonie, et pour s'affranchir des problèmes liés à la colinéarité entre variables explicatives, on peut essayer de simplifier les modèles en ne conservant que la surface du bassin versant comme variable explicative. On peut aussi essayer de combiner notre jeu de données avec les autres. Les résultats obtenus sont les suivants :
+
+```{r}
+modeles_simp %>% 
+  rename(`Surface BV` = `Surface_BV_km2`,
+          Constante = `(Intercept)`) %>% 
+  mutate(r2 = round(r2, 2)) %>% 
+  flextable() %>%
+  set_table_properties(layout = "autofit", width = 1) %>% 
+  align(j = c(1, 3:5), align = "center", part = "all") %>% 
+  hline(i = 5)
+```
+
+Ces modèles sont très cohérents. La perte sur le coefficient de détermination ajusté est négligeable. Ces modèles semblent dont être les plus intéressants. 
+
+# Préconisations de dimensionnement
+
+```{r}
+inputPanel(
+  shiny::numericInput(
+    "sbv",
+    label = "Surface du BV en km²",
+    value = 0
+  )
+)
+```
+
 
 # Conclusion
 
