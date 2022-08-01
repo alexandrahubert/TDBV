@@ -165,31 +165,39 @@ g_lpb_pente
 g_hpb_pente
 g_lh_pente
 
-l_h_moy <- ref %>% 
-  group_by(jeu_donnees) %>% 
-  summarise(moy = mean(l_h))
-# 
-g_densite_lh <- ggplot(data = ref %>%
-                          filter(pente_eau_m_m > 0),
-                        aes(x = l_h,
-                            col = jeu_donnees,
-                            fill = jeu_donnees)) +
-  geom_density(alpha = 0.5) +
-  scale_color_manual(values = wes_palette(n = 3,
-                                          name = "Darjeeling1")) +
-  scale_fill_manual(values = wes_palette(n = 3,
-                                          name = "Darjeeling1")) +
-  labs(x = "Largeur sur hauteur",
-       y = "Densité de probabilité",
-       fill = "",
-       col = "") +
-  geom_vline(xintercept = l_h_moy$moy,
-             col = wes_palette(n = 3,
-                               name = "Darjeeling1"),
-             size = 1) +
-  theme(legend.position = "bottom")
+# ----------------------------------------------------------
+# Graphiques distributions en densité
+# ----------------------------------------------------------
 
-g_densite_lh
+# 
+g_densite_lpb <- ma_densite(data = ref,
+                           x = Lpb,
+                           x_lab = "Largeur plein bord (m)")
+g_densite_hpb <- ma_densite(data = ref,
+                           x = Hpb,
+                           x_lab = "Hauteur plein bord (m)")
+g_densite_sbv <- ma_densite(data = ref,
+                           x = Surface_BV_km2,
+                           x_lab = "Surface du BV (km²), échelle log10",
+                           x_log = TRUE)
+g_densite_pente <- ma_densite(data = ref,
+                           x = pente_eau_m_m,
+                           x_lab = "Pente de la ligne d'eau en m/m")
+
+g_densite_lh <- ma_densite(data = ref,
+                           x = l_h,
+                           x_lab = "Largeur sur hauteur")
+
+g_densite <- ggpubr::ggarrange(g_densite_lpb,
+                               g_densite_hpb,
+                               g_densite_sbv,
+                               g_densite_pente,
+                               g_densite_lh,
+                               common.legend = TRUE,
+                               ncol = 2,
+                               nrow = 3)
+  
+
 
 save(g_lpb_sbv,
      g_pente_sbv,
@@ -198,8 +206,8 @@ save(g_lpb_sbv,
      g_lpb_pente,
      g_hpb_pente,
      g_lh_pente,
-     g_densite_lh,
-     file = "output/graphiques_bivaries.RData")
+     g_densite,
+     file = "output/graphiques.RData")
 
 
 
