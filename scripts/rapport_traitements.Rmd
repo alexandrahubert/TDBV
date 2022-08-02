@@ -2,7 +2,7 @@
 title: "Hydromorphologie des têtes de bassins versants"
 subtitle: "Analyses préliminaires sur les stations de référence hydromorphologique du massif armoricain"
 author: "Julien Boëton, Pascal Irz, Alexandra Hubert & Mikaël Le Bihan"
-date: "22/07/2022"
+date: "02/08/2022"
 output:
   bookdown::html_document2: 
     fig_caption: true
@@ -36,13 +36,18 @@ Afin de mettre en perspective les résultats obtenus, les mêmes analyses ont é
 
 ```{r}
 # chargement des packages
-library(tidyverse)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(magrittr)
+library(ggplot2)
+library(ggpubr)
 library(plotly)
 library(flextable)
 library(shiny)
 
 # chargement du tableau de données au format RData
-load(file = "../processed_data/ref.RData")
+load(file = "ref.RData")
 
 # chargement des fonctions
 source(file = "00_fonctions.R")
@@ -68,7 +73,7 @@ ref %>%
          -Coef_sinuo) %>%
   mutate_at(vars(pente_eau_m_m, l_h),
             function(x) round(x, 5)) %>% 
-  DT::datatable(caption = "Table 1 : Tableau assemblant les données de l'IED Carhyce et les mesures de terrain réalisées par la DR OFB Bretagne. La variable `etiquette` est obtenue par concaténation de la référence de la station et du nom du cours d'eau car aucune de ces variables n'est renseignée dans 100% des cas. Elle sert à identifier les points sur les graphiques interactifs.")
+  DT::datatable(caption = "Table 1")
 ```
 
 
@@ -88,10 +93,10 @@ Les distributions des variables sont données ci-dessous en comparant les jeux d
 
 ```{r}
 # chargement du tableau de données au format RData
-load(file = "../output/graphiques.RData")
+load(file = "graphiques.RData")
 ```
 
-```{r, fig.height=10, fig.width=10, fig.cap="Distribution des variables. Les lignes verticales indiquent la valeur moyenne pour chaque jeu de données."}
+```{r, fig.height = 9, fig.width = 10}
 g_densite
 ```
 
@@ -115,7 +120,7 @@ Dans un premier temps, on observe les relations des variables deux à deux.
 Sur le graphique ci-dessous, une droite de régression a été calée pour chaque jeu de données. La courbe grise en pointillés indique une tendance non linéaire sur l'ensemble des données.
 
 
-```{r, fig.cap="Relation entre la pente de la ligne d'eau et la surface du bassin versant, distinguant les trois jeux de données."}
+```{r}
 g_pente_sbv
 ```
 
@@ -130,21 +135,21 @@ Quelques points sont très éloignés du schéma général et méritent des vér
 
 A commenter.
 
-```{r, fig.cap="Relation entre la largeur plein bords et la pente de la ligne d'eau, distinguant les trois jeux de données."}
+```{r}
 g_lpb_pente
 ```
 
 
-```{r, fig.cap="Relation entre la largeur plein bords et la surface du bassin versant, distinguant les trois jeux de données."}
+```{r}
 g_lpb_sbv
 ```
 
-```{r, fig.cap="Relation entre la hauteur plein bords et la pente de la ligne d'eau, distinguant les trois jeux de données."}
+```{r}
 g_hpb_pente
 ```
 
 
-```{r, fig.cap="Relation entre la hauteur plein bords et la surface du bassin versant, distinguant les trois jeux de données."}
+```{r}
 g_hpb_sbv
 ```
 
@@ -165,7 +170,7 @@ $hauteur\ plein\ bord = a\cdot log_{10}(1+surface\_bv) + b\cdot log_{10}(1+pente
 
 ```{r}
 # chargement du tableau de données au format RData
-load(file = "../output/modeles.RData")
+load(file = "modeles.RData")
 
 modeles %>% 
   rename(`Surface BV` = `log10(1 + Surface_BV_km2)`,
