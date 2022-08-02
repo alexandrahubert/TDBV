@@ -165,12 +165,13 @@ modeles_simp <- rbind(ms_lpb_tbv[[2]],
     sep = " / "
   )
 
-# mf_lpb <- ms_lpb_tbv[[1]]
-# mf_hpb <- ms_hpb_tbv[[1]]
+mf_lpb <- ms_lpb_tbv[[1]]
+mf_hpb <- ms_hpb_tbv[[1]]
 
+# conserver le RData dans le répertoire du Rmd en vue du déploiement de l'appli
 save(modeles,
      modeles_simp,
      mf_lpb,
      mf_hpb,
-     file = "output/modeles.RData")
+     file = "scripts/modeles.RData")
 
