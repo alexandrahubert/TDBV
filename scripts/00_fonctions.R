@@ -1,3 +1,7 @@
+# --------------------------------------- #
+#  GRAPHIQUES
+# --------------------------------------- #
+
 #' Produire un nuage de points personnalisé
 #'
 #' @param data Le dataframe contenant les données.
@@ -39,7 +43,7 @@ mon_nuage <- function(data,
                   col = {{ col }},
                   label = {{ label }})) +
   geom_point() +
-  scale_x_log10() +
+  scale_x_log10(labels = label_number()) +
   geom_smooth(method = tendance) +
   scale_color_manual(values = wes_palette(n = 3,
                                           name = "Darjeeling1"),
@@ -65,14 +69,61 @@ mon_nuage <- function(data,
   g
 
 }
+# --------------------------- fin mon_nuage() -------------------------
+
+ma_densite <- function(data,
+                       x,
+                       x_lab = NULL,
+                       y_lab = "Densit\u00e9 de probabilit\u00e9",
+                       x_log = FALSE)
+
+{
+  data <- data %>%
+    filter(pente_eau_m_m > 0)
+  
+  moy <- data %>% 
+    group_by(jeu_donnees) %>% 
+    summarise(moy = mean({{ x }}))
+  
+  g <- ggplot(data = data,
+              aes(x = {{ x }},
+                  col = jeu_donnees,
+                  fill = jeu_donnees)) +
+  geom_density(alpha = 0.5) +
+  scale_color_manual(values = wes_palette(n = 3,
+                                          name = "Darjeeling1")) +
+  scale_fill_manual(values = wes_palette(n = 3,
+                                         name = "Darjeeling1")) +
+  labs(y = "Densité de probabilité",
+       fill = "",
+       col = "") +
+  geom_vline(xintercept = moy$moy,
+             col = wes_palette(n = 3,
+                               name = "Darjeeling1"),
+             size = 1) +
+  theme(legend.position = "bottom") +
+  labs(y = y_lab)
+  
+  # gestion des échelles et étiquettes des axes
+  if(x_log) {g <- g + scale_x_log10() }
+  if(!is.null(x_lab)) {g <- g + labs(x = x_lab) }
+  
+  g
+  
+}
+
+# ma_densite(data = ref,
+#            x = Lpb)
+
+# --------------------------- fin ma_sensite() -------------------------
+
+
 
 # --------------------------------------- #
 #  modèles
 # --------------------------------------- #
 
 
-
-    # -------------- Fonction pour un modèle ------------------------- #
 lm_unitaire <- function(data,
                         var_dep,
                         jeu_donnees_selectionne = NULL,
@@ -81,14 +132,14 @@ lm_unitaire <- function(data,
   # construction de la formule en fonction de la variable dépendante
   fm <- 
     paste0(
-   #   "log(",
+     # "log10(1 + ",
       var_dep,
-   #   ", base = 10) ",
-      "~ Surface_BV_km2"
+     # ") ",
+      "~ log10(1 + Surface_BV_km2)"
     )
   
   if (pente_incluse) {
-    fm <- paste0(fm, "+ pente_eau_m_m")
+    fm <- paste0(fm, "+ log10(1 + pente_eau_m_m)")
   }
   
   
@@ -100,7 +151,9 @@ lm_unitaire <- function(data,
     filter(
       jeu_donnees %in% jeu_donnees_selectionne,
       !is.na(Surface_BV_km2),
-      !is.na(pente_eau_m_m)
+      !is.na(pente_eau_m_m),
+      !is.na({{ var_dep }}),
+      !is.infinite({{ var_dep }})
     )
   
   # on cale le modèle initial
@@ -124,13 +177,13 @@ lm_unitaire <- function(data,
     
   resultat <-
     summary(mod)$coefficients[c("(Intercept)",
-                                "Surface_BV_km2",
-                                "pente_eau_m_m"), ]
+                                "log10(1 + Surface_BV_km2)",
+                                "log10(1 + pente_eau_m_m)"), ]
   }else{
     
     resultat <-
       summary(mod)$coefficients[c("(Intercept)",
-                                  "Surface_BV_km2"), ]
+                                  "log10(1 + Surface_BV_km2)"), ]
   }
   
   resultat <-  resultat %>% 
@@ -159,8 +212,11 @@ lm_unitaire <- function(data,
     paste(var_dep, jeux_donnees, sep = " / ")
   
   # ajout du r2
-  as.data.frame(resultat) %>%
+  resultat <- resultat %>%
+    as.data.frame() %>% 
     mutate(r2 = summary(mod)$adj.r.squared)
+  
+  list(mod, resultat)
   
 }
 
@@ -168,4 +224,5 @@ lm_unitaire <- function(data,
 
 # lm_unitaire(data = ref,
 #             var_dep = "Lpb",
-#             jeu_donnees_selectionne = "tbv_ref")
+#             jeu_donnees_selectionne = "carhyce_ref_armo",
+#             pente_incluse = TRUE)
