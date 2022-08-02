@@ -48,7 +48,8 @@ data <- station %>%
   left_join(y = pente %>%
               select(Ref_sta,
                      pente_eau)) %>%
-  mutate(pente_eau_m_m = pente_eau / 100) %>%
+  mutate(#pente_eau_m_m = ifelse(pente_eau_m_m < 0, NA, pente_eau_m_m),
+         pente_eau_m_m = pente_eau / 100) %>%
   left_join(y = dist_rad %>%
               select(Ref_sta,
                      dist_inter_rad)) %>%
@@ -65,12 +66,15 @@ data <- station %>%
   mutate(
     jeu_donnees = ifelse(
       str_detect(jeu_donnees, "Gallineau"),
-      yes = "gallineau_2020",
+      yes = "galineau_2020",
       no = "tbv_ref"
     ),
     pente_eau_m_m = ifelse(is.na(pente_eau_m_m),
                            yes = Pentea_m_m,
-                           no = pente_eau_m_m)
+                           no = pente_eau_m_m),
+    pente_eau_m_m = ifelse(pente_eau_m_m < 0,
+                         yes = NA,
+                         no = pente_eau_m_m)
   ) %>% 
   select(-Pentea_m_m,
          -pente_eau) %>% 
