@@ -3,6 +3,7 @@ rm(list = ls()) # nettoyage de l'espace
 # chargement des packages
 library(tidyverse)
 library(plotly)
+library(scales)
 library(wesanderson)
 
 # chargement des fonctions
