@@ -7,19 +7,11 @@ library(tidyverse)
 source(file = "scripts/00_fonctions.R")
 
 # chargement des données au format RData
-load(file = "processed_data/ref.RData")
+load(file = "scripts/ref.RData")
 
 # ---------------------------------------------------
 # calage des modèles
 # ---------------------------------------------------
-
-# transformation des variables 
-# ref <- ref %>% 
-#   mutate(Lpb_log = log10(1 + Lpb),
-#          Hpb_log = log10(1 + Hpb),
-#          sbv_log = log10(1 + Surface_BV_km2),
-#          pente_log = log10(1 + pente_eau_m_m))
-
 # Largeur plein bord
 
 m_lpb_tbv <- lm_unitaire(
@@ -58,6 +50,8 @@ m_hpb_car <- lm_unitaire(
   jeu_donnees_selectionne = "carhyce_ref_armo"
 )
 
+# assemblage du tableau. Les modèles sont des listes dont le 2e élement est mis en forme
+# depuis le summary()
 modeles <- rbind(m_lpb_tbv[[2]],
                  m_lpb_gal[[2]],
                  m_lpb_car[[2]],
@@ -72,6 +66,7 @@ modeles <- rbind(m_lpb_tbv[[2]],
     sep = " / "
   )
 
+# --------------------------------------------------------------------
 # modèmes simplifiés avec seulement surface BV en var expl mais jdd variables
 # largeur
 ms_lpb_tbv <- lm_unitaire(
@@ -165,12 +160,14 @@ modeles_simp <- rbind(ms_lpb_tbv[[2]],
     sep = " / "
   )
 
-# mf_lpb <- ms_lpb_tbv[[1]]
-# mf_hpb <- ms_hpb_tbv[[1]]
+# modèles finaux retenus. on en récupère le 1er élément qui permettra d'utiliser predict.lm()
+mf_lpb <- ms_lpb_tbv[[1]]
+mf_hpb <- ms_hpb_tbv[[1]]
 
+# conserver le RData dans le répertoire du Rmd en vue du déploiement de l'appli
 save(modeles,
      modeles_simp,
      mf_lpb,
      mf_hpb,
-     file = "output/modeles.RData")
+     file = "scripts/modeles.RData")
 

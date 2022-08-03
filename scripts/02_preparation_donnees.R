@@ -23,17 +23,6 @@ dist_rad <- facies %>%
   select(Ref_sta,
          dist_inter_rad)
 
-# calcul des moyennes de profondeur de chute
-# moyenne <- prof_chute %>%
-#   group_by(Ref_sta) %>%
-#   summarise(moy_chute = mean(Hauteur_chute),
-#             moy_fd = mean(Profondeur_FD)) %>%
-#   ungroup() %>%
-#   select(Ref_sta,
-#          moy_chute, moy_fd)
-
-
-
 # assemblage du tableau de données
 data <- station %>%
   select(Ref_sta,
@@ -147,6 +136,7 @@ ref <- rbind(ref_data, ref_carhyce) %>%
   mutate(etiquette = paste0(Ref_sta, ", ", topo),
          l_h = Lpb/Hpb)
 
-save(ref, file = "processed_data/ref.RData")
+# conserver le RData dans le répertoire du Rmd en vue du déploiement de l'appli
+save(ref, file = "scripts/ref.RData")
   
   
