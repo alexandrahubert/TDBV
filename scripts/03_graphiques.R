@@ -10,7 +10,7 @@ library(wesanderson)
 source(file = "scripts/00_fonctions.R")
 
 # chargement des données au format RData
-load(file = "processed_data/ref.RData")
+load(file = "scripts/ref.RData")
 
 # ----------------------------------------------------------
 # Graphiques bivariés des variables de morpho en fonction de la surface du BV
@@ -173,27 +173,21 @@ g_lh_pente
 # 
 g_densite_lpb <- ma_densite(data = ref,
                            x = Lpb,
-                           x_lab = "Largeur plein bord (m)") +
-  labs(y = "")
+                           x_lab = "Largeur plein bord (m)")
 g_densite_hpb <- ma_densite(data = ref,
                            x = Hpb,
-                           x_lab = "Hauteur plein bord (m)") +
-  labs(y = "")
+                           x_lab = "Hauteur plein bord (m)") 
 g_densite_sbv <- ma_densite(data = ref,
                            x = Surface_BV_km2,
-                         #  x_lab = "Surface du BV (km²), échelle log10",
-                           x_log = TRUE) +
-  labs(y = "")
+                           x_lab = "Surface du BV (km²), échelle log10",
+                           x_log = TRUE)
 g_densite_pente <- ma_densite(data = ref,
                            x = pente_eau_m_m,
-                          # x_lab = "Pente de la ligne d'eau en m/m"
-                           ) +
-  labs(y = "")
-
+                           x_lab = "Pente de la ligne d'eau en m/m"
+                           )
 g_densite_lh <- ma_densite(data = ref,
                            x = l_h,
-                           x_lab = "Largeur sur hauteur") +
-  labs(y = "")
+                           x_lab = "Largeur sur hauteur")
 
 g_densite <- ggpubr::ggarrange(g_densite_lpb,
                                g_densite_hpb,
