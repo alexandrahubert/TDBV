@@ -14,6 +14,7 @@ output:
       toc_collapsed: yes
       toc_depth: 2
     code_folding: hide
+    css: "style.css"
   word_document: default
   pdf_document: default
 subtitle: Analyses préliminaires sur les stations de référence hydromorphologique
@@ -257,8 +258,8 @@ rbind(mf_lpb[[2]], mf_hpb[[2]]) %>%
     sep = " / "
   ) %>% 
   select(-jeu_donnees) %>% 
-    rename(`Surface BV` = `log10(1 + Surface_BV_km2)`,
-          Constante = `(Intercept)`) %>% 
+    rename(`a (Surface BV)` = `log10(1 + Surface_BV_km2)`,
+          `b (Constante)` = `(Intercept)`) %>% 
   mutate(r2 = round(r2, 2)) %>% 
   flextable() %>%
   set_table_properties(layout = "autofit", width = 1) %>% 
@@ -268,11 +269,12 @@ rbind(mf_lpb[[2]], mf_hpb[[2]]) %>%
 
 # Préconisations de dimensionnement
 
+
 ```{r}
 inputPanel(
   shiny::numericInput(
     "sbv",
-    label = "Surface du BV en km²",
+    label = "Saisissez la surface de votre bassin versant, en km²",
     value = 1.5,
     step = 0.1
   )
@@ -291,21 +293,48 @@ new_data <- reactive({
 ```{r}
 output$pred_lpb <- renderText({ 
  raw_pred_lpb <-
-    predict.lm(mf_lpb[[1]], newdata = new_data())
+    predict.lm(mf_lpb[[1]], newdata = new_data(), interval = "confidence")
   
- paste0("Largeur plein bord : ", round(raw_pred_lpb, 2), "m")
+ paste0("Largeur plein bord : ",
+        round(raw_pred_lpb[1], 2),
+        "m, IC = [",
+        round(raw_pred_lpb[2], 2),
+        "-",
+        round(raw_pred_lpb[3], 2),
+        "]")
 })
 
 output$pred_hpb <- renderText({ 
  raw_pred_hpb <-
-    predict.lm(mf_hpb[[1]], newdata = new_data())
+    predict.lm(mf_hpb[[1]], newdata = new_data(), interval = "confidence")
   
- paste0("Hauteur plein bord : ", round(raw_pred_hpb, 2), "m")
+ paste0("Hauteur plein bord : ",
+        round(raw_pred_hpb[1], 2),
+        "m, IC = [",
+        round(raw_pred_hpb[2], 2),
+        "-",
+        round(raw_pred_hpb[3], 2),
+        "]")
 })
+```
 
+:::: {.colorbox data-latex=""}
+
+Valeurs prédites par le modèle, avec entre crochets l'intervalle de confiance associé.
+
+```{r}
 verbatimTextOutput("pred_lpb")
 verbatimTextOutput("pred_hpb")
 ```
+
+
+::: {.center data-latex=""}
+**ATTENTION**
+:::
+
+Ces préconisations ne sont valables que pour les bassins de moins de 20km² situés dans l'hydro-écorégion de niveau 1 "Massif Armoricain".
+
+::::
 
 # Conclusion
 
