@@ -40,7 +40,6 @@ library(plotly)
 library(flextable)
 library(shiny)
 library(bookdown)
-# library(golem)
 ```
 
 ```{r, echo = FALSE}
