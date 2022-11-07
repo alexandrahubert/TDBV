@@ -341,12 +341,20 @@ A rédiger.
 
 # Reste à faire
 
-- Parties à rédiger.
-- Besoin de faire des vérifications sur certains points suspects ?
-- Valider le seuil à 20km².
+## Pascal
+
 - Améliorer présentation (onglets ?).
-- Ajouter biblio.
-- Elaguer pour un propos plus concis ?
-- Validation DR ?
-- Favicon ?
+- Elaguer pour un propos plus concis
+- Favicon 
+- Carto interactive avec points gps
+- Validation DR ? 
+
+## MLB
+
+- Prendre contact avec Gabriel (pour lien techniciens et publi scientifique)
+- Parties à rédiger
+- Besoin de faire des vérifications sur les paramètres et sur certains points suspects ?
+- Valider le seuil à 20km²
+- Ajouter biblio
+
 
