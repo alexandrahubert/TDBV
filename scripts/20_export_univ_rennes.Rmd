@@ -1,0 +1,98 @@
+---
+title: "Export univ Rennes"
+date: "2023-06-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+## Chargement des packages et des données
+
+```{r}
+library(tidyverse)
+library(sf)
+library(mapview)
+
+
+load(file = "data1.RData")
+load(file = "../processed_data/tables_access.RData")
+```
+
+## Assemblage du jeu de données
+
+On fait une jointure pour récupérer les coordonnées.
+
+```{r}
+data <- data %>% 
+  left_join(station) %>% 
+  left_join(tdbv_stations_aval_l93_20200612 %>% 
+              select(Ref_sta, INSEE_DEP, NOM_COM)) 
+
+
+data %>% 
+  mutate_if(is.double, function(x) round(x, 4)) %>% 
+  DT::datatable()
+```
+
+>Pbs sur les coordonnées. Dans les seules colonnes de coordonnées qui sont complètes (`Sta_GPS_avl_X` et `Sta_GPS_avl_Y`), il y a manifestement des inversions latitude / longitude.
+
+On corrige donc ces inversions.
+
+```{r}
+stations2 <- data %>% 
+  mutate(x_wgs84 = ifelse(Sta_GPS_avl_X < 10,
+                          Sta_GPS_avl_X,
+                          Sta_GPS_avl_Y),
+         y_wgs84 = ifelse(Sta_GPS_avl_Y < 10,
+                          Sta_GPS_avl_X,
+                          Sta_GPS_avl_Y),
+         x_wgs84 = ifelse(Ref_sta %in% c("Ref_0002", "Ref_0005", "Ref_0146"),
+                          (-1) * x_wgs84,
+                          x_wgs84)
+         )  
+```
+
+## Spatialisation
+
+```{r}
+stations2_geo <- stations2 %>% 
+  filter(y_wgs84 > 0) %>% 
+  sf::st_as_sf(coords = c("x_wgs84", "y_wgs84"), crs = 4326)
+```
+
+## Visualisation
+
+```{r, fig.height = 8, fig.width = 8}
+mapview::mapview(stations2_geo)
+```
+
+```{r}
+stations2_geo %>% 
+  mutate_if(is.double, function(x) round(x, 4)) %>% 
+  DT::datatable()
+```
+
+```{r}
+stations2 %>%
+  downloadthis::download_this(
+    output_name = "hydromorpho_tbv_armo",
+    output_extension = ".xlsx",
+    button_label = "Télécharger en Excel",
+    button_type = "success",
+    has_icon = TRUE,
+    icon = "fa fa-save",
+    csv2 = TRUE,
+  )
+```
+
+```{r}
+stations2 %>% 
+  select(Ref_sta:jeu_donnees, starts_with("Sta_GPS"), ends_with("wgs84")) %>% 
+  filter(Ref_sta == "Ref_0226") %>% 
+  DT::datatable()
+```
+

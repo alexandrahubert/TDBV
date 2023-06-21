@@ -138,5 +138,6 @@ ref <- rbind(ref_data, ref_carhyce) %>%
 
 # conserver le RData dans le répertoire du Rmd en vue du déploiement de l'appli
 save(ref, file = "scripts/ref.RData")
+save(data, file = "scripts/data1.RData")
   
   
