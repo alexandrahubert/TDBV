@@ -30,7 +30,8 @@ On fait une jointure pour récupérer les coordonnées.
 data <- data %>% 
   left_join(station) %>% 
   left_join(tdbv_stations_aval_l93_20200612 %>% 
-              select(Ref_sta, INSEE_DEP, NOM_COM)) 
+              select(Ref_sta, INSEE_DEP, NOM_COM)) %>% 
+  filter(Etude != "Colin, 2015")
 
 
 data %>% 
