@@ -5,6 +5,6 @@
 raw_data/
 processed_data/
 processed_data/tables_access.RData
-scripts/rapport_traitements.html
+scripts/*.html
 scripts/rsconnect/
 test.txt
