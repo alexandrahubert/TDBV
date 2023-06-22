@@ -1,6 +1,6 @@
 ---
 title: "Export univ Rennes"
-date: "2023-06-21"
+date: "`r format(Sys.time(), 'Le %d/%m/%Y')`"
 output: html_document
 ---
 
@@ -97,9 +97,9 @@ stations2 %>%
 ```
 
 ```{r}
-stations2 %>% 
-  select(Ref_sta:jeu_donnees, starts_with("Sta_GPS"), ends_with("wgs84")) %>% 
-  filter(Ref_sta == "Ref_0226") %>% 
-  DT::datatable()
+# stations2 %>% 
+#   select(Ref_sta:jeu_donnees, starts_with("Sta_GPS"), ends_with("wgs84")) %>% 
+#   filter(Ref_sta == "Ref_0226") %>% 
+#   DT::datatable()
 ```
 

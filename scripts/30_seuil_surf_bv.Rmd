@@ -1,0 +1,65 @@
+---
+title: "Détermination du seuil de surface de BV"
+date: "`r format(Sys.time(), 'Le %d/%m/%Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+## Objectif
+
+Déterminer un seuil haut à la superficie du bassin versant des cours d'eau de rangs de Strahler 1 et 2.
+
+## Chargement des packages et des données
+
+```{r}
+library(tidyverse)
+library(sf)
+library(mapview)
+```
+
+Les données ont été téléchargées depuis le portail GéoBretagne, donnée ["Têtes de bassin versant - Finistère - pré-localisation"](https://geobretagne.fr/geonetwork/srv/fre/catalog.search#/metadata/21f194f0-6abb-4fd9-8aca-119514f8140f).
+
+```{r}
+bv <- foreign::read.dbf(file = "../raw_data/tetes_bassin_versant_29.dbf") %>% 
+  mutate(surf_km2 = Surf_ha / 100)
+
+bv_quantiles <- quantile(bv$surf_km2, probs = c(0.01, 0.05, 0.25, 0.5, 0.75, 0.95, 0.99))
+```
+
+NB on ne calcule pas de moyenne car la distribution est trop asymétrique (cf. histogrammes).
+
+## Stats descriptives
+
+```{r}
+bv_quantiles %>% 
+  round(3)
+```
+
+Exemple d'interprétation : `r names(bv_quantiles)[6]` des bassins ont une superficie inférieure à `r round(bv_quantiles[6], 3)` km².
+
+
+## Distribution de la surface des BV
+
+On représente graphiquement les surfaces de BV (histogramme). Les lignes verticales sont les quantiles calculés précédemment.
+
+```{r}
+ggplot(data = bv,
+       aes(x = surf_km2)) +
+  geom_histogram() +
+  geom_vline(xintercept = bv_quantiles, col = "red", linetype = "dotted")
+```
+
+Comme la courbe est écrasée vers la gauche, on peut log-transformer les valeurs de la surface du BV :
+
+```{r}
+ggplot(data = bv,
+       aes(x = surf_km2)) +
+  geom_histogram() +
+  scale_x_log10() +
+  geom_vline(xintercept = bv_quantiles, col = "red", linetype = "dotted")
+```
