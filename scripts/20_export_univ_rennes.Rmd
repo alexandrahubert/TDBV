@@ -52,7 +52,13 @@ stations2 <- data %>%
                           Sta_GPS_avl_Y),
          x_wgs84 = ifelse(Ref_sta %in% c("Ref_0002", "Ref_0005", "Ref_0146"),
                           (-1) * x_wgs84,
-                          x_wgs84)
+                          x_wgs84),
+         x_wgs84 = ifelse(Ref_sta == "Ref_0226",
+                          -0.71195,
+                          x_wgs84),
+         y_wgs84 = ifelse(Ref_sta == "Ref_0226",
+                          48.12197,
+                          y_wgs84)
          )  
 ```
 
