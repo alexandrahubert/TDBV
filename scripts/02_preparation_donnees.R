@@ -25,6 +25,7 @@ dist_rad <- facies %>%
 
 # assemblage du tableau de données
 data <- station %>%
+  filter(Etude != "Colin, 2015") %>% 
   select(Ref_sta,
          comm,
          topo,
@@ -92,7 +93,8 @@ ref_data <- data %>%
 # filtré sur REGION == ARMORICAIN
 carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
                              encoding = "UTF-8") %>% 
-  select(localisation = `Localisation station de mesure`,
+  select(code_station = `Code station`,
+         localisation = `Localisation station de mesure`,
          topo = `Cours d'eau`,
          Surface_BV_km2 = `Surface BV (km2)`,
          Coeff_K = `Coefficient rugosité`,
@@ -103,11 +105,13 @@ carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
          Lpb = `Largeur plein bord évaluée (m)`,
          Hpb = `Profondeur moyenne Qb (m)`,
          Coef_sinuo = `Coefficient de sinuosité`,
-         ref = `Station référence modèle`
+         ref = `Station référence modèle`,
+         x_l93 = X,
+         y_l93 = Y
          ) %>% 
-  mutate_at(vars(Surface_BV_km2:Coef_sinuo),
+  mutate_at(vars(Surface_BV_km2:Coef_sinuo, x_l93, y_l93),
             function(x) str_replace(x, pattern = ",", replacement = ".")) %>% 
-  mutate_at(vars(Surface_BV_km2:Coef_sinuo),
+  mutate_at(vars(Surface_BV_km2:Coef_sinuo, x_l93, y_l93),
             as.numeric) %>% 
   mutate(jeu_donnees = 'carhyce_ref_armo',
          Ref_sta = NA,
@@ -127,17 +131,73 @@ ref_carhyce <- carhyce %>%
                                     replacement = " A "),
          comm = word(localisation,
                      start = -1,
-                     sep = ' A ')) %>% 
+                     sep = ' A '))
+
+codes_station_ref_carhyce <- unique(ref_carhyce$code_station)
+
+ref_carhyce <- ref_carhyce %>%  
   select(names(ref_data))
 
 identical(names(ref_carhyce), names(ref_data))
 
 ref <- rbind(ref_data, ref_carhyce) %>% 
   mutate(etiquette = paste0(Ref_sta, ", ", topo),
-         l_h = Lpb/Hpb)
+         l_h = Lpb / Hpb)
 
-# conserver le RData dans le répertoire du Rmd en vue du déploiement de l'appli
+### Spatialisation
+ref_geo <- ref %>% 
+  left_join(station) %>%
+  filter(!is.na(Sta_GPS_avl_X)) %>% 
+  mutate(x_wgs84 = ifelse(Sta_GPS_avl_X < 10,
+                          Sta_GPS_avl_X,
+                          Sta_GPS_avl_Y),
+         y_wgs84 = ifelse(Sta_GPS_avl_Y < 10,
+                          Sta_GPS_avl_X,
+                          Sta_GPS_avl_Y),
+         x_wgs84 = ifelse(Ref_sta %in% c("Ref_0002", "Ref_0005", "Ref_0146"),
+                          (-1) * x_wgs84,
+                          x_wgs84),
+         x_wgs84 = ifelse(Ref_sta == "Ref_0226",
+                          -0.71195,
+                          x_wgs84),
+         y_wgs84 = ifelse(Ref_sta == "Ref_0226",
+                          48.12197,
+                          y_wgs84)
+  ) %>% 
+  select(Ref_sta, jeu_donnees, x_wgs84, y_wgs84) %>% 
+  filter(y_wgs84 > 0) %>% 
+  sf::st_as_sf(coords = c("x_wgs84", "y_wgs84"),
+               crs = 4326) %>% 
+  sf::st_transform(crs = 2154)
+
+mapview::mapview(ref_geo)
+
+ref_carhyce_geo <- carhyce %>% 
+  filter(code_station %in% codes_station_ref_carhyce) %>%
+  select(code_station, x_l93, y_l93) %>% 
+  distinct() %>% 
+  # drop_na() %>% 
+  sf::st_as_sf(coords = c("x_l93", "y_l93"),
+               crs = 2154) %>% 
+  mutate(jeu_donnees = "carhyce_ref_armo")
+
+mapview::mapview(ref_carhyce_geo)
+
+ref_geo <- ref_geo %>% 
+  bind_rows(ref_carhyce_geo)
+
+
+mapview::mapview(ref_geo,
+                 zcol = "jeu_donnees")
+
+
+### Sauvegarde
+# Données : conserver le RData dans le répertoire du Rmd en vue du déploiement de l'appli
 save(ref, file = "scripts/ref.RData")
 save(data, file = "scripts/data1.RData")
+
+# couche géo des points
+sf::st_write(obj = ref_geo,
+             dsn = "processed_data/stations_ref_hydromorpho.shp")
   
   
