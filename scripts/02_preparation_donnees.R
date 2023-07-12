@@ -193,7 +193,7 @@ mapview::mapview(ref_geo,
 
 ### Sauvegarde
 # Données : conserver le RData dans le répertoire du Rmd en vue du déploiement de l'appli
-save(ref, file = "scripts/ref.RData")
+save(ref, ref_geo, file = "scripts/ref.RData")
 save(data, file = "scripts/data1.RData")
 
 # couche géo des points

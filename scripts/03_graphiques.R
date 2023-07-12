@@ -187,12 +187,12 @@ g_densite_pente <- ma_densite(data = ref,
                            )
 g_densite_lh <- ma_densite(data = ref,
                            x = l_h,
-                           x_lab = "Largeur sur hauteur")
+                           x_lab = "Ratio largeur / hauteur")
 
-g_densite <- ggpubr::ggarrange(g_densite_lpb,
-                               g_densite_hpb,
-                               g_densite_sbv,
+g_densite <- ggpubr::ggarrange(g_densite_sbv,
                                g_densite_pente,
+                               g_densite_lpb,
+                               g_densite_hpb,
                                g_densite_lh,
                                common.legend = TRUE,
                                ncol = 2,
