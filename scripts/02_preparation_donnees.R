@@ -190,10 +190,28 @@ ref_geo <- ref_geo %>%
 mapview::mapview(ref_geo,
                  zcol = "jeu_donnees")
 
+# Nb de sites par source ------
+n_sites_par_source <- ref %>%
+  count(jeu_donnees) %>%
+  as.data.frame()
+
+# R2 et pvalue de la relation pente - surface BV
+relation_pente_sbv <- lm(log10(pente_eau_m_m) ~ log10(Surface_BV_km2),
+                         data = ref %>% filter(pente_eau_m_m > 0, Surface_BV_km2 > 0))
+pente_sbv_r2 <- summary(relation_pente_sbv)$r.squared %>% 
+  round(2)
+pente_sbv_pvalue <- anova(relation_pente_sbv)$`Pr(>F)`[1] %>% 
+  signif(3)
+
 
 ### Sauvegarde
 # Données : conserver le RData dans le répertoire du Rmd en vue du déploiement de l'appli
-save(ref, ref_geo, file = "scripts/ref.RData")
+save(ref,
+     ref_geo,
+     n_sites_par_source,
+     pente_sbv_r2,
+     pente_sbv_pvalue,
+     file = "scripts/ref.RData")
 save(data, file = "scripts/data1.RData")
 
 # couche géo des points
