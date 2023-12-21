@@ -1,6 +1,6 @@
 ---
 title: "Hydromorphologie des cours d'eau en têtes de bassins versants"
-author: Julien BOËTON, Pascal IRZ, Alexandra HUBERT, Mikaël LE BIHAN, Gabriel MELUN OFB - Direction
+author: Julien BOËTON, Pascal IRZ, Alexandra HUBERT, Mikaël LE BIHAN, Gabriel MELUN - OFB, Direction
   Régionale Bretagne
 date: "`r format(Sys.time(), 'Le %d/%m/%Y')`"
 output:
