@@ -15,6 +15,7 @@ output:
       toc_depth: 2
     code_folding: hide
     css: "style.css"
+    
   word_document: default
   pdf_document: default
 subtitle: Analyses préliminaires sur les stations de cours d'eau de référence hydromorphologique de l'hydroécorégion de niveau 1 "Massif Armoricain"
@@ -42,7 +43,7 @@ library(bookdown)
 ```
 
 ```{r, echo = FALSE}
-htmltools::img(src = knitr::image_uri('logo_OFB.jpg'),
+htmltools::img(src = knitr::image_uri('../scripts/logo_OFB.jpg'),
                alt = 'logo',
                style = 'position:absolute; top:0; right:0; padding:0px; width:100px;')
 
@@ -70,6 +71,9 @@ Afin de mettre en perspective les résultats obtenus Sur ce jeu de données de l
 ```{r}
 # chargement du tableau de données au format RData
 load(file = "ref.RData")
+
+# chargement des graphiques au format RData
+load(file = "graphiques.RData")
 
 # chargement des fonctions
 source(file = "00_fonctions.R")
@@ -101,8 +105,32 @@ ref %>%
          -Coef_sinuo) %>%
   mutate_at(vars(pente_eau_m_m, l_h),
             function(x) round(x, 5)) %>% 
-  DT::datatable(caption = "Table 1 : assemblage des données de l'IED Carhyce et des mesures de terrain réalisées par la DR OFB Bretagne. La variable `etiquette` est obtenue par concaténation de la référence de la station et du nom du cours d'eau car aucune de ces variables n'est renseignée dans 100% des cas. Elle sert à identifier les points sur les graphiques interactifs.")
+  DT::datatable(caption = "Table 1 : Assemblage des données de l'IED Carhyce et des mesures de terrain réalisées par la DR OFB Bretagne. La variable `etiquette` est obtenue par concaténation de la référence de la station et du nom du cours d'eau car aucune de ces variables n'est renseignée dans 100% des cas. Elle sert à identifier les points sur les graphiques interactifs.")
 ```
+
+```{r, fig.width = 8, fig.height = 8, fig.cap = "Carte des sites prospectés."}
+# mapview::mapview(donnees_carte,
+#                  zcol = "Source",
+#                  layer.name = "Source",
+#                  popup = leafpop::popupTable(
+#       donnees_carte,
+#       zcol = c("Station",
+#                "Source")))
+test <-  mapview::mapview(donnees_carte,
+    zcol = "Source",
+    layer.name = "Source",
+    popup = leafpop::popupTable(
+      donnees_carte,
+      zcol = c("Station",
+               "Source"),
+      feature.id = FALSE,
+      row.numbers = FALSE
+    )
+  )
+
+test@map
+```
+
 
 L'hypothèse sous-jacente aux analyses est que les variables de contrôle du bassin versant (exemple : superficie du bassin versant amont) contraignent les variables de réponse (ex : largeur à plein bord, hauteur à plein bord, etc) à l’échelle du cours d’eau (Malavoi & Bravard, 2010). Le phénomène est bien documenté sur les grands cours d'eau, mais les têtes de bassins ont été beaucoup moins étudiées. 
 
@@ -117,10 +145,6 @@ Les variables de réponses sont *la largeur et la hauteur de plein bord* (moyenn
 
 Les distributions des variables sont données ci-dessous en comparant les jeux de données afin de bien présenter les ordres de grandeur. Celles qui prennent des valeurs très dispersées sont représentées en échelle logarithmique $log$ (base 10).
 
-```{r}
-# chargement du tableau de données au format RData
-load(file = "graphiques.RData")
-```
 
 ```{r, fig.height = 10, fig.width = 10, fig.cap = "Distribution des variables. Les lignes verticales indiquent la valeur moyenne pour chaque jeu de données."}
 g_densite
@@ -356,7 +380,6 @@ A rédiger.
 
 ## Pascal
 
-- Favicon 
 - Carto interactive avec points gps
 - Validation DR ? 
 
