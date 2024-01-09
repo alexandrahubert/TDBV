@@ -311,23 +311,27 @@ rbind(mf_lpb[[2]], mf_hpb[[2]]) %>%
 # Recommandations pour le dimensionnement des lits mineurs dans le cadre de projets de restauration
 
 
-De nombreux projets de restauration de l'hydromorphologie des cours d'eau ont pour principal objectif de retrouver une géométrie du lit mineur proche des conditions naturelles. Pour ce faire, deux choix techniques sont possibles : reconstitution d'un nouveau lit mineur ou réduction de la section d'écoulement d'un lit mineur existant.
+De nombreux projets de restauration de l'hydromorphologie des cours d'eau ont pour principal objectif de retrouver une géométrie du lit mineur proche des conditions naturelles. Pour ce faire, deux choix techniques sont possibles : reconstituer un nouveau lit mineur ou réduire la section d'écoulement d'un lit mineur existant.
 
 
-Afin de dimensionner le nouveau lit mineur, il convient de privilégier le recours à des segments hydromorphologiques de référence sur le même cours d'eau, à proximité immédiate du site à restaurer.
-Généralement, en l'abence de stations de référence à proximité directe, le dimensionnement repose sur le calcul de la crue journalière de fréquence annuelle à biennale (QJ1 à QJ2) à l'aide du ratio de BV simple (établi par rapport à une station hydrolométrique présentant des caractéristiques relativement similaires au site étudié (surface de bassin versant, géologie, relief, etc.)). 
+Afin de dimensionner un nouveau lit mineur, il convient de privilégier le recours à des segments hydromorphologiques de référence (proches des conditions naturelles) sur le même cours d'eau, à proximité immédiate du site à restaurer.
+Généralement, en l'absence de stations de référence à proximité directe, le dimensionnement repose sur le calcul de la crue journalière de fréquence annuelle à biennale (QJ1 à QJ2) (Malavoi & Bravard, 2010). Ce calcul s'effectue à l'aide du ratio de BV simple, établi par rapport à une station hydrolométrique présentant des caractéristiques relativement similaires au site étudié (surface de bassin versant, géologie, relief, etc.). 
 
 
-Ce calculateur, issu de données de référence sur les caractéristiques hydromorphologiques de 139 stations réparties sur l'HydroEcoRégion "Massif Armoricain", peut permettre de vérifier le dimensionnement de la largeur et de la profondeur à plein bord du lit mineur obtenu par les calculs hydrauliques précédents (ratio de BV simple).
+Le calculateur proposé ci-dessous et issu de données de référence sur les caractéristiques hydromorphologiques de 139 stations réparties sur l'HydroEcoRégion "Massif Armoricain", peut permettre de vérifier le dimensionnement de la largeur et de la profondeur à plein bord du lit mineur obtenu par les calculs hydrauliques précédents (ratio de BV simple).
 
 
-Attention, les valeurs calculées ne doivent pas conduire à effectuer des reconstitutions de lits mineurs homogènes, il est en effet nécessaire de diversifier les largeurs et les profondeurs afin de concourir à la réussite du projet de restauration. De plus, comme ces valeurs sont issues de caractéristiques relevées sur des cours d'eau qui ont évolué dans le temps, il est conseillé de légèrement sous-dimensionner les largeurs et hauteurs plein bord du lit mineur par rapport aux valeurs calculées par l'outil, afin de favoriser les ajustements hydromorphologiques.
+Attention, les valeurs calculées ne doivent pas conduire à effectuer des reconstitutions de lits mineurs homogènes, il est en effet nécessaire de diversifier les largeurs et les profondeurs afin de concourir à la réussite du projet de restauration. De plus, comme ces valeurs sont issues de caractéristiques relevées sur des cours d'eau qui ont évolué dans le temps, il est conseillé de légèrement sous-dimensionner les largeurs et hauteurs à plein bord du lit mineur par rapport aux valeurs données par l'outil, afin de favoriser les ajustements hydromorphologiques.
 
 
 Une vigilance particulière devra être apportée sur l'utilisation de cet outil pour des cours d'eau présentant des pentes très faibles (quelques pour mille) ou très fortes (> à 5 ou 6 %). En effet, ces valeurs de pente sont pour le moment peu représentées dans le jeu de données actuel. 
 
 
-Pour rappel, la quasi-totalité des stations de référence étudiées, sont bordées par une ripisylve dense, composée d'essences locales, naturellement présentes en bordure des cours d'eau, diversifiées et multi-strates. La reconstitution d'une ripisylve fonctionnelle est déterminante pour garantir l'éfficacité et la réussite sdes projets de restauration.
+Pour rappel, la quasi-totalité des stations de référence étudiées sont bordées par une ripisylve dense, multi-strates, composée d'essences locales et diversifiées, naturellement présentes en bordure des cours d'eau. La reconstitution d'une ripisylve fonctionnelle est déterminante pour garantir l'éfficacité et la réussite des projets de restauration.
+
+
+De plus, en "contexte argileux", les cours d'eau proches des conditions naturelles présentent des berges verticales basses. Cette forme de berges constitue la forme d'équilibre sur ce type de sol et permet la reconstitution naturelle de sous-berges.
+
 ```{r}
 inputPanel(
   shiny::numericInput(
