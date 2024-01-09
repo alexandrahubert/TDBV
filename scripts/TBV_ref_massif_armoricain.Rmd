@@ -2,6 +2,7 @@
 title: "Hydromorphologie des cours d'eau en têtes de bassin versant"
 author: "Pascal IRZ, Julien BOËTON, Alexandra HUBERT, Mikaël LE BIHAN - OFB, Direction
   Régionale Bretagne
+  
   Gabriel MELUN - OFB, Direction de la recherche et de l'appui scientifique"
 date: "`r format(Sys.time(), 'Le %d/%m/%Y')`"
 output:
@@ -52,7 +53,7 @@ htmltools::img(src = knitr::image_uri('logo_OFB.jpg'),
 # golem::use_favicon("www/favicon.ico")
 ```
 
->Mots-clés : cours d’eau ; hydromorphologie ; lit mineur ; conditions naturelles ; restauration ; têtes de bassin versant
+>Mots-clés : cours d’eau ; hydromorphologie ; lit mineur ; condition naturelle ; restauration ; tête de bassin versant
 
 # Introduction
 
@@ -63,6 +64,7 @@ Cette page thématique présente une analyse préliminaire des caractéristiques
 Les cours d’eau en têtes de bassin versant se localisent à l’extrémité amont du réseau hydrographique. La classification de Strahler (Strahler, 1957) a été majoritairement utilisée dans le cadre des études tendant à définir spatialement ces cours d’eau en têtes de bassin (Tixier et al., 2012). Cette classification est fondée sur l’importance croissante des branches qui constituent le réseau hydrographique. En France métropolitaine, et dans la plupart des Schémas Directeurs d'Aménagement et de Gestion des Eaux (SDAGE), sont considérés en têtes de bassin, les cours d’eau de rang de Strahler 1 et 2 à l’échelle 1 : 25 000$^{ème}$.
 
 ::::
+
 
 
 Des données ont été collectées par l'OFB dans le cadre de stages de Master 2 entre 2013 et 2019 sur des cours d’eau qualifiés de "non impactés" vis à vis de leurs caractéristiques hydromorphologiques (Jan, 2013 ; Bossis, 2014 ; Gallineau, 2020). Le protocole de terrain mis en œuvre à l’échelle stationnelle visait à recueillir les principales caractéristiques hydromorphologiques du lit mineur et de la ripisylve sur des stations localisées sur des cours d'eau de rang de Strahler de 1 à 4, avec une majorité de cours d'eau de rang de Strahler 1. Les caractéristiques principales des bassins versants en amont des tronçons ont été obtenues par géotraitement sous le logiciel QGis.
@@ -79,6 +81,7 @@ load(file = "graphiques.RData")
 # chargement des fonctions
 source(file = "00_fonctions.R")
 ```
+
 Le tableau assemblé comprend au total `r nrow(ref)` lignes correspondant à 1) `r ref %>% filter(jeu_donnees != 'carhyce_ref_armo') %>% nrow()` stations localisées sur les cours d'eau étudiés par la DR Bretagne et 2) `r ref %>% filter(jeu_donnees == 'carhyce_ref_armo') %>% nrow()` stations dont les données proviennent de [l'IED Carhyce](https://analytics.huma-num.fr/ied_carhyce/) (Table 1).
 
 Dans le détail, 3 jeux de données peuvent être distingués dans les analyses suivantes, en lien notamment avec un critère de nombre de stations :
@@ -307,12 +310,23 @@ rbind(mf_lpb[[2]], mf_hpb[[2]]) %>%
 
 # Recommandations pour le dimensionnement des lits mineurs dans le cadre de projets de restauration
 
+
 De nombreux projets de restauration de l'hydromorphologie des cours d'eau ont pour principal objectif de retrouver une géométrie du lit mineur proche des conditions naturelles. Pour ce faire, deux choix techniques sont possibles : reconstitution d'un nouveau lit mineur ou réduction de la section d'écoulement d'un lit mineur existant.
+
+
 Afin de dimensionner le nouveau lit mineur, il convient de privilégier le recours à des segments hydromorphologiques de référence sur le même cours d'eau, à proximité immédiate du site à restaurer.
 Généralement, en l'abence de stations de référence à proximité directe, le dimensionnement repose sur le calcul de la crue journalière de fréquence annuelle à biennale (QJ1 à QJ2) à l'aide du ratio de BV simple (établi par rapport à une station hydrolométrique présentant des caractéristiques relativement similaires au site étudié (surface de bassin versant, géologie, relief, etc.)). 
+
+
 Ce calculateur, issu de données de référence sur les caractéristiques hydromorphologiques de 139 stations réparties sur l'HydroEcoRégion "Massif Armoricain", peut permettre de vérifier le dimensionnement de la largeur et de la profondeur à plein bord du lit mineur obtenu par les calculs hydrauliques précédents (ratio de BV simple).
+
+
 Attention, les valeurs calculées ne doivent pas conduire à effectuer des reconstitutions de lits mineurs homogènes, il est en effet nécessaire de diversifier les largeurs et les profondeurs afin de concourir à la réussite du projet de restauration. De plus, comme ces valeurs sont issues de caractéristiques relevées sur des cours d'eau qui ont évolué dans le temps, il est conseillé de légèrement sous-dimensionner les largeurs et hauteurs plein bord du lit mineur par rapport aux valeurs calculées par l'outil, afin de favoriser les ajustements hydromorphologiques.
+
+
 Une vigilance particulière devra être apportée sur l'utilisation de cet outil pour des cours d'eau présentant des pentes très faibles (quelques pour mille) ou très fortes (> à 5 ou 6 %). En effet, ces valeurs de pente sont pour le moment peu représentées dans le jeu de données actuel. 
+
+
 Pour rappel, la quasi-totalité des stations de référence étudiées, sont bordées par une ripisylve dense, composée d'essences locales, naturellement présentes en bordure des cours d'eau, diversifiées et multi-strates. La reconstitution d'une ripisylve fonctionnelle est déterminante pour garantir l'éfficacité et la réussite sdes projets de restauration.
 ```{r}
 inputPanel(
