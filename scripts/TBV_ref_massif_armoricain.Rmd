@@ -108,7 +108,7 @@ ref %>%
             function(x) round(x, 5)) %>% 
   DT::datatable(caption = "Table 1 : Assemblage des données de l'IED Carhyce et des mesures de terrain réalisées par la DR OFB Bretagne. La variable `etiquette` est obtenue par concaténation de la référence de la station et du nom du cours d'eau car aucune de ces variables n'est renseignée dans 100% des cas. Elle sert à identifier les points sur les graphiques interactifs.")
 ```
-L'interface cartographique ci-dessous présente la localisation des différentes stations étudiées, en distinguant les trois jeux de données.  
+L'interface cartographique ci-dessous présente la localisation des différentes stations étudiées, en distinguant les trois jeux de données (figure 1).  
 ```{r, fig.width = 8, fig.height = 8, fig.cap = "Carte des sites prospectés."}
 # mapview::mapview(donnees_carte,
 #                  zcol = "Source",
