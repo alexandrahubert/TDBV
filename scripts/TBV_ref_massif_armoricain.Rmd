@@ -1,9 +1,9 @@
 ---
-title: "Hydromorphologie des cours d'eau en têtes de bassin versant"
-author: "Pascal IRZ, Julien BOËTON, Alexandra HUBERT, Mikaël LE BIHAN - OFB, Direction
-  Régionale Bretagne
-  
-  Gabriel MELUN - OFB, Direction de la recherche et de l'appui scientifique"
+title: "Hydromorphologie des cours d'eau <br> en têtes de bassin versant"
+author:
+- Pascal IRZ, Julien BOËTON, Alexandra HUBERT, Mikaël LE BIHAN - OFB, Direction
+  Régionale Bretagne\newline
+- Gabriel MELUN - OFB, Direction de la recherche et de l'appui scientifique
 date: "`r format(Sys.time(), 'Le %d/%m/%Y')`"
 output:
   bookdown::html_document2:
@@ -17,7 +17,6 @@ output:
       toc_depth: 2
     code_folding: hide
     css: "style.css"
-    
   word_document: default
   pdf_document: default
 subtitle: Analyses préliminaires sur les stations de cours d'eau de référence hydromorphologique de l'hydroécorégion de niveau 1 "Massif Armoricain"
@@ -82,7 +81,7 @@ load(file = "graphiques.RData")
 source(file = "00_fonctions.R")
 ```
 
-Le tableau assemblé comprend au total `r nrow(ref)` lignes correspondant à 1) `r ref %>% filter(jeu_donnees != 'carhyce_ref_armo') %>% nrow()` stations localisées sur les cours d'eau étudiés par la DR Bretagne et 2) `r ref %>% filter(jeu_donnees == 'carhyce_ref_armo') %>% nrow()` stations dont les données proviennent de [l'IED Carhyce](https://analytics.huma-num.fr/ied_carhyce/) (Table 1).
+Le tableau assemblé comprend au total `r nrow(ref)` lignes correspondant à 1) `r ref %>% filter(jeu_donnees != 'CARHYCE') %>% nrow()` stations localisées sur les cours d'eau étudiés par la DR Bretagne et 2) `r ref %>% filter(jeu_donnees == 'CARHYCE') %>% nrow()` stations dont les données proviennent de [l'IED Carhyce](https://analytics.huma-num.fr/ied_carhyce/) (Table 1).
 
 Dans le détail, 3 jeux de données peuvent être distingués dans les analyses suivantes, en lien notamment avec un critère de nombre de stations :
 
@@ -111,8 +110,9 @@ ref %>%
             function(x) round(x, 5)) %>% 
   DT::datatable(caption = "Table 1 : Assemblage des données de l'IED Carhyce et des mesures de terrain réalisées par la DR OFB Bretagne. La variable `etiquette` est obtenue par concaténation de la référence de la station et du nom du cours d'eau car aucune de ces variables n'est renseignée dans 100% des cas. Elle sert à identifier les points sur les graphiques interactifs.")
 ```
-L'interface cartographique ci-dessous présente la localisation des différentes stations étudiées, en distinguant les trois jeux de données (figure 1).  
-```{r, fig.width = 8, fig.height = 8, fig.cap = "Carte des sites prospectés."}
+L'interface cartographique ci-dessous présente la localisation des différentes stations étudiées, en distinguant les trois jeux de données (figure 1).
+
+```{r, fig.width = 8, fig.height = 6.5, fig.cap = "Carte des sites prospectés."}
 # mapview::mapview(donnees_carte,
 #                  zcol = "Source",
 #                  layer.name = "Source",
@@ -162,7 +162,7 @@ Les écarts sont nettement plus importants en termes de surface du bassin versan
 
 Les petits bassins versants (< 10 km²) sont marqués par de fortes pentes de la ligne d'eau.
 
-Le rapport de forme (largeur plein bord/hauteur plein bord) est, en moyenne, inférieur dans le jeu de données "Jan & Bossis" en comparaison des deux autres jeux de données ("Galineau" et "Carhyce").
+Le rapport de forme (largeur à plein bord / hauteur à plein bord) est, en moyenne, inférieur dans le jeu de données "Jan & Bossis" en comparaison des deux autres jeux de données ("Galineau" et "Carhyce").
 
 
 # Analyse bivariée
@@ -173,10 +173,12 @@ Dans un premier temps, on observe les relations des variables deux à deux.
 
 Sur le graphique ci-dessous (figure 3), une droite de régression a été calée pour chacun des 3 jeux de données. La courbe grise en pointillés indique une tendance non linéaire sur l'ensemble des données.
 
-
+<div class = 'centerplotly'>
 ```{r, fig.cap="Relation entre la pente de la ligne d'eau et la surface du bassin versant, distinguant les trois jeux de données."}
 g_pente_sbv
 ```
+
+</div>
 
 En échelle log-log, le lien entre les deux variables explicatives est fort (sur l'ensemble des trois jeux de données, *r²*=$`r pente_sbv_r2`$, *p-value*=$`r pente_sbv_pvalue`$). Il est possible que la relation soit plutôt curvi-linéaire que linéaire. La relation est décroissante, et logiquement la pente est d'autant plus faible que la station étudiée est située en aval (bassin versant plus grand).
 
@@ -188,26 +190,33 @@ Quelques stations sont très éloignées du schéma général et méritent des v
 
 A commenter ou retirer graph ? Gabriel ?
 
+<div class = 'centerplotly'>
 ```{r, fig.cap="Relation entre la largeur à plein bords et la surface du bassin versant, distinguant les trois jeux de données."}
 g_lpb_sbv
 ```
 
+</div>
 
+<div class = 'centerplotly'>
 ```{r, fig.cap="Relation entre la hauteur à plein bords et la surface du bassin versant, distinguant les trois jeux de données."}
 g_hpb_sbv
 ```
 
+</div>
 
+<div class = 'centerplotly'>
 ```{r, fig.cap="Relation entre la largeur à plein bords et la pente de la ligne d'eau, distinguant les trois jeux de données."}
 g_lpb_pente
 ```
 
+</div>
 
+<div class = 'centerplotly'>
 ```{r, fig.cap="Relation entre la hauteur à plein bords et la pente de la ligne d'eau, distinguant les trois jeux de données."}
 g_hpb_pente
 ```
 
-
+</div>
 
 
 
@@ -244,7 +253,7 @@ La superficie du bassin versant amont présente des coefficients de corrélation
 
 L'effet de la pente n'est significatif que sur un modèle, avec une `p-value` entre `0.05` et `0.01`, ce qui n'est pas très convaincant. Il s'agit vraisemblablement d'une mauvaise estimation de ce coefficient, ce qui arrive quand les variables explicatives sont corrélées entre elles. Cela vient peut etre aussi du fait que la pente des stations ne suit pas le modèle conceptuel de décroissance vers l’aval (exemple des têtes de bassin versant à faible pente).
 
-Les coefficients de détermination ajustés `r²` sont plus faibles pour les têtes de bassin versant que pour les deux autres jeux de données, malgré l'effet très significatif de la surface du bassin versant. Sur ces deux autres jeux de données, ils sont particulièrement élevés (`>0.90`) pour la largeur plein bord `Lpb`. Ils sont de l'ordre de `0.80` pour la hauteur plein bord `Hpb`.
+Les coefficients de détermination ajustés `r²` sont plus faibles pour les têtes de bassin versant que pour les deux autres jeux de données, malgré l'effet très significatif de la surface du bassin versant. Sur ces deux autres jeux de données, ils sont particulièrement élevés (`>0.90`) pour la largeur à plein bord `Lpb`. Ils sont de l'ordre de `0.80` pour la hauteur à plein bord `Hpb`.
 
 ## Modèles simplifiés
 
@@ -265,7 +274,7 @@ Ces modèles sont très cohérents. La perte sur le coefficient de déterminatio
 
 ## Modèles finaux
 
-La seule variable explicative retenue est donc la surface du bassin versant. Les figures 4 et 6 suggèrent toutefois que la relation entre cette variable et les dimensions à plein bord du lit pourraient être curvilinéaires. Afin d'en tenir compte, on peut essayer d'ajouter au modèle un terme quadratique, c'est-à-dire de caler pour la hauteur plein bord :
+La seule variable explicative retenue est donc la surface du bassin versant. Les figures 4 et 6 suggèrent toutefois que la relation entre cette variable et les dimensions à plein bord du lit pourraient être curvilinéaires. Afin d'en tenir compte, on peut essayer d'ajouter au modèle un terme quadratique, c'est-à-dire de caler pour la hauteur à plein bord :
 
 $hauteur\ à\ plein\ bord = a_1\cdot log_{10}(1+surface\_bv) + a_2\cdot (log_{10}(1+surface\_bv))^2+b$
 
@@ -273,25 +282,25 @@ Les résultats n'apportent pas d'amélioration, donc le modèle final retenu est
 
 >$hauteur\ à\ plein\ bord = a\cdot log_{10}(1+surface\_bv)+b$
 
-Afin de le caler au mieux sur les têtes de bassin versant, on l'ajuste sur le jeu de données combiné restreint aux bassins inférieurs à 10 km² (Brummer & Montgomery, 2003 ; MacDonald & Coe, 2007). Au-delà de cette valeur il est préférable de se reporter à Carhyce.
+Afin d'obtenir le meilleur modèle sur les têtes de bassin versant, on l'ajuste sur le jeu de données combiné restreint aux bassins inférieurs à 10 km² (Brummer & Montgomery, 2003 ; MacDonald & Coe, 2007). Au-delà de cette valeur il est préférable de se reporter à Carhyce.
 
 ```{r}
 mf_lpb <- lm_unitaire(
-  data = ref %>% filter(Surface_BV_km2 < 20),
+  data = ref %>% filter(Surface_BV_km2 < 10),
   var_dep = "Lpb",
-  jeu_donnees_selectionne = c("tbv_ref", "galineau_2020", "carhyce_ref_armo"),
+  jeu_donnees_selectionne = c("Jan & Bossis", "Galineau", "CARHYCE"),
   pente_incluse = FALSE
 )
 
 mf_hpb <- lm_unitaire(
-  data = ref %>% filter(Surface_BV_km2 < 20),
+  data = ref %>% filter(Surface_BV_km2 < 10),
   var_dep = "Hpb",
-  jeu_donnees_selectionne = c("tbv_ref", "galineau_2020", "carhyce_ref_armo"),
+  jeu_donnees_selectionne = c("Jan & Bossis", "Galineau", "CARHYCE"),
   pente_incluse = FALSE
 )
 
 rbind(mf_lpb[[2]], mf_hpb[[2]]) %>% 
-    as.data.frame() %>%
+  as.data.frame() %>%
   rownames_to_column() %>%
   separate(
     col = rowname,
@@ -357,7 +366,7 @@ output$pred_lpb <- renderText({
  raw_pred_lpb <-
     predict.lm(mf_lpb[[1]], newdata = new_data(), interval = "confidence")
   
- paste0("Largeur plein bord : ",
+ paste0("Largeur à plein bord : ",
         round(raw_pred_lpb[1], 2),
         "m, IC = [",
         round(raw_pred_lpb[2], 2),
@@ -370,7 +379,7 @@ output$pred_hpb <- renderText({
  raw_pred_hpb <-
     predict.lm(mf_hpb[[1]], newdata = new_data(), interval = "confidence")
   
- paste0("Hauteur plein bord : ",
+ paste0("Hauteur à plein bord : ",
         round(raw_pred_hpb[1], 2),
         "m, IC = [",
         round(raw_pred_hpb[2], 2),

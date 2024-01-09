@@ -17,37 +17,37 @@ load(file = "scripts/ref.RData")
 m_lpb_tbv <- lm_unitaire(
   data = ref,
   var_dep = "Lpb",
-  jeu_donnees_selectionne = "tbv_ref"
+  jeu_donnees_selectionne = "Jan & Bossis"
 )
 
 m_hpb_tbv <- lm_unitaire(
   data = ref,
   var_dep = "Hpb",
-  jeu_donnees_selectionne = "tbv_ref"
+  jeu_donnees_selectionne = "Jan & Bossis"
 )
 
 m_lpb_gal <- lm_unitaire(
   data = ref,
   var_dep = "Lpb",
-  jeu_donnees_selectionne = "galineau_2020"
+  jeu_donnees_selectionne = "Galineau"
 )
 
 m_hpb_gal <- lm_unitaire(
   data = ref,
   var_dep = "Hpb",
-  jeu_donnees_selectionne = "galineau_2020"
+  jeu_donnees_selectionne = "Galineau"
 )
 
 m_lpb_car <- lm_unitaire(
   data = ref,
   var_dep = "Lpb",
-  jeu_donnees_selectionne = "carhyce_ref_armo"
+  jeu_donnees_selectionne = "CARHYCE"
 )
 
 m_hpb_car <- lm_unitaire(
   data = ref,
   var_dep = "Hpb",
-  jeu_donnees_selectionne = "carhyce_ref_armo"
+  jeu_donnees_selectionne = "CARHYCE"
 )
 
 # assemblage du tableau. Les modèles sont des listes dont le 2e élement est mis en forme
@@ -72,35 +72,35 @@ modeles <- rbind(m_lpb_tbv[[2]],
 ms_lpb_tbv <- lm_unitaire(
   data = ref,
   var_dep = "Lpb",
-  jeu_donnees_selectionne = c("tbv_ref"),
+  jeu_donnees_selectionne = c("Jan & Bossis"),
   pente_incluse = FALSE
 )
 
 ms_lpb_gal <- lm_unitaire(
   data = ref,
   var_dep = "Lpb",
-  jeu_donnees_selectionne = c("galineau_2020"),
+  jeu_donnees_selectionne = c("Galineau"),
   pente_incluse = FALSE 
 )
 
 ms_lpb_car <- lm_unitaire(
   data = ref,
   var_dep = "Lpb",
-  jeu_donnees_selectionne = c("carhyce_ref_armo"),
+  jeu_donnees_selectionne = c("CARHYCE"),
   pente_incluse = FALSE 
 )
 
 ms_lpb_tbv_gal <- lm_unitaire(
   data = ref,
   var_dep = "Lpb",
-  jeu_donnees_selectionne = c("tbv_ref", "galineau_2020"),
+  jeu_donnees_selectionne = c("Jan & Bossis", "Galineau"),
   pente_incluse = FALSE 
 )
 
 ms_lpb_tbv_gal_car <- lm_unitaire(
   data = ref,
   var_dep = "Lpb",
-  jeu_donnees_selectionne = c("tbv_ref", "galineau_2020", "carhyce_ref_armo"),
+  jeu_donnees_selectionne = c("Jan & Bossis", "Galineau", "CARHYCE"),
   pente_incluse = FALSE 
 )
 
@@ -108,35 +108,35 @@ ms_lpb_tbv_gal_car <- lm_unitaire(
 ms_hpb_tbv <- lm_unitaire(
   data = ref,
   var_dep = "Hpb",
-  jeu_donnees_selectionne = c("tbv_ref"),
+  jeu_donnees_selectionne = c("Jan & Bossis"),
   pente_incluse = FALSE
 )
 
 ms_hpb_gal <- lm_unitaire(
   data = ref,
   var_dep = "Hpb",
-  jeu_donnees_selectionne = c("galineau_2020"),
+  jeu_donnees_selectionne = c("Galineau"),
   pente_incluse = FALSE 
 )
 
 ms_hpb_car <- lm_unitaire(
   data = ref,
   var_dep = "Hpb",
-  jeu_donnees_selectionne = c("carhyce_ref_armo"),
+  jeu_donnees_selectionne = c("CARHYCE"),
   pente_incluse = FALSE 
 )
 
 ms_hpb_tbv_gal <- lm_unitaire(
   data = ref,
   var_dep = "Hpb",
-  jeu_donnees_selectionne = c("tbv_ref", "galineau_2020"),
+  jeu_donnees_selectionne = c("Jan & Bossis", "Galineau"),
   pente_incluse = FALSE 
 )
 
 ms_hpb_tbv_gal_car <- lm_unitaire(
   data = ref,
   var_dep = "Hpb",
-  jeu_donnees_selectionne = c("tbv_ref", "galineau_2020", "carhyce_ref_armo"),
+  jeu_donnees_selectionne = c("Jan & Bossis", "Galineau", "CARHYCE"),
   pente_incluse = FALSE 
 )
 

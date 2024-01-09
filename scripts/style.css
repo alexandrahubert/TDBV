@@ -1,3 +1,7 @@
+body {
+text-align: justify
+}
+
 .infobox {
   padding: 1em 1em 1em 4em;
   margin-bottom: 10px;
@@ -36,5 +40,19 @@ p.caption {
     color: grey;
     margin-right: 10%;
     margin-left: 10%;  
-    text-align: justify;
+    text-align: center;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:90%;
+    max-width:500px;
+}
+
+.centerplotly {
+  display: table;
+  margin-right: auto;
+  margin-left: auto;
 }

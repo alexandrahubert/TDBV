@@ -56,8 +56,8 @@ data <- station %>%
   mutate(
     jeu_donnees = ifelse(
       str_detect(jeu_donnees, "Gallineau"),
-      yes = "galineau_2020",
-      no = "tbv_ref"
+      yes = "Galineau",
+      no = "Jan & Bossis"
     ),
     pente_eau_m_m = ifelse(is.na(pente_eau_m_m),
                            yes = Pentea_m_m,
@@ -113,7 +113,7 @@ carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
             function(x) str_replace(x, pattern = ",", replacement = ".")) %>% 
   mutate_at(vars(Surface_BV_km2:Coef_sinuo, x_l93, y_l93),
             as.numeric) %>% 
-  mutate(jeu_donnees = 'carhyce_ref_armo',
+  mutate(jeu_donnees = 'CARHYCE',
          Ref_sta = NA,
          lieu_dit = NA,
          Code_tron = NA,
@@ -179,7 +179,7 @@ ref_carhyce_geo <- carhyce %>%
   # drop_na() %>% 
   sf::st_as_sf(coords = c("x_l93", "y_l93"),
                crs = 2154) %>% 
-  mutate(jeu_donnees = "carhyce_ref_armo")
+  mutate(jeu_donnees = "CARHYCE")
 
 mapview::mapview(ref_carhyce_geo)
 
@@ -198,8 +198,10 @@ n_sites_par_source <- ref %>%
 # R2 et pvalue de la relation pente - surface BV
 relation_pente_sbv <- lm(log10(pente_eau_m_m) ~ log10(Surface_BV_km2),
                          data = ref %>% filter(pente_eau_m_m > 0, Surface_BV_km2 > 0))
+
 pente_sbv_r2 <- summary(relation_pente_sbv)$r.squared %>% 
   round(2)
+
 pente_sbv_pvalue <- anova(relation_pente_sbv)$`Pr(>F)`[1] %>% 
   signif(3)
 
@@ -212,6 +214,7 @@ save(ref,
      pente_sbv_r2,
      pente_sbv_pvalue,
      file = "scripts/ref.RData")
+
 save(data, file = "scripts/data1.RData")
 
 # couche géo des points

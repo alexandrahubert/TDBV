@@ -24,7 +24,7 @@ g_lpb_sbv <- mon_nuage(
   col = jeu_donnees,
   label = etiquette,
   x_lab = "Surface du bassin versant (km²)",
-  y_lab = "Largeur plein bord (m)"
+  y_lab = "Largeur à plein bord (m)"
 )
 
 
@@ -50,7 +50,7 @@ g_hpb_sbv <- mon_nuage(
   label = etiquette,
   #        y_log = FALSE,
   x_lab = "Surface du bassin versant (km²)",
-  y_lab = "Hauteur plein bord (m)"
+  y_lab = "Hauteur à plein bord (m)"
 )
 
 g_lh_sbv <- mon_nuage(
@@ -110,7 +110,7 @@ g_lpb_pente <- mon_nuage(
   col = jeu_donnees,
   label = etiquette,
   x_lab = "Pente de la ligne d'eau (m/m)",
-  y_lab = "Largeur plein bord (m)"
+  y_lab = "Largeur à plein bord (m)"
 )
 
 g_hpb_pente <- mon_nuage(
@@ -122,7 +122,7 @@ g_hpb_pente <- mon_nuage(
   label = etiquette,
   #        y_log = FALSE,
   x_lab = "Pente de la ligne d'eau (m/m)",
-  y_lab = "Hauteur plein bord (m)"
+  y_lab = "Hauteur à plein bord (m)"
 )
 
 g_lh_pente <- mon_nuage(
@@ -174,17 +174,17 @@ g_lh_pente
 # 
 g_densite_lpb <- ma_densite(data = ref,
                            x = Lpb,
-                           x_lab = "Largeur plein bord (m)")
+                           x_lab = "Largeur à plein bord (m)")
 g_densite_hpb <- ma_densite(data = ref,
                            x = Hpb,
-                           x_lab = "Hauteur plein bord (m)") 
+                           x_lab = "Hauteur à plein bord (m)") 
 g_densite_sbv <- ma_densite(data = ref,
                            x = Surface_BV_km2,
                            x_lab = "Surface du BV (km²), échelle log10",
                            x_log = TRUE)
 g_densite_pente <- ma_densite(data = ref,
                            x = pente_eau_m_m,
-                           x_lab = "Pente de la ligne d'eau en m/m"
+                           x_lab = "Pente de la ligne d'eau (m/m)"
                            )
 g_densite_lh <- ma_densite(data = ref,
                            x = l_h,
@@ -203,11 +203,11 @@ g_densite <- ggpubr::ggarrange(g_densite_sbv,
 # ___________________________
 
 donnees_carte <- ref_geo %>% 
-  mutate(jeu_donnees = case_when(
-    jeu_donnees == "carhyce_ref_armo" ~ "Carhyce",
-    jeu_donnees == "galineau_2020" ~ "Galineau (2020)",
-    jeu_donnees == "tbv_ref" ~ "TBV référence"
-  ),
+  # mutate(jeu_donnees = case_when(
+  #   jeu_donnees == "carhyce_ref_armo" ~ "Carhyce",
+  #   jeu_donnees == "galineau_2020" ~ "Galineau (2020)",
+  #   jeu_donnees == "tbv_ref" ~ "TBV référence"
+  # ),
   Station = ifelse(is.na(Ref_sta), code_station, Ref_sta)) %>% 
   select(Station, Source = jeu_donnees)
 
