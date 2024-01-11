@@ -203,7 +203,8 @@ g_densite <- ggpubr::ggarrange(g_densite_sbv,
 # ___________________________
 
 donnees_carte <- ref_geo %>% 
-  # mutate(jeu_donnees = case_when(
+  mutate(
+  # jeu_donnees = case_when(
   #   jeu_donnees == "carhyce_ref_armo" ~ "Carhyce",
   #   jeu_donnees == "galineau_2020" ~ "Galineau (2020)",
   #   jeu_donnees == "tbv_ref" ~ "TBV référence"
