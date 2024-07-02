@@ -145,9 +145,9 @@ Les caractéristiques des bassins versants qui s'étendent en amont de chaque st
 
 Les variables de réponses retenues sont *la largeur et la hauteur à plein bord* (moyennes sur l'ensemble des transects par station, exprimées en m) ainsi que le ratio entre la largeur à plein bord et la hauteur à plein bord (également appelé rapport de forme ou rapport L/P).
 
-# Contexte géographique
+# Contexte géographique 
 
-A faire MLB
+A faire MLB.
 
 
 # Analyse des principales variables
