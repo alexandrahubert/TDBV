@@ -56,19 +56,19 @@ htmltools::img(src = knitr::image_uri('logo_OFB.jpg'),
 
 # Introduction
 
-Cette page thématique présente une analyse préliminaire des caractéristiques hydromorphologique des cours d'eau en têtes de bassin versant, réalisée par la Direction régionale Bretagne de l'Office Français de la Biodiversité. Elle vise à fournir des éléments de connaissance sur les caractéristiques hydromorphologiques des cours d’eau sur des stations proches des conditions naturelles (peu ou pas impactées) dans l’HydroEcoRégion (HER) de niveau 1 « Massif Armoricain ». L'établissement et la connaissance de ces données de référence est de nature à améliorer l’efficacité des opérations de restauration écologique de cours d’eau sur ce territoire.
+Cette page thématique propose une analyse préliminaire des caractéristiques hydromorphologique des cours d'eau en têtes de bassin versant, réalisée par la Direction régionale Bretagne de l'Office français de la biodiversité. Elle vise à fournir des éléments de connaissance sur les principales caractéristiques hydromorphologiques des cours d’eau sur des stations proches des conditions naturelles (peu ou pas impactées par les activités anthropiques) dans l’HydroEcoRégion (HER) de niveau 1 « Massif Armoricain » (Wasson *et al*., 2004). L'établissement et la connaissance de ces données de référence est de nature à mettre en lumière les enjeux de préservation de ces milieux essentiels au bon fonctionnement des hydrosystèmes et à améliorer l’efficacité des opérations de restauration écologique de cours d’eau sur ce territoire.
 
 :::: {.defbox data-latex=""}
 
-Les cours d’eau en têtes de bassin versant se localisent à l’extrémité amont du réseau hydrographique. La classification de Strahler (Strahler, 1957) a été majoritairement utilisée dans le cadre des études tendant à définir spatialement ces cours d’eau en têtes de bassin (Tixier et al., 2012). Cette classification est fondée sur l’importance croissante des branches qui constituent le réseau hydrographique. En France métropolitaine, et dans la plupart des Schémas Directeurs d'Aménagement et de Gestion des Eaux (SDAGE), sont considérés en têtes de bassin, les cours d’eau de rang de Strahler 1 et 2 à l’échelle 1 : 25 000$^{ème}$.
+Les cours d’eau en têtes de bassin versant se localisent à l’extrémité amont du réseau hydrographique. La classification de Strahler (Strahler, 1957) a été majoritairement utilisée dans le cadre des études tendant à définir spatialement ces cours d’eau en têtes de bassin (Tixier *et al*., 2012). Cette classification est fondée sur l’importance croissante des branches qui constituent le réseau hydrographique. En France hexagonale, et dans la plupart des Schémas Directeurs d'Aménagement et de Gestion des Eaux (SDAGE), sont considérés en têtes de bassin, les cours d’eau de rang de Strahler 1 et 2 à l’échelle 1 : 25 000$^{ème}$.
 
 ::::
 
 
 
-Des données ont été collectées par l'OFB dans le cadre de stages de Master 2 entre 2013 et 2019 sur des cours d’eau qualifiés de "non impactés" vis à vis de leurs caractéristiques hydromorphologiques (Jan, 2013 ; Bossis, 2014 ; Gallineau, 2020). Le protocole de terrain mis en œuvre à l’échelle stationnelle visait à recueillir les principales caractéristiques hydromorphologiques du lit mineur et de la ripisylve sur des stations localisées sur des cours d'eau de rang de Strahler de 1 à 4, avec une majorité de cours d'eau de rang de Strahler 1. Les caractéristiques principales des bassins versants en amont des tronçons ont été obtenues par géotraitement sous le logiciel QGis.
+Des données ont été collectées par l'OFB dans le cadre de stages de Master 2 entre 2013 et 2019 sur des cours d’eau qualifiés de "non impactés" vis à vis de leurs caractéristiques hydromorphologiques (Jan, 2013 ; Bossis, 2014 ; Gallineau, 2020). Le protocole de terrain mis en œuvre à l’échelle stationnelle vise à recueillir les principales caractéristiques hydromorphologiques du lit mineur et de la ripisylve sur des stations localisées sur des cours d'eau de rang de Strahler de 1 à 4, avec une majorité de cours d'eau de rang de Strahler 1 (70 %). Les superficies des bassins versants en amont des stations étudiées ont été obtenues par géotraitement sous le logiciel QGis.
 
-Afin de mettre en perspective les résultats obtenus sur ce jeu de données de la direction Bretagne de l’OFB, les mêmes analyses ont été menées sur les stations qualifiées "de référence" de [l'IED Carhyce](https://analytics.huma-num.fr/ied_carhyce/) sur la même HydroEcoRégion. Les protocoles de terrain de ces différents jeux de données ne sont pas identiques, cependant certains paramètres sont similaires et se recoupent.
+Afin de mettre en perspective les résultats issus de ces données collectées par la direction Bretagne de l’OFB, des analyses similaires ont été conduites sur les stations qualifiées "de référence" au sein de [l'IED Carhyce](https://analytics.huma-num.fr/ied_carhyce/) pour la même HydroEcoRégion, sur des cours d'eau de rang de Strahler de 2 à 7. Les protocoles de terrain de ces différents jeux de données ne sont pas identiques, toutefois certains paramètres sont identiques et se recoupent.
 
 ```{r}
 # chargement du tableau de données au format RData
@@ -136,42 +136,52 @@ test@map
 ```
 
 
-L'hypothèse sous-jacente aux analyses présentées ci-dessous est que les variables de contrôle du bassin versant (exemple : superficie du bassin versant amont) contraignent les variables de réponse (ex : largeur à plein bord, hauteur à plein bord, etc.) à l’échelle du cours d’eau (Malavoi & Bravard, 2010). Cette corrélation est bien documentée sur les grands cours d'eau, mais les cours d'eau en têtes de bassin versant ont été moins étudiés. 
+En accord avec les travaux de synthèse de Malavoi et Bravard (2010), l'hypothèse sous-jacente aux analyses présentées ci-dessous est que les variables structurantes du bassin versant (telles que la superficie du bassin versant amont ou la pente du cours d'eau) conditionnent directement les variables de réponse (telles que la largeur ou la hauteur à plein bord) à l’échelle du cours d’eau. Cette corrélation est bien documentée sur les grands cours d'eau, mais les cours d'eau en têtes de bassin versant ont été moins étudiés. 
 
-Les caractéristiques des bassins versants à l’amont de chaque station étudiée et qui sont utilisées dans l'analyse ci-dessous sont :
+Les caractéristiques des bassins versants qui s'étendent en amont de chaque station étudiée et qui sont utilisées dans l'analyse ci-dessous sont :
 
-- La *superficie* du bassin versant, en km².
-- La *pente*, en m/m. Ici c'est la pente longitudinale de la ligne d'eau du cours d'eau au niveau de la station qui est prise comme *proxy* de la pente du bassin versant.
+- La *superficie* du bassin versant (en km²).
+- La *pente* longitudinale de la ligne d'eau du cours d'eau au niveau de la station, considérée comme *proxy* de la pente du bassin versant (en m/m).
 
-Les variables de réponses retenues sont *la largeur et la hauteur à plein bord* (moyennes sur l'ensemble des transects par station, exprimées en m) ainsi que le ratio entre la largeur à plein bord sur la hauteur à plein bord (rapport de forme).
+Les variables de réponses retenues sont *la largeur et la hauteur à plein bord* (moyennes sur l'ensemble des transects par station, exprimées en m) ainsi que le ratio entre la largeur à plein bord et la hauteur à plein bord (également appelé rapport de forme ou rapport L/P).
 
-# Distribution des variables
+# Contexte géographique
 
-Les distributions des variables sont données ci-dessous en comparant les jeux de données afin de bien présenter les ordres de grandeur (figure 2). Celles qui prennent des valeurs très dispersées sont représentées en échelle logarithmique $log$ (base 10).
+A faire MLB
 
 
-```{r, fig.height = 10, fig.width = 10, fig.cap = "Distribution des variables. Les lignes verticales indiquent la valeur moyenne pour chaque jeu de données."}
+# Analyse des principales variables
+
+## Présentation générale des stations de référence
+
+
+
+## Distribution des variables 
+
+Les distributions des variables sont données ci-dessous en dissociant les différents jeux de données afin de bien présenter leurs singularités et ordres de grandeur (figure 2).
+
+
+```{r, fig.height = 10, fig.width = 10, fig.cap = "Distribution des variables. Les lignes verticales indiquent la valeur moyenne pour chaque jeu de données de la couleur correspondante. Lorsque la dispersion est importante (surface du BV amont), les données sont présentées en échelle logarithmique log (base 10)."}
 g_densite
 ```
 
-Les largeurs à plein bord du jeu de données "Jan & Bossis" sont toutes inférieures à 5 m, avec une moyenne de l'ordre d'un mètre. Les largeurs à plein bord moyennes des données issues de "Galineau" et de "Carhyce" sont logiquement plus importantes ; respectivement de 6 m et 9 m.
+L’analyse permet de mettre en évidence les caractéristiques propres à chacun des jeux de données compilés :  
+•	Les stations intégrant le jeu de données “Jan & Bossis” caractérisent naturellement les plus petits cours d’eau, marqués par une faible largeur (1 m en moyenne et toute inférieure à 5 m), une faible profondeur (moyenne de l’ordre de 30 cm) et, en conséquence, un faible rapport de forme (moyenne < à 8). Les bassins amont des stations échantillonnées sont petits (moyenne de l’ordre d’1 km²) ; toutefois, il est intéressant de remarquer que ce jeu de données présente une plus forte dispersion (hétérogénéité) de valeur de pente dont la moyenne est d’environ 2.2 % (0.022 m/m) et mais peut atteindre près de 9 % (0.09 m/m). 
+•	Le jeu de données issus de la base de données Carhyce présente inversement une plus grande hétérogénéité des valeurs de géométrie du lit (largeur, hauteur). En effet, la largeur moyenne des stations est de l’ordre de 9 m et peut atteindre près de 30 m. de même la hauteur est en moyenne d’environ 90 cm mais peut dépasser 2 m. Cette hétérogénéité de géométrie se retrouve dans l’hétérogénéité de la taille du bassin versant amont puisque ceux-ci s’étendent sur des surfaces comprises entre 1 et plus de 800 km². Les valeurs de pente apparaissent inversement très homogènes sur ce sous-jeu de données avec des valeurs de pente très faible, de l’ordre 0,5% (0.005 m/m).
+•	Le sous-jeu de données « Galineau » constitue un peu un « intermédiaire » entre les deux sous-jeu précédents. Les stations échantillonnées par Galineau sont marquées par une géométrie plus grande (largeur moyenne de l’ordre de 5 m et hauteur moyenne de 60 cm) mais également plus hétérogène que celles issues des travaux de Jan et Bossis. Comme pour le sous-jeu de données Carhyce, les stations renseignées par Galineau présentent des surface de bassin amont plutôt importantes, en moyenne de l’ordre de 30 km² mais marquées par une forte hétérogénéité. La pente moyenne de ce sous-jeu de données est de l’ordre de 1 % (0.01 m/m) mais reste assez hétérogène et peut atteindre 3 %.   
+Ces analyses permettent de mettre en évidence les différences globales de géométrie des petits cours d’eau échantillonnés dans le cadre de 3 sous-jeux de données. Les données issues de « Jan et Bossis » se singularise par leur relative homogénéité des valeurs de gabarit du lit, qui apparaissent plus petites et moins larges que pour les autres sous-jeux de données. Ceci est parfaitement cohérent avec l’objectif de leur étude qui ciblait spécifiquement les cours d’eau de rang 1. Ces analyses suggèrent également des relations directes entre la surface de bassins amont, la pente et les caractéristiques géométrique du lit. Il apparaît en effet notamment que : 
+•	Plus la taille du bassin amont est petite, plus la pente du cours d’eau est forte.
+•	Plus la surface de bassin amont est petite, plus le gabarit du lit (largeur, profondeur) est petit
+Ces interprétations sont tout à fait en accord avec les principes fondamentaux de l’hydromorphologie et de la géométrie hydraulique (Leopold & Maddock, 1953 ;Wolman, 1955 ; Hey & Thorne, 1986)
 
-Les écarts sont moins nets sur les hauteurs à plein bord mais le même "ordre" est observé. En moyenne les hauteurs à plein bord sont de 0,3 (Jan & Bossis), 0,6 (Galineau) et 0,9 m (CARHYCE).
 
-Les écarts sont nettement plus importants en termes de surface du bassin versant amont, ce qui conduit à représenter les distributions en échelle log. Les ordres de grandeur pour les trois jeux de données précédents sont respectivement de 1, 10 et 100 km².
+# Analyse des varaibles
 
-Les petits bassins versants (< 10 km²) sont marqués par de fortes pentes de la ligne d'eau.
+Ces analyses ont pour objectif de mettre en relation les différentes variables issues du jeu de données global afin de mettre en évidence certaines de leurs corrélations.
 
-Le rapport de forme (largeur à plein bord / hauteur à plein bord) est, en moyenne, inférieur dans le jeu de données "Jan & Bossis" en comparaison des deux autres jeux de données ("Galineau" et "Carhyce").
+## Les variables structurantes
 
-
-# Analyse bivariée
-
-Dans un premier temps, on observe les relations des variables deux à deux.
-
-## Les variables explicatives (de contrôle)
-
-Sur le graphique ci-dessous (figure 3), une droite de régression a été calée pour chacun des 3 jeux de données. La courbe grise en pointillés indique une tendance non linéaire sur l'ensemble des données.
+Le graphique ci-dessous (figure 3), met en relation la pente du cours d’eau selon la taille du bassin versant situé en amont pour chacune des stations étudiées. La courbe grise en pointillés indique une tendance sur l'ensemble de ces données.
 
 <div class = 'centerplotly'>
 ```{r, fig.cap="Relation entre la pente de la ligne d'eau et la surface du bassin versant, distinguant les trois jeux de données."}
@@ -180,15 +190,11 @@ g_pente_sbv
 
 </div>
 
-En échelle log-log, le lien entre les deux variables explicatives est fort (sur l'ensemble des trois jeux de données, *r²*=$`r pente_sbv_r2`$, *p-value*=$`r pente_sbv_pvalue`$). Il est possible que la relation soit plutôt curvi-linéaire que linéaire. La relation est décroissante, et logiquement la pente est d'autant plus faible que la station étudiée est située en aval (bassin versant plus grand).
+Le lien entre les deux variables explicatives est fort (sur l'ensemble des trois jeux de données, le coefficient de corrélation *r²*=$`r pente_sbv_r2`$, *p-value*=$`r pente_sbv_pvalue`$). Dans le détail, il semble que la relation soit plus curvi-linéaire que linéaire. La relation est logiquement décroissante : plus la pente du cours d’eau est faible, plus le bassin versant amont est étendu ; corroborant parfaitement nos analyses précédentes. Il apparait également que certaines stations sont significativement éloignées de la droite de régression, et présentent donc des pentes nettement plus faible que ce à quoi on pourrait s’attendre (Ref_0065 ou Ref_0113 dans le sous-jeu de « Jan & Bossis », le Dolo, la varenne ou l’Aron dans Carhyce). Des vérifications sur le caractère « de référence » de ces stations seront vérifiés.  
 
-Les plus petits bassins sont bien ceux du jeu de données "Jan & Bossis" (0,1 à 2,2 km²), les plus grands ceux du jeu de données "Carhyce" (2,2 à 626,5 km²), et ceux de "Galineau" en position intermédiaire (3,9 à 72,8 km²). Sur la figure 3, une discontinuité de la pente en fonction de la surface du bassin-versant apparaît, certaines pentes de stations issues du jeu de données de référence sont assez faibles.
-
-Quelques stations sont très éloignées du schéma général et méritent des vérifications (ex : Ref_0065, ou bien le Dolo dans Carhyce).
 
 ## Relation entre surface du bassin versant et morphologie du lit mineur
 
-A commenter ou retirer graph ? Gabriel ?
 
 <div class = 'centerplotly'>
 ```{r, fig.cap="Relation entre la largeur à plein bords et la surface du bassin versant, distinguant les trois jeux de données."}
@@ -224,7 +230,7 @@ g_hpb_pente
 
 ## Modèles complets
 
-Pour évaluer les effets combinés des deux variables explicatives (surface de bassin versant et pente), sur la largeur et la hauteur à plein bord des lits mineurs, des régressions multiples ont été réalisées. D'après les graphiques, les relations *log-log* semblent linéaires. Cependant, quelques essais montrent que les modèles sont mieux ajustés en ne transformant que les variables explicatives :
+Pour évaluer les effets combinés des deux variables explicatives (surface de bassin versant et pente), sur la largeur et la hauteur à plein bord des lits mineurs, des régressions multiples ont été réalisées. D'après les graphiques, les relations *log-log* semblent linéaires. Cependant, quelques essais montrent que les modèles sont mieux ajustés et ne transformant que les variables explicatives :
 
 $x \rightarrow \log_{10}(1+x)$
 
