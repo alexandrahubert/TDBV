@@ -9,9 +9,12 @@ La partie 5 permet de simuler, pour une superficie de bassin versant donnée ent
 # TODO
 
 - Installer Access 64 bits
-- Modéliser la granulo D16 D50 D84. Données dispo sur Access
-- Rangs de Strahler. Ajouter à la table des stations dans Access + dans le tableau descriptif des stations dans le Rmd.
--  
+- Modéliser la granulo D16 D50 D84. Données dispo sur Access. Questions : Sur quel JDD ? Quelles variables explicatives ?
+- Rangs de Strahler. Ajouter à la table des stations dans Access + dans la table 1 du Rmd. Diagramme en bâtons à insérer sous la figure 1.
+- Ajouter un 6ième partie Bibliographie
+- MLB transfère sa bilbio EndNote sous Zotero
+- 3.2 à séparer en 2 : 321 SBV, 322 pente
+- Tester lien entre les résidus et les variables explicatives (ex pour affinier la gamme de SBV sur laquelle les modèle sont applicables).
 
 
 
