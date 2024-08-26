@@ -2,7 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-/raw_data/
 /processed_data/
 processed_data/tables_access.RData
 scripts/*.html
