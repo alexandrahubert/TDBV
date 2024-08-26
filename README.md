@@ -6,5 +6,14 @@ La partie 5 permet de simuler, pour une superficie de bassin versant donnée ent
 
 **NB : Cet outil est dédié à l'hydroécorégion de niveau 1 “Massif Armoricain”**.
 
+# TODO
+
+- Installer Access 64 bits
+- Modéliser la granulo D16 D50 D84. Données dispo sur Access
+- Rangs de Strahler. Ajouter à la table des stations dans Access + dans le tableau descriptif des stations dans le Rmd.
+-  
+
+
+
 
 
