@@ -1,4 +1,4 @@
-# Analyse des données hydromorphologiques sur les têtes de bassins versants de référence en Bretagne
+# Analyse des données hydromorphologiques sur les têtes de bassins versants de référence sur l'hydroécorégion de niveau 1 “Massif Armoricain”
 
 La démarche détaillée et les résultats sont disponibles [en ligne](https://ssm-ecologie.shinyapps.io/TBV_ref_massif_armoricain/).
 
