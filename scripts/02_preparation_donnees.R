@@ -3,6 +3,13 @@ rm(list = ls()) # nettoyage de l'espace
 # chargement des packages
 library(tidyverse)
 
+# Chargement des contours de la HER "Massif armoricain"
+her1 <- tod::wfs_sandre(url_wfs = "https://services.sandre.eaufrance.fr/geo/mdo?",
+                        couche = "Hydroecoregion1") %>% 
+  filter(NomHER1 == "ARMORICAIN")
+
+mapview::mapview(her1)
+
 
 # chargement des données au format RData
 load(file = "processed_data/tables_access.RData")
@@ -186,9 +193,13 @@ mapview::mapview(ref_carhyce_geo)
 ref_geo <- ref_geo %>% 
   bind_rows(ref_carhyce_geo)
 
-
-mapview::mapview(ref_geo,
-                 zcol = "jeu_donnees")
+mapview::mapview(her1,
+                 alpha.region = 0.1,
+                 col.region = "lightgreen",
+                 layer.name = c("Massif Armoricain"),
+                 map.types = c("Esri.WorldShadedRelief", "OpenStreetMap")) +
+  mapview::mapview(ref_geo,
+                   zcol = "jeu_donnees")
 
 # Nb de sites par source ------
 n_sites_par_source <- ref %>%
@@ -210,6 +221,7 @@ pente_sbv_pvalue <- anova(relation_pente_sbv)$`Pr(>F)`[1] %>%
 # Données : conserver le RData dans le répertoire du Rmd en vue du déploiement de l'appli
 save(ref,
      ref_geo,
+     her1,
      n_sites_par_source,
      pente_sbv_r2,
      pente_sbv_pvalue,

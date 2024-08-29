@@ -144,6 +144,7 @@ g_lpb_pente <- ggplotly(g_lpb_pente) %>%
     x = 0,
     y = -0.2
   ))
+
 g_hpb_pente <- ggplotly(g_hpb_pente) %>%
   layout(legend = list(
     orientation = "h",
