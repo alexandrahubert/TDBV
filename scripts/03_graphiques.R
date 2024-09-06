@@ -65,6 +65,54 @@ g_lh_sbv <- mon_nuage(
   y_lab = "Largeur sur Hauteur"
 )
 
+# granulo
+g_d16_sbv <- mon_nuage(
+  data = ref %>%
+    filter(pente_eau_m_m > 0),
+  x = Surface_BV_km2,
+  y = D16,
+  col = jeu_donnees,
+  label = etiquette,
+  #        y_log = FALSE,
+  x_lab = "Surface du bassin versant (km²)",
+  y_lab = "D16 (mm)"
+)
+
+g_lh_sbv <- mon_nuage(
+  data = ref %>%
+    filter(pente_eau_m_m > 0),
+  x = Surface_BV_km2,
+  y = l_h,
+  col = jeu_donnees,
+  label = etiquette,
+  #        y_log = FALSE,
+  x_lab = "Surface du bassin versant (km²)",
+  y_lab = "Largeur sur Hauteur"
+)
+
+g_lh_sbv <- mon_nuage(
+  data = ref %>%
+    filter(pente_eau_m_m > 0),
+  x = Surface_BV_km2,
+  y = l_h,
+  col = jeu_donnees,
+  label = etiquette,
+  #        y_log = FALSE,
+  x_lab = "Surface du bassin versant (km²)",
+  y_lab = "Largeur sur Hauteur"
+)
+
+g_lh_sbv <- mon_nuage(
+  data = ref %>%
+    filter(pente_eau_m_m > 0),
+  x = Surface_BV_km2,
+  y = l_h,
+  col = jeu_donnees,
+  label = etiquette,
+  #        y_log = FALSE,
+  x_lab = "Surface du bassin versant (km²)",
+  y_lab = "Largeur sur Hauteur"
+)
 # passage en plotly pour avoir l'interactivité
 g_lpb_sbv <- ggplotly(g_lpb_sbv) %>%
   layout(legend = list(

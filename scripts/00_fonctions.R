@@ -100,7 +100,7 @@ ma_densite <- function(data,
   geom_vline(xintercept = moy$moy,
              col = wes_palette(n = 3,
                                name = "Darjeeling1"),
-             size = 1) +
+             linewidth = 1) +
   theme(legend.position = "bottom") +
   labs(y = y_lab)
   

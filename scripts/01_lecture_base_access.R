@@ -1,16 +1,15 @@
-
+rm(list=ls())
 
 # chargement des packages
 library(tidyverse)
 library(RODBC)
 
 # connexion à la base Access
-my_file <- "//sp000035/partages_$/dr35/8_Stagiaires/2022TeteDeBassin_BOETON_Julien/2022_07_21_Tête_BV.accdb"
+#my_file <- "//sp000035/partages_$/dr35/8_Stagiaires/2022TeteDeBassin_BOETON_Julien/2022_07_21_Tête_BV.accdb"
+my_file <- "//sp000035/partages_$/dr35/3_Police/6ProjetsEnCours/TBV/2024_01_09_Tête_BV.accdb"
 channel <- RODBC::odbcConnectAccess2007(access.file = my_file)
 
-#channel <- RODBC::odbcConnectAccess2007(access.file = "//ad.intra/dfs/COMMUNS/REGIONS/BRE/DR/dr35/donnees_partage/6Stagiaires/2022TeteDeBassin_BOETON_Julien/2022_07_21_Tête_BV.accdb")
-
-# importation des tables qui seront utilisées
+## importation des tables qui seront utilisées
 station <- sqlFetch(channel, "Station")
 caractere_bv <- sqlFetch(channel, "caractere_BV")
 facies <- sqlFetch(channel, "Facies")

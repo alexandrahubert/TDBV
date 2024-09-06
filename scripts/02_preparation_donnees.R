@@ -2,6 +2,7 @@ rm(list = ls()) # nettoyage de l'espace
 
 # chargement des packages
 library(tidyverse)
+library(sf)
 
 # Chargement des contours de la HER "Massif armoricain"
 her1 <- tod::wfs_sandre(url_wfs = "https://services.sandre.eaufrance.fr/geo/mdo?",
@@ -29,6 +30,15 @@ dist_rad <- facies %>%
   mutate(dist_inter_rad = (borne_der_rad - borne_prem_rad) / (n_rad - 1)) %>%
   select(Ref_sta,
          dist_inter_rad)
+
+# granulometrie
+granulo <- tdbv_stations_aval_l93_20200612 %>% 
+  select(Ref_sta,
+         d16 = D16,
+         d50 = D50,
+         d84 = D84,
+         Ra_D16_D84) %>% 
+  filter(!is.na(d16))
 
 # assemblage du tableau de données
 data <- station %>%
@@ -73,14 +83,23 @@ data <- station %>%
                          yes = NA,
                          no = pente_eau_m_m)
   ) %>% 
+  left_join(y = mesures_wolman) %>% 
   select(-Pentea_m_m,
-         -pente_eau) %>% 
+         -pente_eau,
+         -Dmoyen) %>% 
+  rename(D16_D84 = `D16/D84`) %>% 
   select(Ref_sta:Code_tron,
          jeu_donnees,
          Surface_BV_km2,
          pente_eau_m_m,
          everything()) %>% 
-  filter(Ref_sta != "Ref_0061") # pb sur la surface du bv
+  filter(Ref_sta != "Ref_0061") %>% # pb sur la surface du bv
+  left_join(y = granulo) %>% 
+  mutate(D16 = ifelse(is.na(D16), d16, D16),
+         D50 = ifelse(is.na(D50), d50, D50),
+         D84 = ifelse(is.na(D84), d84, D84),
+         D16_D84 = ifelse(is.na(D16_D84), d16 / D84, D16_D84)) %>%
+  select(-(d16:Ra_D16_D84))
 
 # Sélection des stations
 # selon les sites, sur les Code_tron, ou bien sur les lieu_dit
@@ -138,7 +157,9 @@ ref_carhyce <- carhyce %>%
                                     replacement = " A "),
          comm = word(localisation,
                      start = -1,
-                     sep = ' A '))
+                     sep = ' A '),
+         D16_D84 = D16 / D84
+         )
 
 codes_station_ref_carhyce <- unique(ref_carhyce$code_station)
 
@@ -154,7 +175,7 @@ ref <- rbind(ref_data, ref_carhyce) %>%
 ### Spatialisation
 ref_geo <- ref %>% 
   left_join(station) %>%
-  filter(!is.na(Sta_GPS_avl_X)) %>% 
+#  filter(!is.na(Sta_GPS_avl_X)) %>% 
   mutate(x_wgs84 = ifelse(Sta_GPS_avl_X < 10,
                           Sta_GPS_avl_X,
                           Sta_GPS_avl_Y),
@@ -171,7 +192,7 @@ ref_geo <- ref %>%
                           48.12197,
                           y_wgs84)
   ) %>% 
-  select(Ref_sta, jeu_donnees, x_wgs84, y_wgs84) %>% 
+#  select(Ref_sta, jeu_donnees, x_wgs84, y_wgs84) %>% 
   filter(y_wgs84 > 0) %>% 
   sf::st_as_sf(coords = c("x_wgs84", "y_wgs84"),
                crs = 4326) %>% 
@@ -181,7 +202,7 @@ mapview::mapview(ref_geo)
 
 ref_carhyce_geo <- carhyce %>% 
   filter(code_station %in% codes_station_ref_carhyce) %>%
-  select(code_station, x_l93, y_l93) %>% 
+#  select(code_station, x_l93, y_l93) %>% 
   distinct() %>% 
   # drop_na() %>% 
   sf::st_as_sf(coords = c("x_l93", "y_l93"),
@@ -193,6 +214,10 @@ mapview::mapview(ref_carhyce_geo)
 ref_geo <- ref_geo %>% 
   bind_rows(ref_carhyce_geo)
 
+# to avoid error => turned off spherical geometry NOAA-EDAB/survdat#43
+# see https://github.com/r-spatial/sf/issues/1762
+sf_use_s2(FALSE)
+
 mapview::mapview(her1,
                  alpha.region = 0.1,
                  col.region = "lightgreen",
@@ -200,6 +225,27 @@ mapview::mapview(her1,
                  map.types = c("Esri.WorldShadedRelief", "OpenStreetMap")) +
   mapview::mapview(ref_geo,
                    zcol = "jeu_donnees")
+
+her1_buff <- her1 %>% 
+  st_transform(crs = 2154) %>% 
+  st_buffer(0.03)
+
+ref_geo <- ref_geo %>% 
+  st_join(y = her1_buff) %>% 
+  filter(!is.na(NomHER1))
+
+
+
+mapview::mapview(her1_buff,
+                 alpha.region = 0.1,
+                 col.region = "lightgreen",
+                 layer.name = c("Massif Armoricain"),
+                 map.types = c("Esri.WorldShadedRelief", "OpenStreetMap")) +
+  mapview::mapview(ref_geo,
+                   zcol = "jeu_donnees")
+
+ref_filtered <- ref %>% 
+  filter()
 
 # Nb de sites par source ------
 n_sites_par_source <- ref %>%
