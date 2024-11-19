@@ -13,7 +13,7 @@ La partie 5 permet de simuler, pour une superficie de bassin versant donnée ent
 - Ajouter un 6ième partie Bibliographie
 - 3.2 à séparer en 2 : 321 SBV, 322 pente
 - Tester lien entre les résidus et les variables explicatives (ex pour affiner la gamme de SBV sur laquelle les modèle sont applicables).
-- Quid des stations hors HER1 Massif Armoricain "strict" ?
+- Ecarter les stations hors HER1 Massif Armoricain "strict" des analyses.
 
 
 
