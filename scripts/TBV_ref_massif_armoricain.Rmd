@@ -193,8 +193,9 @@ g_pente_sbv
 Le lien entre les deux variables explicatives est fort (sur l'ensemble des trois jeux de données, le coefficient de corrélation *r²*=$`r pente_sbv_r2`$, *p-value*=$`r pente_sbv_pvalue`$). Dans le détail, il semble que la relation soit plus curvi-linéaire que linéaire. La relation est logiquement décroissante : plus la pente du cours d’eau est faible, plus le bassin versant amont est étendu ; corroborant parfaitement nos analyses précédentes. Il apparait également que certaines stations sont significativement éloignées de la droite de régression, et présentent donc des pentes nettement plus faible que ce à quoi on pourrait s’attendre (Ref_0065 ou Ref_0113 dans le sous-jeu de « Jan & Bossis », le Dolo, la varenne ou l’Aron dans Carhyce). Des vérifications sur le caractère « de référence » de ces stations seront vérifiés.  
 
 
-## Relation entre surface du bassin versant et morphologie du lit mineur
+## Relation entre variables de contrôle et morphologie du lit mineur
 
+### Effet de la surface du bassin versant
 
 <div class = 'centerplotly'>
 ```{r, fig.cap="Relation entre la largeur à plein bords et la surface du bassin versant, distinguant les trois jeux de données."}
@@ -209,6 +210,8 @@ g_hpb_sbv
 ```
 
 </div>
+
+### Effet de la pente
 
 <div class = 'centerplotly'>
 ```{r, fig.cap="Relation entre la largeur à plein bords et la pente de la ligne d'eau, distinguant les trois jeux de données."}
@@ -411,7 +414,18 @@ verbatimTextOutput("pred_hpb")
 Ces valeurs ne doivent être utilisées qu’en l’absence de station de référence à l’amont immédiat du linéaire de cours d’eau étudié. De plus, les valeurs de géométrie du lit proposées par cet outil ne sont applicables que sur des bassins versants de moins de 10 km² et situés dans l'hydroEcoRégion de niveau 1 "Massif Armoricain".
 ::::
 
+# Bibliographie
 
+Bossis M. 2014. Étude de l’hydromorphologie à l’échelle stationnelle des cours d’eau de tête de bassin versant armoricains en situation de référence. Rapport de stage de Master 2. Délégation interrégionale Bretagne, Pays de la Loire de l’ONEMA / Université de Rennes 1.
 
+Galineau M. 2020. Etude exploratoire des rangs zéro sur le territoire Bretagne-Pays de la Loire. Rapport de stage de Master 2. Direction Bretagne de l’OFB / Université de Rennes 1.
+
+Gomi T, Sidle RC, Richardson JS. 2002. Understanding processes and downstream linkages of headwater systems: headwaters differ from downstream reaches by their close coupling to hillslope processes, more temporal and spatial variation, and their need for different means of protection from land use. BioScience 52: 905–916.
+
+Jan A. 2013. Etude du fonctionnement hydromorphologique de référence des cours d’eau de tête de bassin sur le Massif Armoricain. Rapport de stage de Master 2. Délégation Bretagne Pays de la Loire de l’ONEMA / Université de Rennes 1.
+
+Malavoi J-R, Bravard J-P. 2010. Eléments d’hydromorphologie fluviale, 228 p.
+
+Tixier G, et al. 2012. Enjeux des têtes de bassins versants pour la préservation et la restauration du bon état des masses d’eau. Rapport d’étape ONEMA / LIEC.
 
 
