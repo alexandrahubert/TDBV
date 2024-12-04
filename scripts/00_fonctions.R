@@ -31,6 +31,7 @@ mon_nuage <- function(data,
                       label,
                       tendance = "lm",
                       tendance_tous_jeux = TRUE,
+                      x_log = TRUE,
                       y_log = TRUE,
                       x_lab = NULL,
                       y_lab = NULL)
@@ -43,7 +44,7 @@ mon_nuage <- function(data,
                   col = {{ col }},
                   label = {{ label }})) +
   geom_point() +
-  scale_x_log10(labels = label_number()) +
+#  scale_x_log10(labels = label_number()) +
   geom_smooth(method = tendance) +
   scale_color_manual(values = wes_palette(n = 3,
                                           name = "Darjeeling1"),
@@ -51,6 +52,7 @@ mon_nuage <- function(data,
   theme(legend.position = "bottom")
   
   # gestion des échelles et étiquettes des axes
+  if(x_log) {g <- g + scale_x_log10(labels = label_number()) }
   if(y_log) {g <- g + scale_y_log10() }
   if(!is.null(x_lab)) {g <- g + labs(x = x_lab) }
   if(!is.null(y_lab)) {g <- g + labs(y = y_lab) }
@@ -83,7 +85,7 @@ ma_densite <- function(data,
   
   moy <- data %>% 
     group_by(jeu_donnees) %>% 
-    summarise(moy = mean({{ x }}))
+    summarise(moy = mean({{ x }}, na.rm = TRUE))
   
   g <- ggplot(data = data,
               aes(x = {{ x }},
@@ -226,3 +228,4 @@ lm_unitaire <- function(data,
 #             var_dep = "Lpb",
 #             jeu_donnees_selectionne = "carhyce_ref_armo",
 #             pente_incluse = TRUE)
+

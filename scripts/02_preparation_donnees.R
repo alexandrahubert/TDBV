@@ -12,10 +12,8 @@ her1 <- tod::wfs_sandre(url_wfs = "https://services.sandre.eaufrance.fr/geo/mdo?
 mapview::mapview(her1)
 
 
-# chargement des données au format RData
+# chargement des données TBV OFB au format RData
 load(file = "processed_data/tables_access.RData")
-
-
 
 # distance entre deux radiers
 dist_rad <- facies %>%
@@ -41,7 +39,7 @@ granulo <- tdbv_stations_aval_l93_20200612 %>%
   filter(!is.na(d16))
 
 # assemblage du tableau de données
-data <- station %>%
+tbv_ofb <- station %>%
   filter(Etude != "Colin, 2015") %>% 
   select(Ref_sta,
          comm,
@@ -67,7 +65,8 @@ data <- station %>%
         Lpb = Lpb_moy,
         Hpb = Htot_moy,
         Pentea_m_m,
-        Coef_sinuo
+        Coef_sinuo#,
+       # strahler = Rang_Strah
       )
   ) %>%
   mutate(
@@ -104,21 +103,31 @@ data <- station %>%
 # Sélection des stations
 # selon les sites, sur les Code_tron, ou bien sur les lieu_dit
 # NB manque une station du 44, contact D Fatin, SMBV Isac ?
-# troncons_a_supprimer <- c(1, 5, 10, 11, 12, 14, 17, 20:24, 26:32)
-# lieux_dits_a_supprimer <- c('La Chauvinière','Le Champ-Fleury')
+troncons_a_supprimer <- c(1, 5, 10, 11, 12, 14, 17, 20:24, 26:32)
+lieux_dits_a_supprimer <- c('La Chauvinière','Le Champ-Fleury')
 
-ref_data <- data %>% 
-  # filter(!Code_tron %in% troncons_a_supprimer) %>%
-  # filter(!lieu_dit %in% lieux_dits_a_supprimer)
+ref_tbv_ofb <- tbv_ofb %>% 
+   filter(!Code_tron %in% troncons_a_supprimer) %>%
+   filter(!lieu_dit %in% lieux_dits_a_supprimer) %>% 
   mutate(num = str_sub(Ref_sta, -3, -1),
          num = as.integer(num)) %>% 
   filter(num < 201 | num > 235) %>% 
   select(-num)
 
+#---------------------------------------------------------------------------------
 # Données Carhyce téléchargées depuis l'IED https://analytics.huma-num.fr/ied_carhyce/
 # filtré sur REGION == ARMORICAIN
+# rang_strahler <- sf::read_sf("raw_data/stations_ref_hydromorpho.shp") %>% 
+#   sf::st_drop_geometry() %>% 
+#   select(
+#     `Code station` = Ref_sta,
+#     strahler = Rang_Strah) %>% 
+#   mutate(`Code station` = as.integer(`Code station`))
+  
+
 carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
                              encoding = "UTF-8") %>% 
+  # left_join(y = rang_strahler) %>% 
   select(code_station = `Code station`,
          localisation = `Localisation station de mesure`,
          topo = `Cours d'eau`,
@@ -133,7 +142,8 @@ carhyce <- data.table::fread("raw_data/Operations_2022-07-19.csv",
          Coef_sinuo = `Coefficient de sinuosité`,
          ref = `Station référence modèle`,
          x_l93 = X,
-         y_l93 = Y
+         y_l93 = Y#,
+   #      strahler
          ) %>% 
   mutate_at(vars(Surface_BV_km2:Coef_sinuo, x_l93, y_l93),
             function(x) str_replace(x, pattern = ",", replacement = ".")) %>% 
@@ -164,11 +174,11 @@ ref_carhyce <- carhyce %>%
 codes_station_ref_carhyce <- unique(ref_carhyce$code_station)
 
 ref_carhyce <- ref_carhyce %>%  
-  select(names(ref_data))
+  select(names(ref_tbv_ofb))
 
-identical(names(ref_carhyce), names(ref_data))
+identical(names(ref_carhyce), names(ref_tbv_ofb))
 
-ref <- rbind(ref_data, ref_carhyce) %>% 
+ref <- rbind(ref_tbv_ofb, ref_carhyce) %>% 
   mutate(etiquette = paste0(Ref_sta, ", ", topo),
          l_h = Lpb / Hpb)
 
@@ -200,18 +210,19 @@ ref_geo <- ref %>%
 
 mapview::mapview(ref_geo)
 
-ref_carhyce_geo <- carhyce %>% 
-  filter(code_station %in% codes_station_ref_carhyce) %>%
-#  select(code_station, x_l93, y_l93) %>% 
-  distinct() %>% 
-  # drop_na() %>% 
+ref_carhyce_geo <- carhyce %>%
+  filter(code_station %in% codes_station_ref_carhyce,
+         ref == 1) %>% # car plusieurs sites par code station, dont seulement certains sont de référence
+#  select(code_station, x_l93, y_l93) %>%
+  distinct() %>%
+  # drop_na() %>%
   sf::st_as_sf(coords = c("x_l93", "y_l93"),
-               crs = 2154) %>% 
+               crs = 2154) %>%
   mutate(jeu_donnees = "CARHYCE")
 
 mapview::mapview(ref_carhyce_geo)
 
-ref_geo <- ref_geo %>% 
+ref_geo <- ref_geo %>%
   bind_rows(ref_carhyce_geo)
 
 # to avoid error => turned off spherical geometry NOAA-EDAB/survdat#43
@@ -234,6 +245,8 @@ ref_geo <- ref_geo %>%
   st_join(y = her1_buff) %>% 
   filter(!is.na(NomHER1))
 
+setdiff(names(ref_geo), names(ref))
+
 
 
 mapview::mapview(her1_buff,
@@ -244,8 +257,8 @@ mapview::mapview(her1_buff,
   mapview::mapview(ref_geo,
                    zcol = "jeu_donnees")
 
-ref_filtered <- ref %>% 
-  filter()
+# ref_filtered <- ref %>% 
+#   filter()
 
 # Nb de sites par source ------
 n_sites_par_source <- ref %>%
@@ -277,6 +290,7 @@ save(data, file = "scripts/data1.RData")
 
 # couche géo des points
 sf::st_write(obj = ref_geo,
-             dsn = "processed_data/stations_ref_hydromorpho.shp")
+             dsn = "processed_data/stations_ref_hydromorpho.shp",
+             append = FALSE)
   
   
