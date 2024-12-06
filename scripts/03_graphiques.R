@@ -13,9 +13,7 @@ source(file = "scripts/00_fonctions.R")
 # chargement des données au format RData
 load(file = "scripts/ref.RData")
 
-# ----------------------------------------------------------
 # Graphiques bivariés des variables de morpho en fonction de la surface du BV
-# ----------------------------------------------------------
 
 g_lpb_sbv <- mon_nuage(
   data = ref,
@@ -66,6 +64,8 @@ g_lh_sbv <- mon_nuage(
 )
 
 # granulo
+logy <- FALSE
+
 g_d16_sbv <- mon_nuage(
   data = ref %>%
     filter(pente_eau_m_m > 0),
@@ -73,46 +73,45 @@ g_d16_sbv <- mon_nuage(
   y = D16,
   col = jeu_donnees,
   label = etiquette,
-  #        y_log = FALSE,
+  x_log = TRUE,
+  y_log = logy,
   x_lab = "Surface du bassin versant (km²)",
   y_lab = "D16 (mm)"
 )
 
-g_lh_sbv <- mon_nuage(
+g_d50_sbv <- mon_nuage(
   data = ref %>%
     filter(pente_eau_m_m > 0),
   x = Surface_BV_km2,
-  y = l_h,
+  y = D50,
   col = jeu_donnees,
   label = etiquette,
-  #        y_log = FALSE,
+  x_log = TRUE,
+  y_log = logy,
   x_lab = "Surface du bassin versant (km²)",
-  y_lab = "Largeur sur Hauteur"
+  y_lab = "D50 (mm)"
 )
 
-g_lh_sbv <- mon_nuage(
+g_d84_sbv <- mon_nuage(
   data = ref %>%
     filter(pente_eau_m_m > 0),
   x = Surface_BV_km2,
-  y = l_h,
+  y = D84,
   col = jeu_donnees,
   label = etiquette,
-  #        y_log = FALSE,
+  x_log = TRUE,
+  y_log = logy,
   x_lab = "Surface du bassin versant (km²)",
-  y_lab = "Largeur sur Hauteur"
+  y_lab = "D84 (mm)"
 )
 
-g_lh_sbv <- mon_nuage(
-  data = ref %>%
-    filter(pente_eau_m_m > 0),
-  x = Surface_BV_km2,
-  y = l_h,
-  col = jeu_donnees,
-  label = etiquette,
-  #        y_log = FALSE,
-  x_lab = "Surface du bassin versant (km²)",
-  y_lab = "Largeur sur Hauteur"
-)
+g_wol_sbv <- ggpubr::ggarrange(g_d16_sbv,
+                               g_d50_sbv,
+                               g_d84_sbv,
+                               common.legend = TRUE,
+                               ncol = 2,
+                               nrow = 2)
+
 # passage en plotly pour avoir l'interactivité
 g_lpb_sbv <- ggplotly(g_lpb_sbv) %>%
   layout(legend = list(
@@ -185,6 +184,53 @@ g_lh_pente <- mon_nuage(
   y_lab = "Largeur sur Hauteur"
 )
 
+# granulo
+g_d16_pente <- mon_nuage(
+  data = ref %>%
+    filter(pente_eau_m_m > 0),
+  x = pente_eau_m_m,
+  y = D16,
+  col = jeu_donnees,
+  label = etiquette,
+  x_log = TRUE,
+  y_log = logy,
+  x_lab = "Pente de la ligne d'eau (m/m)",
+  y_lab = "D16 (mm)"
+)
+
+g_d50_pente <- mon_nuage(
+  data = ref %>%
+    filter(pente_eau_m_m > 0),
+  x = pente_eau_m_m,
+  y = D50,
+  col = jeu_donnees,
+  label = etiquette,
+  x_log = TRUE,
+  y_log = logy,
+  x_lab = "Pente de la ligne d'eau (m/m)",
+  y_lab = "D50 (mm)"
+)
+
+g_d84_pente <- mon_nuage(
+  data = ref %>%
+    filter(pente_eau_m_m > 0),
+  x = pente_eau_m_m,
+  y = D84,
+  col = jeu_donnees,
+  label = etiquette,
+  x_log = TRUE,
+  y_log = logy,
+  x_lab = "Pente de la ligne d'eau (m/m)",
+  y_lab = "D84 (mm)"
+)
+
+g_wol_pente <- ggpubr::ggarrange(g_d16_pente,
+                                 g_d50_pente,
+                                 g_d84_pente,
+                                 common.legend = TRUE,
+                                 ncol = 2,
+                                 nrow = 2)
+
 # passage en plotly pour avoir l'interactivité
 g_lpb_pente <- ggplotly(g_lpb_pente) %>%
   layout(legend = list(
@@ -216,6 +262,8 @@ g_lpb_pente
 g_hpb_pente
 g_lh_pente
 
+
+
 # ----------------------------------------------------------
 # Graphiques distributions en densité
 # ----------------------------------------------------------
@@ -239,6 +287,20 @@ g_densite_lh <- ma_densite(data = ref,
                            x = l_h,
                            x_lab = "Ratio largeur / hauteur")
 
+g_densite_d16 <- ma_densite(data = ref,
+                           x = D16,
+                           x_lab = "D16 (mm)")
+
+g_densite_d50 <- ma_densite(data = ref,
+                            x = D50,
+                            x_lab = "D50 (mm)")
+
+g_densite_d84 <- ma_densite(data = ref,
+                            x = D84,
+                            x_lab = "D84 (mm)")
+
+
+
 g_densite <- ggpubr::ggarrange(g_densite_sbv,
                                g_densite_pente,
                                g_densite_lpb,
@@ -247,6 +309,13 @@ g_densite <- ggpubr::ggarrange(g_densite_sbv,
                                common.legend = TRUE,
                                ncol = 2,
                                nrow = 3)
+
+g_densite_wol <- ggpubr::ggarrange(g_densite_d16,
+                                   g_densite_d50,
+                                   g_densite_d84,
+                                   common.legend = TRUE,
+                                   ncol = 2,
+                                   nrow = 2)
 
 # carte ----
 # ___________________________
@@ -271,6 +340,9 @@ save(g_lpb_sbv,
      g_hpb_pente,
      g_lh_pente,
      g_densite,
+     g_densite_wol,
+     g_wol_sbv,
+     g_wol_pente,
      donnees_carte,
      file = "scripts/graphiques.RData")
 

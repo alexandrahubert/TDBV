@@ -1,9 +1,9 @@
 ---
 title: "Hydromorphologie des cours d'eau <br> en têtes de bassin versant"
 author:
-- Pascal IRZ, Julien BOËTON, Alexandra HUBERT, Mikaël LE BIHAN - OFB, Direction
-  Régionale Bretagne\newline
-- Gabriel MELUN - OFB, Direction de la recherche et de l'appui scientifique
+- __Pascal IRZ__, __Julien BOËTON__, __Alexandra HUBERT__, __Mikaël LE BIHAN__ *- OFB, Direction
+  Régionale Bretagne*\newline
+- __Gabriel MELUN__ *- OFB, Direction de la recherche et de l'appui scientifique*
 date: "`r format(Sys.time(), 'Le %d/%m/%Y')`"
 output:
   bookdown::html_document2:
@@ -87,10 +87,10 @@ Dans le détail, 3 jeux de données peuvent être distingués dans les analyses 
 
 - le jeu de données « têtes de bassins de référence » issu des travaux de Jan (2013) et Bossis (2014) sur des cours d’eau de rang 1 en Bretagne et Pays de la Loire (n=`r n_sites_par_source[3,2]`  stations) ;
 - le jeu de données issu des travaux de Galineau (2020) sur des cours d’eau de rang 1 à 4 en Bretagne et Pays de la Loire (n=`r n_sites_par_source[2,2]` stations)  ;
-- le jeu de données issu de Carhyce, intégrant des cours d’eau plus importants, de rang 1 à X sur l'HydroEcoRégion "Massif Armoricain" (n=`r n_sites_par_source[1,2]` stations). 
+- le jeu de données issu de Carhyce, intégrant des cours d’eau plus importants, de rang 1 à 4 sur l'HydroEcoRégion "Massif Armoricain" (n=`r n_sites_par_source[1,2]` stations). 
 
 
-```{r tab:table1}
+```{r tab:table1, out.width = "100%"}
 ref %>%
   downloadthis::download_this(
     output_name = "hydromorpho_ref_armo",
@@ -105,34 +105,34 @@ ref %>%
 ref %>% 
   select(-Code_tron,
          -dist_inter_rad,
-         -Coef_sinuo) %>%
-  mutate_at(vars(pente_eau_m_m, l_h),
+         -Coef_sinuo,
+         -D16_D84,
+         -l_h,
+         -etiquette) %>%
+  mutate_at(vars(pente_eau_m_m),
             function(x) round(x, 5)) %>% 
-  DT::datatable(caption = "Table 1 : Assemblage des données de l'IED Carhyce et des mesures de terrain réalisées par la DR OFB Bretagne. La variable `etiquette` est obtenue par concaténation de la référence de la station et du nom du cours d'eau car aucune de ces variables n'est renseignée dans 100% des cas. Elle sert à identifier les points sur les graphiques interactifs.")
+  rename(Id = Ref_sta,
+         commune = comm,
+         `Surface BV` = Surface_BV_km2,
+         pente = pente_eau_m_m) %>% 
+  DT::datatable(width = '140%', options = list(scrollX = TRUE), caption = "Table 1 : Assemblage des données de l'IED Carhyce et des mesures de terrain réalisées par la DR OFB Bretagne. La pente de la ligne d'eau (pente) est en mètre par mètre. Les largeurs et hauteurs de plein bord (Lpb et Hpb) sont en mètres. La granulométrie Wolman est en mm.")
 ```
+
 L'interface cartographique ci-dessous présente la localisation des différentes stations étudiées, en distinguant les trois jeux de données (figure 1).
 
-```{r, fig.width = 8, fig.height = 6.5, fig.cap = "Carte des sites prospectés."}
-# mapview::mapview(donnees_carte,
-#                  zcol = "Source",
-#                  layer.name = "Source",
-#                  popup = leafpop::popupTable(
-#       donnees_carte,
-#       zcol = c("Station",
-#                "Source")))
-test <-  mapview::mapview(donnees_carte,
-    zcol = "Source",
-    layer.name = "Source",
-    popup = leafpop::popupTable(
-      donnees_carte,
-      zcol = c("Station",
-               "Source"),
-      feature.id = FALSE,
-      row.numbers = FALSE
-    )
-  )
 
-test@map
+```{r, fig.width = 8, fig.height = 6.5, fig.cap = "Carte des sites prospectés."}
+test2 <- mapview::mapview(her1,
+                 alpha.region = 0.1,
+                 col.region = "grey80",
+                   lwd = 1.5,
+                 layer.name = c("Massif Armoricain"),
+                 map.types = c("OpenStreetMap", "Esri.WorldShadedRelief")) +
+  mapview::mapview(ref_geo,
+                  zcol = "jeu_donnees",
+                  layer.name = 'Source')
+
+test2@map
 ```
 
 
@@ -147,14 +147,14 @@ Les variables de réponses retenues sont *la largeur et la hauteur à plein bord
 
 # Contexte géographique 
 
-A faire MLB.
+**A faire MLB.**
 
 
-# Analyse des principales variables
+# Description des données mobilisées
 
 ## Présentation générale des stations de référence
 
-
+**A faire MLB.**
 
 ## Distribution des variables 
 
@@ -172,10 +172,10 @@ L’analyse permet de mettre en évidence les caractéristiques propres à chacu
 Ces analyses permettent de mettre en évidence les différences globales de géométrie des petits cours d’eau échantillonnés dans le cadre de 3 sous-jeux de données. Les données issues de « Jan et Bossis » se singularise par leur relative homogénéité des valeurs de gabarit du lit, qui apparaissent plus petites et moins larges que pour les autres sous-jeux de données. Ceci est parfaitement cohérent avec l’objectif de leur étude qui ciblait spécifiquement les cours d’eau de rang 1. Ces analyses suggèrent également des relations directes entre la surface de bassins amont, la pente et les caractéristiques géométrique du lit. Il apparaît en effet notamment que : 
 •	Plus la taille du bassin amont est petite, plus la pente du cours d’eau est forte.
 •	Plus la surface de bassin amont est petite, plus le gabarit du lit (largeur, profondeur) est petit
-Ces interprétations sont tout à fait en accord avec les principes fondamentaux de l’hydromorphologie et de la géométrie hydraulique (Leopold & Maddock, 1953 ;Wolman, 1955 ; Hey & Thorne, 1986)
+Ces interprétations sont tout à fait en accord avec les principes fondamentaux de l’hydromorphologie et de la géométrie hydraulique (Leopold & Maddock, 1953 ; Wolman, 1955 ; Hey & Thorne, 1986)
 
 
-# Analyse des varaibles
+# Analyse des relations entre variables
 
 Ces analyses ont pour objectif de mettre en relation les différentes variables issues du jeu de données global afin de mettre en évidence certaines de leurs corrélations.
 
@@ -243,7 +243,7 @@ Ainsi, les modèles sont de la forme suivante :
 
 $hauteur\ à\ plein\ bord = a\cdot log_{10}(1+surface\_bv) + b\cdot log_{10}(1+pente)+c$
 
-```{r}
+```{r tab:table2, out.width = "100%"}
 # chargement du tableau de données au format RData
 load(file = "modeles.RData")
 
@@ -425,6 +425,8 @@ Gomi T, Sidle RC, Richardson JS. 2002. Understanding processes and downstream li
 Jan A. 2013. Etude du fonctionnement hydromorphologique de référence des cours d’eau de tête de bassin sur le Massif Armoricain. Rapport de stage de Master 2. Délégation Bretagne Pays de la Loire de l’ONEMA / Université de Rennes 1.
 
 Malavoi J-R, Bravard J-P. 2010. Eléments d’hydromorphologie fluviale, 228 p.
+
+Strahler, AN. 1957. Quantitative analysis of watershed geomorphology. Eos, Transactions American Geophysical Union, 38(6): 913-920.
 
 Tixier G, et al. 2012. Enjeux des têtes de bassins versants pour la préservation et la restauration du bon état des masses d’eau. Rapport d’étape ONEMA / LIEC.
 
