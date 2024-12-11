@@ -56,7 +56,7 @@ htmltools::img(src = knitr::image_uri('logo_OFB.jpg'),
 
 # Introduction
 
-Cette page thématique propose une analyse préliminaire des caractéristiques hydromorphologique des cours d'eau en têtes de bassin versant, réalisée par la Direction régionale Bretagne de l'Office français de la biodiversité. Elle vise à fournir des éléments de connaissance sur les principales caractéristiques hydromorphologiques des cours d’eau sur des stations proches des conditions naturelles (peu ou pas impactées par les activités anthropiques) dans l’HydroEcoRégion (HER) de niveau 1 « Massif Armoricain » (Wasson *et al*., 2004). L'établissement et la connaissance de ces données de référence est de nature à mettre en lumière les enjeux de préservation de ces milieux essentiels au bon fonctionnement des hydrosystèmes et à améliorer l’efficacité des opérations de restauration écologique de cours d’eau sur ce territoire.
+Cette page thématique propose une analyse préliminaire des caractéristiques hydromorphologiques des cours d'eau en têtes de bassin versant, réalisée par la Direction régionale Bretagne de l'Office français de la biodiversité. Elle vise à fournir des éléments de connaissance sur les principales caractéristiques hydromorphologiques des cours d’eau sur des stations proches des conditions naturelles (peu ou pas impactées par les activités anthropiques) dans l’HydroEcoRégion (HER) de niveau 1 « Massif Armoricain » (Wasson *et al*., 2004). L'établissement et la connaissance de ces données de référence est de nature à mettre en lumière les enjeux de préservation de ces milieux essentiels au bon fonctionnement des hydrosystèmes et à améliorer l’efficacité des opérations de restauration écologique de cours d’eau sur ce territoire.
 
 :::: {.defbox data-latex=""}
 
@@ -66,7 +66,7 @@ Les cours d’eau en têtes de bassin versant se localisent à l’extrémité a
 
 
 
-Des données ont été collectées par l'OFB dans le cadre de stages de Master 2 entre 2013 et 2019 sur des cours d’eau qualifiés de "non impactés" vis à vis de leurs caractéristiques hydromorphologiques (Jan, 2013 ; Bossis, 2014 ; Gallineau, 2020). Le protocole de terrain mis en œuvre à l’échelle stationnelle vise à recueillir les principales caractéristiques hydromorphologiques du lit mineur et de la ripisylve sur des stations localisées sur des cours d'eau de rang de Strahler de 1 à 4, avec une majorité de cours d'eau de rang de Strahler 1 (70 %). Les superficies des bassins versants en amont des stations étudiées ont été obtenues par géotraitement sous le logiciel QGis.
+Des données ont été collectées par l'OFB dans le cadre de stages de Master entre 2013 et 2019 sur des cours d’eau qualifiés de "non impactés" vis à vis de leurs caractéristiques hydromorphologiques (Jan, 2013 ; Bossis, 2014 ; Galineau, 2020). Le protocole de terrain mis en œuvre à l’échelle stationnelle vise à recueillir les principales caractéristiques hydromorphologiques du lit mineur et de la ripisylve sur des stations localisées sur des cours d'eau de rang de Strahler de 1 à 4, avec une majorité de cours d'eau de rang de Strahler 1 (70 %). Les superficies des bassins versants en amont des stations étudiées ont été obtenues par géotraitement sous le logiciel QGis.
 
 Afin de mettre en perspective les résultats issus de ces données collectées par la direction Bretagne de l’OFB, des analyses similaires ont été conduites sur les stations qualifiées "de référence" au sein de [l'IED Carhyce](https://analytics.huma-num.fr/ied_carhyce/) pour la même HydroEcoRégion, sur des cours d'eau de rang de Strahler de 2 à 7. Les protocoles de terrain de ces différents jeux de données ne sont pas identiques, toutefois certains paramètres sont identiques et se recoupent.
 
@@ -87,7 +87,7 @@ Dans le détail, 3 jeux de données peuvent être distingués dans les analyses 
 
 - le jeu de données « têtes de bassins de référence » issu des travaux de Jan (2013) et Bossis (2014) sur des cours d’eau de rang 1 en Bretagne et Pays de la Loire (n=`r n_sites_par_source[3,2]`  stations) ;
 - le jeu de données issu des travaux de Galineau (2020) sur des cours d’eau de rang 1 à 4 en Bretagne et Pays de la Loire (n=`r n_sites_par_source[2,2]` stations)  ;
-- le jeu de données issu de Carhyce, intégrant des cours d’eau plus importants, de rang 1 à 4 sur l'HydroEcoRégion "Massif Armoricain" (n=`r n_sites_par_source[1,2]` stations). 
+- le jeu de données issu de Carhyce, intégrant des cours d’eau plus importants, de rang 1 à 7 sur l'HydroEcoRégion "Massif Armoricain" (n=`r n_sites_par_source[1,2]` stations). 
 
 
 ```{r tab:table1, out.width = "100%"}
@@ -143,18 +143,14 @@ Les caractéristiques des bassins versants qui s'étendent en amont de chaque st
 - La *superficie* du bassin versant (en km²).
 - La *pente* longitudinale de la ligne d'eau du cours d'eau au niveau de la station, considérée comme *proxy* de la pente du bassin versant (en m/m).
 
-Les variables de réponses retenues sont *la largeur et la hauteur à plein bord* (moyennes sur l'ensemble des transects par station, exprimées en m) ainsi que le ratio entre la largeur à plein bord et la hauteur à plein bord (également appelé rapport de forme ou rapport L/P).
+Les variables de réponses retenues sont *la largeur et la hauteur à plein bord* (moyennes sur l'ensemble des transects par station, exprimées en m) ainsi que le ratio entre la largeur à plein bord et la hauteur à plein bord (également appelé "rapport de forme" ou rapport L/P).
 
 # Contexte géographique 
 
-**A faire MLB.**
+L’approche par HydroÉcoRégions (HER) permet de délimiter des contextes géographiques dans lesquels les cours d’eau présentent des caractéristiques communes. Cette approche est basée sur la géologie, le relief et le climat. L’HER de niveau 1 « Massif Armoricain » se distingue par ses roches primaires dures, imperméables et non carbonatées, un relief de collines peu accentué et un climat océanique (Wasson *et al.*, 2004). Son point culminant se situe au Mont des Avaloirs, à 416 mètres, en Mayenne (53). Ce territoire est sous l’influence d’un climat tempéré océanique, caractérisé par des amplitudes thermiques annuelles peu marquées ainsi qu’une pluviométrie abondante et régulière. La pluviométrie moyenne annuelle sur les 9 départements des régions Bretagne et Pays de la Loire est de 812 mm/an ± 169. La pluviométrie moyenne annuelle en Bretagne peut varier du simple au double entre le bassin rennais (cumul < 700 mm) et les reliefs finistériens (cumul annuel >1300 mm). En Pays de la Loire, la pluviométrie annuelle moyenne varie de 650 mm sur le Layon à 1000 mm sur les reliefs du nord de la Mayenne ou les Gâtines en Vendée (Source Météo France). Il résulte de ces caractéristiques physiques un réseau hydrographique ramifié et dense constitué de nombreux cours d’eau (Lefrançois et al., 2005). Plus de 105 000 km de cours d’eau s’écoule sur ce territoire (BD TOPAGE, 2024). Cela représente environ 20 % du réseau hydrographique hexagonal 
 
 
 # Description des données mobilisées
-
-## Présentation générale des stations de référence
-
-**A faire MLB.**
 
 ## Distribution des variables 
 
@@ -166,12 +162,16 @@ g_densite
 ```
 
 L’analyse permet de mettre en évidence les caractéristiques propres à chacun des jeux de données compilés :  
-•	Les stations intégrant le jeu de données “Jan & Bossis” caractérisent naturellement les plus petits cours d’eau, marqués par une faible largeur (1 m en moyenne et toute inférieure à 5 m), une faible profondeur (moyenne de l’ordre de 30 cm) et, en conséquence, un faible rapport de forme (moyenne < à 8). Les bassins amont des stations échantillonnées sont petits (moyenne de l’ordre d’1 km²) ; toutefois, il est intéressant de remarquer que ce jeu de données présente une plus forte dispersion (hétérogénéité) de valeur de pente dont la moyenne est d’environ 2.2 % (0.022 m/m) et mais peut atteindre près de 9 % (0.09 m/m). 
-•	Le jeu de données issus de la base de données Carhyce présente inversement une plus grande hétérogénéité des valeurs de géométrie du lit (largeur, hauteur). En effet, la largeur moyenne des stations est de l’ordre de 9 m et peut atteindre près de 30 m. de même la hauteur est en moyenne d’environ 90 cm mais peut dépasser 2 m. Cette hétérogénéité de géométrie se retrouve dans l’hétérogénéité de la taille du bassin versant amont puisque ceux-ci s’étendent sur des surfaces comprises entre 1 et plus de 800 km². Les valeurs de pente apparaissent inversement très homogènes sur ce sous-jeu de données avec des valeurs de pente très faible, de l’ordre 0,5% (0.005 m/m).
-•	Le sous-jeu de données « Galineau » constitue un peu un « intermédiaire » entre les deux sous-jeu précédents. Les stations échantillonnées par Galineau sont marquées par une géométrie plus grande (largeur moyenne de l’ordre de 5 m et hauteur moyenne de 60 cm) mais également plus hétérogène que celles issues des travaux de Jan et Bossis. Comme pour le sous-jeu de données Carhyce, les stations renseignées par Galineau présentent des surface de bassin amont plutôt importantes, en moyenne de l’ordre de 30 km² mais marquées par une forte hétérogénéité. La pente moyenne de ce sous-jeu de données est de l’ordre de 1 % (0.01 m/m) mais reste assez hétérogène et peut atteindre 3 %.   
-Ces analyses permettent de mettre en évidence les différences globales de géométrie des petits cours d’eau échantillonnés dans le cadre de 3 sous-jeux de données. Les données issues de « Jan et Bossis » se singularise par leur relative homogénéité des valeurs de gabarit du lit, qui apparaissent plus petites et moins larges que pour les autres sous-jeux de données. Ceci est parfaitement cohérent avec l’objectif de leur étude qui ciblait spécifiquement les cours d’eau de rang 1. Ces analyses suggèrent également des relations directes entre la surface de bassins amont, la pente et les caractéristiques géométrique du lit. Il apparaît en effet notamment que : 
-•	Plus la taille du bassin amont est petite, plus la pente du cours d’eau est forte.
-•	Plus la surface de bassin amont est petite, plus le gabarit du lit (largeur, profondeur) est petit
+
+- Les stations intégrant le jeu de données “Jan & Bossis” caractérisent naturellement les plus petits cours d’eau, marqués par une faible largeur (1 m en moyenne et toute inférieure à 5 m), une faible profondeur (moyenne de l’ordre de 30 cm) et, en conséquence, un faible rapport de forme (moyenne < à 8). Les bassins varsants amont des stations échantillonnées sont petits (moyenne de l’ordre d’1 km²) ; toutefois, il est intéressant de remarquer que ce jeu de données présente une plus forte dispersion (hétérogénéité) de valeur de pente dont la moyenne est d’environ 2.2 % (0.022 m/m) et mais peut atteindre près de 9 % (0.09 m/m). 
+- Le jeu de données issus de la base de données Carhyce présente inversement une plus grande hétérogénéité des valeurs de géométrie du lit (largeur, hauteur). En effet, la largeur moyenne des stations est de l’ordre de 9 m et peut atteindre près de 30 m. De même, la hauteur est en moyenne d’environ 90 cm mais peut dépasser 2 m. Cette hétérogénéité observée sur la géométrie du lit se retrouve dans l’hétérogénéité de la taille du bassin versant amont puisque ceux-ci s’étendent sur des surfaces comprises entre 1 et plus de 800 km². Les valeurs de pente apparaissent inversement très homogènes sur ce sous-jeu de données avec des valeurs de pente très faible, de l’ordre 0,5% (0.005 m/m).
+- Le sous-jeu de données « Galineau » constitue un peu un « intermédiaire » entre les deux sous-jeux précédents. Les stations échantillonnées par Galineau sont marquées par des lits mineurs plus grands (largeur moyenne de l’ordre de 5 m et hauteur moyenne de 60 cm) mais également plus hétérogène que celles issues des travaux de Jan et Bossis. Comme pour le sous-jeu de données Carhyce, les stations renseignées par Galineau présentent des surfaces de bassin amont plutôt importantes, en moyenne de l’ordre de 30 km² mais marquées par une forte hétérogénéité. La pente moyenne de ce sous-jeu de données est de l’ordre de 1 % (0.01 m/m) mais reste assez hétérogène et peut atteindre 3 %.
+
+Ces analyses permettent de mettre en évidence les différences globales de géométrie des lits mineurs des petits cours d’eau échantillonnés dans le cadre de 3 sous-jeux de données. Les données issues de « Jan et Bossis » se singularisent par leur relative homogénéité des valeurs de gabarit du lit, qui apparaissent plus petites et moins larges que pour les autres sous-jeux de données. Ceci est parfaitement cohérent avec l’objectif de leur étude qui ciblait spécifiquement les cours d’eau de rang 1. Ces analyses suggèrent également des relations directes entre la surface des bassins versants amont, la pente et les caractéristiques géométriques du lit. Il apparaît en effet notamment que : 
+
+- Plus la taille du bassin amont est petite, plus la pente du cours d’eau est forte.
+- Plus la surface de bassin amont est petite, plus le gabarit du lit (largeur, profondeur) est petit.
+
 Ces interprétations sont tout à fait en accord avec les principes fondamentaux de l’hydromorphologie et de la géométrie hydraulique (Leopold & Maddock, 1953 ; Wolman, 1955 ; Hey & Thorne, 1986)
 
 
@@ -190,7 +190,7 @@ g_pente_sbv
 
 </div>
 
-Le lien entre les deux variables explicatives est fort (sur l'ensemble des trois jeux de données, le coefficient de corrélation *r²*=$`r pente_sbv_r2`$, *p-value*=$`r pente_sbv_pvalue`$). Dans le détail, il semble que la relation soit plus curvi-linéaire que linéaire. La relation est logiquement décroissante : plus la pente du cours d’eau est faible, plus le bassin versant amont est étendu ; corroborant parfaitement nos analyses précédentes. Il apparait également que certaines stations sont significativement éloignées de la droite de régression, et présentent donc des pentes nettement plus faible que ce à quoi on pourrait s’attendre (Ref_0065 ou Ref_0113 dans le sous-jeu de « Jan & Bossis », le Dolo, la varenne ou l’Aron dans Carhyce). Des vérifications sur le caractère « de référence » de ces stations seront vérifiés.  
+Le lien entre les deux variables explicatives est fort (sur l'ensemble des trois jeux de données, le coefficient de corrélation *r²*=$`r pente_sbv_r2`$, *p-value*=$`r pente_sbv_pvalue`$). Dans le détail, il semble que la relation soit plus curvi-linéaire que linéaire. La relation est logiquement décroissante : plus la pente du cours d’eau est faible, plus le bassin versant amont est étendu ; corroborant parfaitement nos analyses précédentes. Il apparait également que certaines stations sont significativement éloignées de la droite de régression, et présentent donc des pentes nettement plus faibles que ce à quoi on pourrait s’attendre (Ref_0065 ou Ref_0113 dans le sous-jeu de « Jan & Bossis », le Dolo, la varenne ou l’Aron dans Carhyce).
 
 
 ## Relation entre variables de contrôle et morphologie du lit mineur
@@ -220,6 +220,8 @@ g_lpb_pente
 
 </div>
 
+**A Rédiger GM**
+
 <div class = 'centerplotly'>
 ```{r, fig.cap="Relation entre la hauteur à plein bords et la pente de la ligne d'eau, distinguant les trois jeux de données."}
 g_hpb_pente
@@ -227,19 +229,19 @@ g_hpb_pente
 
 </div>
 
-
+**A Rédiger GM**
 
 # Modélisation
 
 ## Modèles complets
 
-Pour évaluer les effets combinés des deux variables explicatives (surface de bassin versant et pente), sur la largeur et la hauteur à plein bord des lits mineurs, des régressions multiples ont été réalisées. D'après les graphiques, les relations *log-log* semblent linéaires. Cependant, quelques essais montrent que les modèles sont mieux ajustés et ne transformant que les variables explicatives :
+Pour évaluer les effets combinés des deux variables explicatives (surface de bassin versant et pente), sur la largeur et la hauteur à plein bord des lits mineurs, des régressions multiples ont été réalisées. D'après les graphiques, les relations *log-log* semblent linéaires. Cependant, quelques essais montrent que les modèles sont mieux ajustés et n'opérant la transformation *log* que sur les variables explicatives, en appliquant la fonction suivante :
 
 $x \rightarrow \log_{10}(1+x)$
 
 L'ajout de 1 dans l'équation permet de conserver des valeurs positives ou nulles.
 
-Ainsi, les modèles sont de la forme suivante :
+Ainsi, les modèles prennent de la forme suivante :
 
 $hauteur\ à\ plein\ bord = a\cdot log_{10}(1+surface\_bv) + b\cdot log_{10}(1+pente)+c$
 
@@ -260,7 +262,7 @@ modeles %>%
 
 La superficie du bassin versant amont présente des coefficients de corrélation toujours significatifs. Cette superficie constitue la principale variable qui contribue à expliquer la largeur et la hauteur à plein bord du lit mineur d'un cours d'eau. Ces coefficients sont positifs, indiquant un effet "taille" : plus un bassin versant est grand, plus le lit mineur du cours d'eau est large et profond (Malavoi & Bravard, 2010).
 
-L'effet de la pente n'est significatif que sur un modèle, avec une `p-value` entre `0.05` et `0.01`, ce qui n'est pas très convaincant. Il s'agit vraisemblablement d'une mauvaise estimation de ce coefficient, ce qui arrive quand les variables explicatives sont corrélées entre elles. Cela vient peut etre aussi du fait que la pente des stations ne suit pas le modèle conceptuel de décroissance vers l’aval (exemple des têtes de bassin versant à faible pente).
+L'effet de la pente n'est significatif que sur un modèle, avec une `p-value` entre `0.05` et `0.01`, ce qui n'est pas très convaincant. Il s'agit vraisemblablement d'une mauvaise estimation de ce coefficient, ce qui arrive quand les variables explicatives sont corrélées entre elles. Cela vient peut-être aussi du fait que la pente des stations ne suit pas le modèle conceptuel de décroissance vers l’aval (exemple des têtes de bassin versant à faible pente).
 
 Les coefficients de détermination ajustés `r²` sont plus faibles pour les têtes de bassin versant que pour les deux autres jeux de données, malgré l'effet très significatif de la surface du bassin versant. Sur ces deux autres jeux de données, ils sont particulièrement élevés (`>0.90`) pour la largeur à plein bord `Lpb`. Ils sont de l'ordre de `0.80` pour la hauteur à plein bord `Hpb`.
 
@@ -291,7 +293,7 @@ Les résultats n'apportent pas d'amélioration, donc le modèle final retenu est
 
 >$hauteur\ à\ plein\ bord = a\cdot log_{10}(1+surface\_bv)+b$
 
-Afin d'obtenir le meilleur modèle sur les têtes de bassin versant, on l'ajuste sur le jeu de données combiné restreint aux bassins inférieurs à 10 km² (Brummer & Montgomery, 2003 ; MacDonald & Coe, 2007). Au-delà de cette valeur il est préférable de se reporter à Carhyce.
+Afin d'obtenir le meilleur modèle sur les têtes de bassin versant, on l'ajuste sur le jeu de données combiné restreint aux bassins versants inférieurs à 10 km² (Brummer & Montgomery, 2003 ; MacDonald & Coe, 2007). Au-delà de cette valeur il est préférable de se reporter aux [données de Carhyce](https://analytics.huma-num.fr/ied_carhyce/).
 
 ```{r}
 mf_lpb <- lm_unitaire(
@@ -333,19 +335,19 @@ De nombreux projets de restauration de l'hydromorphologie des cours d'eau ont po
 
 
 Afin de dimensionner un nouveau lit mineur, il convient de privilégier le recours à des segments hydromorphologiques de référence (proches des conditions naturelles) sur le même cours d'eau, à proximité immédiate du site à restaurer.
-Généralement, en l'absence de stations de référence à proximité directe, le dimensionnement repose sur le calcul de la crue journalière de fréquence annuelle à biennale (QJ1 à QJ2) (Malavoi & Bravard, 2010). Ce calcul s'effectue à l'aide du ratio de BV simple, établi par rapport à une station hydrolométrique présentant des caractéristiques relativement similaires au site étudié (surface de bassin versant, géologie, relief, etc.). 
+Généralement, en l'absence de stations de référence à proximité directe, le dimensionnement repose sur le calcul de la crue journalière de fréquence annuelle à biennale (QJ1 à QJ2) (Malavoi & Bravard, 2010). Ce calcul s'effectue généralement à l'aide de l'[hydroportail](https://hydro.eaufrance.fr/). 
 
 
-Le calculateur proposé ci-dessous et issu de données de référence sur les caractéristiques hydromorphologiques de 139 stations réparties sur l'HydroEcoRégion "Massif Armoricain", peut permettre de vérifier le dimensionnement de la largeur et de la profondeur à plein bord du lit mineur obtenu par les calculs hydrauliques précédents (ratio de BV simple).
+Le calculateur proposé ci-dessous est issu de données de référence sur les caractéristiques hydromorphologiques de `r nrow(ref)` stations réparties sur l'HydroEcoRégion "Massif Armoricain". Il peut permettre de vérifier le dimensionnement de la largeur et de la profondeur à plein bord du lit mineur obtenu par les calculs hydrauliques précédents (ratio de BV simple).
 
 
 Attention, les valeurs calculées ne doivent pas conduire à effectuer des reconstitutions de lits mineurs homogènes, il est en effet nécessaire de diversifier les largeurs et les profondeurs afin de concourir à la réussite du projet de restauration. De plus, comme ces valeurs sont issues de caractéristiques relevées sur des cours d'eau qui ont évolué dans le temps, il est conseillé de légèrement sous-dimensionner les largeurs et hauteurs à plein bord du lit mineur par rapport aux valeurs données par l'outil, afin de favoriser les ajustements hydromorphologiques.
 
 
-Une vigilance particulière devra être apportée sur l'utilisation de cet outil pour des cours d'eau présentant des pentes très faibles (quelques pour mille) ou très fortes (> à 5 ou 6 %). En effet, ces valeurs de pente sont pour le moment peu représentées dans le jeu de données actuel. 
+Une vigilance particulière devra être apportée sur l'utilisation de cet outil pour des cours d'eau présentant des pentes très faibles (quelques pour mille) ou très fortes (supérieures à 5 ou 6 %). En effet, ces valeurs de pente sont pour le moment peu représentées dans le jeu de données actuel. 
 
 
-Pour rappel, la quasi-totalité des stations de référence étudiées sont bordées par une ripisylve dense, multi-strates, composée d'essences locales et diversifiées, naturellement présentes en bordure des cours d'eau. La reconstitution d'une ripisylve fonctionnelle est déterminante pour garantir l'éfficacité et la réussite des projets de restauration.
+Pour rappel, la quasi-totalité des stations de référence étudiées sont bordées par une ripisylve dense, multi-strate, composée d'essences locales et diversifiées, naturellement présentes en bordure des cours d'eau. La reconstitution d'une ripisylve fonctionnelle est déterminante pour garantir l'efficacité et la réussite des projets de restauration.
 
 
 De plus, en "contexte argileux", les cours d'eau proches des conditions naturelles présentent des berges verticales basses. Cette forme de berges constitue la forme d'équilibre sur ce type de sol et permet la reconstitution naturelle de sous-berges.
@@ -422,12 +424,20 @@ Galineau M. 2020. Etude exploratoire des rangs zéro sur le territoire Bretagne-
 
 Gomi T, Sidle RC, Richardson JS. 2002. Understanding processes and downstream linkages of headwater systems: headwaters differ from downstream reaches by their close coupling to hillslope processes, more temporal and spatial variation, and their need for different means of protection from land use. BioScience 52: 905–916.
 
+Hey RD, Thorne CR. 1986. Stable channels with mobile gravel beds. J. Hydraul. Div., ASCE 112, 671–689.
+
 Jan A. 2013. Etude du fonctionnement hydromorphologique de référence des cours d’eau de tête de bassin sur le Massif Armoricain. Rapport de stage de Master 2. Délégation Bretagne Pays de la Loire de l’ONEMA / Université de Rennes 1.
+
+Leopold LB, Maddock T. 1953. The hydraulic geometry of stream channels and some physiographic implications. U.S. Geological Survey Professional Paper 252, 56 p.
 
 Malavoi J-R, Bravard J-P. 2010. Eléments d’hydromorphologie fluviale, 228 p.
 
 Strahler, AN. 1957. Quantitative analysis of watershed geomorphology. Eos, Transactions American Geophysical Union, 38(6): 913-920.
 
-Tixier G, et al. 2012. Enjeux des têtes de bassins versants pour la préservation et la restauration du bon état des masses d’eau. Rapport d’étape ONEMA / LIEC.
+Tixier G, Danger M, Felten V, Maunoury-Danger F, Devin S, Guérold F. 2012. Enjeux des têtes de bassins versants pour la préservation et la restauration du bon état des masses d’eau. Rapport d’étape ONEMA / LIEC. 38 p.
+
+Wasson J-G, Chandesris A, Pella H, Blanc L. 2004. Les hydro-écorégions : une approche fonctionnelle de la typologie des rivières pour la Directive cadre européenne sur l’eau. Ingenieries: eau, agriculture, territoires 40: 3–10.
+
+Wolman MG. 1955. The natural channel of Brandywine Creek, Pennsylvania. U.S. Geological Survey Professional Paper 282, 86–109.
 
 
